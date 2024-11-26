@@ -31,3 +31,4 @@ C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\refint\EduTech.dll
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\EduTech.pdb
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\EduTech.genruntimeconfig.cache
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\ref\EduTech.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\EduTech.sourcelink.json
