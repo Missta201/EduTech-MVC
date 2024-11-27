@@ -1,5 +1,6 @@
 {
   "Version": 1,
+  "ManifestType": "Build",
   "Endpoints": [
     {
       "Route": "EduTech.9i4q1vt40p.styles.css",

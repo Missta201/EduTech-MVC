@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\auth\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\auth\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -26,11 +26,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a83394e3-39c2-4678-a3c8-364b69d78fd3}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Auth\\Login.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Auth\\Login.cshtml",
@@ -43,26 +59,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Auth\\Register.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Auth\\Register.cshtml",
               "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Auth\\Register.cshtml",
               "RelativeToolTip": "EduTech\\Views\\Auth\\Register.cshtml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB0AAABPAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-26T12:38:09.372Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "EduTech\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Shared\\_Layout.cshtml*",
+              "RelativeToolTip": "EduTech\\Views\\Shared\\_Layout.cshtml*",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAAAG0AAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-26T09:58:53.772Z",
               "EditorCaption": ""
@@ -77,16 +93,7 @@
               "RelativeToolTip": "EduTech\\Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-26T08:59:45.398Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "WhenOpened": "2024-11-26T08:59:45.398Z"
             }
           ]
         }
