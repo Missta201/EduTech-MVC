@@ -275,3 +275,15 @@ C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\win\lib\net6
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\EduTech.csproj.AssemblyReference.cache
 C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\EduTech.csproj.Up2Date
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\System.Data.SqlClient.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\win-arm64\native\sni.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\win-x64\native\sni.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
+C:\Users\ThongDNg\Desktop\EduTech\EduTech\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

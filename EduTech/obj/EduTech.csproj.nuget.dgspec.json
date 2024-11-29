@@ -71,9 +71,25 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.9.0, )"
             }
           },
           "imports": [
