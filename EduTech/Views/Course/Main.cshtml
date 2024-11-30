@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewData["Title"] = "Main";
+}
+@model List<EduTech.Models.Course>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Board - EduTech</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+     
+
+        .main-content {
+            margin-left: 260px;
+            padding: 1rem;
+        }
+
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            color: #333;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+            .nav-link:hover {
+                background-color: #f8f9fa;
+            }
+
+            .nav-link i {
+                margin-right: 10px;
+            }
+
+        .user-menu {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .course-list {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+            .course-item:last-child {
+                border-bottom: none;
+            }
+
+        .course-icon {
+            font-size: 2rem;
+            color: #6c757d;
+            margin-right: 1rem;
+        }
+
+        .course-details {
+            flex-grow: 1;
+        }
+
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .course-description {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Main Content -->
+    <div class="main-content">
+       
+
+        <!-- Course Board Content -->
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Danh sách khóa học</h1>
+                <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Add Course
+                </a>
+            </div>
+
+            <!-- Course List -->
+            @* <div class="course-list">
+                @foreach (var course in Model)
+                {
+                    <div class="course-item">
+                        <i class="bi bi-journal-text course-icon"></i>
+                        <div class="course-details">
+                           
+                            <div class="course-title">@course.Name</div>
+                            
+                            <div class="course-description">@course.Description</div>
+                        </div>
+                    </div>
+                }
+            </div> *@
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên khóa học</th>
+                        <th>Mô tả</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.Name</td>
+                            <td>@course.Description</td>
+                            <td>
+                                <a class="btn btn-outline-primary" asp-controller"Course" asp-action="Edit" asp-route-name="@course.Name">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

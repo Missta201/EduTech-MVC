@@ -14,7 +14,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @* <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> *@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="@Url.Content("~/css/site.css")" asp-append-version="true" />
 
@@ -87,9 +87,12 @@
 </head>
 <body>
     <!-- Top Bar -->
+    
+  <header style="display:@(ViewData["HideHeader"] != null && (bool)ViewData["HideHeader"] ? "none" : "block");">
+
     <div class="top-bar py-2">
         <div class="container">
-            <div class="d-flex justify-content-end align-items-center gap-3">
+            <div class="d-flex justify-content-end align-items-center gap-1">
                 <a href="#" class="text-white text-decoration-none">Cổng thanh toán học phí</a>
                 <a href="#" class="text-white text-decoration-none">Liên hệ</a>
                 <a href="#" class="social-icon">
@@ -128,11 +131,10 @@
                         <a class="nav-link px-3" href="#">KHÓA HỌC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="#">TRA CỨU KẾT QUẢ THI</a>
+                        <a href="@Url.Action("ExamResults", "Exam")" class="nav-link px-3">TRA CỨU KẾT QUẢ THI</a>
+                        @* <a class="nav-link px-3" href="#">TRA CỨU KẾT QUẢ THI</a> *@
                     </li>
-                    @* <li class="nav-item">
-                    <a class="nav-link px-3" href="#">HỖ TRỢ GV/HV</a>
-                    </li> *@
+                   
                 </ul>
 
                 <!-- Search and Login -->
@@ -150,17 +152,13 @@
         </div>
     </nav>
 
+    </header>
     <!-- Main Content -->
     <div class="container mt-4">
         @RenderBody()
     </div>
 
     <!-- Footer -->
-    @* <footer class="footer text-muted mt-4 py-3 border-top">
-        <div class="container text-center">
-            &copy; @DateTime.Now.Year - EduTech - <a href="@Url.Action("Privacy", "Home")">Privacy</a>
-        </div>
-    </footer> *@
     <footer class="main-footer" style="display: @(ViewData["HideFooter"] != null && (bool)ViewData["HideFooter"] ? "none" : "block");">
         <div class="container">
             <div class="row">

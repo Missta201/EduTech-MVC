@@ -16,13 +16,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\EduTech.9i4q1vt40p.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"9i4q1vt40p"},{"Name":"integrity","Value":"sha256-rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug="},{"Name":"label","Value":"_content/EduTech/EduTech.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1125"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug=\u0022"},{"Name":"Last-Modified","Value":"Tue, 26 Nov 2024 12:36:25 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1125"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug=\u0022"},{"Name":"Last-Modified","Value":"Sat, 30 Nov 2024 15:07:54 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/EduTech/EduTech.bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\EduTech.9i4q1vt40p.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1125"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug=\u0022"},{"Name":"Last-Modified","Value":"Tue, 26 Nov 2024 12:36:25 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1125"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rxm4oju0bAOe\u002BP3BhQDGo/AePb3O7HEqQ7DlCCJp8Ug=\u0022"},{"Name":"Last-Modified","Value":"Sat, 30 Nov 2024 15:07:54 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/EduTech/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>

@@ -6,7 +6,7 @@ namespace EduTech.Controllers
     {
         public IActionResult Login()
         {
-            // Ẩm footer
+            // Ẩn footer
             ViewData["Title"] = "Login Page";
             ViewData["HideFooter"] = true;
             return View("Login");
