@@ -144,7 +144,8 @@
                             <td>@course.Name</td>
                             <td>@course.Description</td>
                             <td>
-                                <a class="btn btn-outline-primary" asp-controller"Course" asp-action="Edit" asp-route-name="@course.Name">Edit</a>
+                                @* <a class="btn btn-outline-primary" href="@Url.Action("Add", "Course")" "@course.Name">Edit</a> *@
+                                <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Course", new { id = course.Id })">Edit</a>
                             </td>
                         </tr>
                     }

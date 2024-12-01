@@ -51,44 +51,43 @@ namespace EduTech.Controllers
             ViewData["HideFooter"] = true;
             ViewData["HideHeader"] = true;
 
-            return View();
+            return RedirectToAction("Main", "Course");
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> List()
-        //{
-        //   var courses = await dbContext.Courses.ToListAsync();
-
-        //    return View(courses);
-        //}
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid Name)
+        public async Task<IActionResult> Edit(int id) // Thay Guid bằng int
         {
-            var course = await dbContext.Courses.FindAsync(Name);
-            return View(course);
+            var course = await dbContext.Courses.FindAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            // Tạo view model từ entity để gửi dữ liệu sang view
+            var viewModel = new AddCourseViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Description = course.Description
+            };
+
+            ViewData["Title"] = "Thêm khóa học";
+            ViewData["HideFooter"] = true;
+            ViewData["HideHeader"] = true;
+            return View(viewModel);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(Course viewModel)
-        //{
-        //    var course = await dbContext.Courses.FindAsync(viewModel.Name);
-        //    if (course is not null)
-        //    {
-        //        course.Name = viewModel.Name;
-        //        course.Description = viewModel.Description;
-
-        //        await dbContext.SaveChangesAsync();
-        //    }
-        //    return RedirectToAction("List", "Course");
-        //}
         [HttpPost]
-        public async Task<IActionResult> Edit(Course viewModel)
+        public async Task<IActionResult> Edit(AddCourseViewModel viewModel)
         {
-            var course = await dbContext.Courses.FindAsync(viewModel.Name); // Use the primary key
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var course = await dbContext.Courses.FindAsync(viewModel.Id);
             if (course != null)
             {
-                // Update fields
                 course.Name = viewModel.Name;
                 course.Description = viewModel.Description;
 
@@ -96,11 +95,13 @@ namespace EduTech.Controllers
             }
             else
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-            return RedirectToAction("List", "Course");
+            return RedirectToAction("Main", "Course");
         }
+
+
 
 
     }

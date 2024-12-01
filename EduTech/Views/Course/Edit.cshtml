@@ -44,7 +44,21 @@
         else
         {
             <!-- Course Edit Form -->
+            @* <form method="post" asp-action="Edit" asp-controller="Course">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInput" asp-for="Name" />
+                    <label for="floatingInput">Tên khóa học</label>
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="floatingDescription" style="height: 120px;" asp-for="Description"></textarea>
+                    <label for="floatingDescription">Mô tả</label>
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form> *@
             <form method="post" asp-action="Edit" asp-controller="Course">
+                <input type="hidden" asp-for="Id" />
                 <div class="form-floating mb-2">
                     <input type="text" class="form-control" id="floatingInput" asp-for="Name" />
                     <label for="floatingInput">Tên khóa học</label>
