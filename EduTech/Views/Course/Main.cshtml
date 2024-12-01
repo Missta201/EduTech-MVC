@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body {
+            font-family: 'Inter', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
             background-color: #f8f9fa;
         }
 
@@ -107,28 +108,17 @@
 
         <!-- Course Board Content -->
         <div class="container-fluid">
+            <a href="@Url.Action("Page", "Dashboard")" class="text-secondary text-decoration-none">
+                <i class="bi bi-arrow-left-circle"></i> Back to Dashborad
+            </a>
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>Danh sách khóa học</h1>
+                <h2>Danh sách khóa học</h2>
                 <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-2"></i>Add Course
                 </a>
             </div>
 
             <!-- Course List -->
-            @* <div class="course-list">
-                @foreach (var course in Model)
-                {
-                    <div class="course-item">
-                        <i class="bi bi-journal-text course-icon"></i>
-                        <div class="course-details">
-                           
-                            <div class="course-title">@course.Name</div>
-                            
-                            <div class="course-description">@course.Description</div>
-                        </div>
-                    </div>
-                }
-            </div> *@
             <table class="table">
                 <thead>
                     <tr>
@@ -146,6 +136,12 @@
                             <td>
                                 @* <a class="btn btn-outline-primary" href="@Url.Action("Add", "Course")" "@course.Name">Edit</a> *@
                                 <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Course", new { id = course.Id })">Edit</a>
+                                @* <button class="btn btn-danger" type="submit" asp-action="Delete" asp-controller="Course">Delete</button> *@
+                                <form method="post" action="@Url.Action("Delete", "Course")" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="Id" value="@course.Id" />
+                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     }

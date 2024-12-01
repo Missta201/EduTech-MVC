@@ -55,7 +55,7 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id) // Thay Guid bằng int
+        public async Task<IActionResult> Edit(int id) 
         {
             var course = await dbContext.Courses.FindAsync(id);
             if (course == null)
@@ -101,7 +101,24 @@ namespace EduTech.Controllers
             return RedirectToAction("Main", "Course");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var course = await dbContext.Courses.FindAsync(id);
 
+            if (course != null)
+            {
+                dbContext.Courses.Remove(course);
+                await dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Main", "Course");
+        }
 
 
     }

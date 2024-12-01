@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\dashboard\\page.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\dashboard\\page.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\controllers\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\controllers\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\course\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\course\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\course\\main.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\course\\main.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\course\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|solutionrelative:edutech\\views\\course\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D8D8C8A1-FCD0-4940-A3B6-6DAF9CA49166}|EduTech\\EduTech.csproj|c:\\users\\thongdng\\desktop\\edutech\\edutech\\views\\course\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -30,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,46 +58,72 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Page.cshtml",
+              "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Dashboard\\Page.cshtml",
+              "RelativeDocumentMoniker": "EduTech\\Views\\Dashboard\\Page.cshtml",
+              "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Dashboard\\Page.cshtml",
+              "RelativeToolTip": "EduTech\\Views\\Dashboard\\Page.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-01T05:39:37.556Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "EduTech\\Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "EduTech\\Controllers\\DashboardController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-01T05:30:39.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Course\\Edit.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Course\\Edit.cshtml",
               "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Course\\Edit.cshtml",
               "RelativeToolTip": "EduTech\\Views\\Course\\Edit.cshtml",
-              "ViewState": "AgIAADkAAAAAAAAAAAAAAEgAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAABAAAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-30T18:33:41.814Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "CourseController.cs",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Controllers\\CourseController.cs",
               "RelativeDocumentMoniker": "EduTech\\Controllers\\CourseController.cs",
               "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Controllers\\CourseController.cs",
               "RelativeToolTip": "EduTech\\Controllers\\CourseController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAcwHgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-30T18:27:41.331Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Main.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Course\\Main.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Course\\Main.cshtml",
               "ToolTip": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Course\\Main.cshtml",
               "RelativeToolTip": "EduTech\\Views\\Course\\Main.cshtml",
-              "ViewState": "AgIAAIcAAAAAAAAAAAAAAIgAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAQwHIAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-30T17:03:11.418Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Home\\Index.cshtml",
@@ -101,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Add.cshtml",
               "DocumentMoniker": "C:\\Users\\ThongDNg\\Desktop\\EduTech\\EduTech\\Views\\Course\\Add.cshtml",
               "RelativeDocumentMoniker": "EduTech\\Views\\Course\\Add.cshtml",
