@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Main";
+    int i = 0;
 }
 @model List<EduTech.Models.Course>
 
@@ -122,6 +123,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>STT</th>
                         <th>Tên khóa học</th>
                         <th>Mô tả</th>
                         <th></th>
@@ -131,6 +133,7 @@
                     @foreach (var course in Model)
                     {
                         <tr>
+                            <td>@(++i)</td>
                             <td>@course.Name</td>
                             <td>@course.Description</td>
                             <td>

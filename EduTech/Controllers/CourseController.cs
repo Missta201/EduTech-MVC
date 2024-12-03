@@ -35,22 +35,35 @@ namespace EduTech.Controllers
             return View("Add");
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Add(AddCourseViewModel viewModel)
         {
+            // Kiểm tra xem dữ liệu có hợp lệ không
+            if (!ModelState.IsValid)
+            {
+
+                ViewData["Title"] = "Thêm khóa học";
+                ViewData["HideFooter"] = true;
+                ViewData["HideHeader"] = true;
+                return View(viewModel);
+            }
+
+           
             var course = new Course
             {
                 Name = viewModel.Name,
-                Description = viewModel.Description,
+                Description = viewModel.Description
             };
+
             await dbContext.Courses.AddAsync(course);
             await dbContext.SaveChangesAsync();
-
 
             ViewData["Title"] = "Thêm khóa học";
             ViewData["HideFooter"] = true;
             ViewData["HideHeader"] = true;
 
+           
             return RedirectToAction("Main", "Course");
         }
 
@@ -82,6 +95,9 @@ namespace EduTech.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewData["Title"] = "Sửa khóa học";
+                ViewData["HideFooter"] = true;
+                ViewData["HideHeader"] = true;
                 return View(viewModel);
             }
 
