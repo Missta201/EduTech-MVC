@@ -8,8 +8,6 @@ namespace EduTech.Controllers
         public IActionResult Add()
         {
             ViewData["Title"] = "Thêm lớp học";
-            ViewData["HideFooter"] = true;
-            ViewData["HideHeader"] = true;
             return View("Add");
         }
     }

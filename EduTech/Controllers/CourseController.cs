@@ -19,8 +19,6 @@ namespace EduTech.Controllers
         {
 
             ViewData["Title"] = "Main";
-            ViewData["HideFooter"] = true;
-            ViewData["HideHeader"] = true;
             var courses = await dbContext.Courses.AsNoTracking().ToListAsync();
             return View("Main", courses);
         }
@@ -30,8 +28,6 @@ namespace EduTech.Controllers
         {
 
             ViewData["Title"] = "Thêm khóa học";
-            ViewData["HideFooter"] = true;
-            ViewData["HideHeader"] = true;
             return View("Add");
         }
 
@@ -44,8 +40,6 @@ namespace EduTech.Controllers
             {
 
                 ViewData["Title"] = "Thêm khóa học";
-                ViewData["HideFooter"] = true;
-                ViewData["HideHeader"] = true;
                 return View(viewModel);
             }
 
@@ -60,10 +54,6 @@ namespace EduTech.Controllers
             await dbContext.SaveChangesAsync();
 
             ViewData["Title"] = "Thêm khóa học";
-            ViewData["HideFooter"] = true;
-            ViewData["HideHeader"] = true;
-
-           
             return RedirectToAction("Main", "Course");
         }
 

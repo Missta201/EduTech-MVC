@@ -8,8 +8,6 @@ namespace EduTech.Controllers
         public IActionResult Page()
         {
             ViewData["Title"] = "Dashboard";
-            ViewData["HideFooter"] = true;
-            ViewData["HideHeader"] = true;
             return View("Page");
         }
     }

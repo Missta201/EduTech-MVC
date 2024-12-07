@@ -7,7 +7,6 @@ namespace EduTech.Controllers
         public IActionResult ExamResults()
         {
             ViewData["Title"] = "Tra cứu điểm / Kết quả học tập EduTECH";
-            ViewData["HideFooter"] = true;
             return View("ExamResults");
         }
     }
