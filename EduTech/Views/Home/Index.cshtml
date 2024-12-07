@@ -319,10 +319,16 @@
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-3 mb-3 mb-md-0">
-                    <a href="@Url.Action("Login", "Auth")" class="action-card d-block">
+                    
+                    <a class="action-card d-block" asp-area="Identity"
+                       asp-page="/Account/Register">
                         <i class="bi bi-pencil-square fs-1 mb-2"></i>
                         <div>Ghi danh ngay</div>
                     </a>
+                    @* <a href="@Url.Action("Login", "Auth")" class="action-card d-block"> *@
+                    @*     <i class="bi bi-pencil-square fs-1 mb-2"></i> *@
+                    @*     <div>Ghi danh ngay</div> *@
+                    @* </a> *@
                 </div>
                 <div class="col-md-3 mb-3 mb-md-0">
                     <a href="#" class="action-card d-block">

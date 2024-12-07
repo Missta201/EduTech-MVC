@@ -70,85 +70,95 @@
 
         /* Footer */
         .footer {
-            background-color: #f8f9fa;
-            font-size: 0.9rem;
+           color: rgb(0, 63, 136); 
+            color: white; 
         }
 
-        .btn-sm {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
+            .footer .contact-info p,
+            .footer .copyright,
+            .footer .brand-title,
+            .footer .est-year {
+                color: white; 
+            }
+
+            .footer .map-container iframe {
+                background-color: rgb(0, 63, 136); 
+                border: 0; 
+            }
+
+            .footer .map-container {
+                background-color: rgb(0, 63, 136); 
+            }
     </style>
 </head>
 <body>
     <!-- Top Bar -->
-    
-  <header style="display:@(ViewData["HideHeader"] != null && (bool)ViewData["HideHeader"] ? "none" : "block");">
 
-    <div class="top-bar py-2">
-        <div class="container">
-            <div class="d-flex justify-content-end align-items-center gap-1">
-                <a href="#" class="text-white text-decoration-none">Cổng thanh toán học phí</a>
-                <a href="#" class="text-white text-decoration-none">Liên hệ</a>
-                <a href="#" class="social-icon">
-                    <i class="bi bi-facebook"></i>
-                </a>
-                <a href="#" class="social-icon">
-                    <i class="bi bi-linkedin"></i>
-                </a>
+    <header style="display:@(ViewData["HideHeader"] != null && (bool)ViewData["HideHeader"] ? "none" : "block");">
+
+        <div class="top-bar py-2">
+            <div class="container">
+                <div class="d-flex justify-content-end align-items-center gap-1">
+                    <a href="#" class="text-white text-decoration-none">Cổng thanh toán học phí</a>
+                    <a href="#" class="text-white text-decoration-none">Liên hệ</a>
+                    <a href="#" class="social-icon">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Main Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container">
-            <!-- Logo -->
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
-                <img src="@Url.Content("~/logo.png")" alt="EduTech Logo" height="50">
-            </a>
+        <!-- Main Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img src="@Url.Content("~/logo.png")" alt="EduTech Logo" height="50">
+                </a>
 
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- Navigation Content -->
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="#">GIỚI THIỆU</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="#">THÔNG BÁO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="#">KHÓA HỌC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("ExamResults", "Exam")" class="nav-link px-3">TRA CỨU KẾT QUẢ THI</a>
-                        @* <a class="nav-link px-3" href="#">TRA CỨU KẾT QUẢ THI</a> *@
-                    </li>
-                   
-                </ul>
+                <!-- Navigation Content -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#">GIỚI THIỆU</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#">THÔNG BÁO</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#">KHÓA HỌC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ExamResults", "Exam")" class="nav-link px-3">TRA CỨU KẾT QUẢ THI</a>
+                            @* <a class="nav-link px-3" href="#">TRA CỨU KẾT QUẢ THI</a> *@
+                        </li>
 
-                <!-- Search and Login -->
-                <partial name="_LoginPartial" />
+                    </ul>
+
+                    <!-- Search and Login -->
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    </header>
+    </ header>
     <!-- Main Content -->
     <div class="container mt-4">
         @RenderBody()
     </div>
 
-    <!-- Footer -->
     <footer class="main-footer" style="display: @(ViewData["HideFooter"] != null && (bool)ViewData["HideFooter"] ? "none" : "block");">
         <div class="container">
             <div class="row">
+                <!-- Thông tin liên hệ -->
                 <div class="col-md-6">
                     <div class="brand-title">Edu</div>
                     <div class="brand-title">TECH</div>
@@ -164,6 +174,8 @@
                         Bản quyền thuộc EduTECH, Thành phố Hồ Chí Minh. Năm 2024
                     </div>
                 </div>
+
+                <!-- Bản đồ -->
                 <div class="col-md-6">
                     <div class="map-container">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0673478727094!2d106.62609067488295!3d10.806153889344406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBUaMawxqFuZyBUUC4gSOG7kyBDaMOtIE1pbmggKEhVSVQp!5e0!3m2!1svi!2s!4v1732874710767!5m2!1svi!2s"
