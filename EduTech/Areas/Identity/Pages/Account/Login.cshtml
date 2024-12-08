@@ -5,8 +5,10 @@
     ViewData["Title"] = "Log in";
 }
 
+
 <div class="row justify-content-center">
     <div class="col-md-4">
+        <h1>@ViewData["Title"]</h1>
         <section>
             <form id="account" method="post">
                 <h2>Use a local account to log in.</h2>
@@ -46,6 +48,7 @@
         </section>
     </div>
 </div>
+    
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

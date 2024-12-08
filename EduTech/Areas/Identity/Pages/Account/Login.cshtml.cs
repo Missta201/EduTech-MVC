@@ -98,7 +98,7 @@ namespace EduTech.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            
+
             ReturnUrl = returnUrl;
         }
 
@@ -107,7 +107,7 @@ namespace EduTech.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -133,7 +133,7 @@ namespace EduTech.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
-            
+
             // If we got this far, something failed, redisplay form
             return Page();
         }
