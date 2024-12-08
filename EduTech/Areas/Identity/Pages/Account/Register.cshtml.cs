@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace EduTech.Areas.Identity.Pages.Account
 {
@@ -76,7 +75,6 @@ namespace EduTech.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
@@ -121,9 +119,9 @@ namespace EduTech.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                // Add custom user data
+
                 user.Name = Input.Name;
-                //
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -131,10 +129,6 @@ namespace EduTech.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    //  Adds the new claim to the ApplicationUser’s collection
-                    var claim = new Claim("Name", "");
-                    await _userManager.AddClaimAsync(user, claim);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -154,7 +148,6 @@ namespace EduTech.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        // Signs the user in by setting the HttpContext.User; the principal will include the custom claim
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
@@ -164,7 +157,7 @@ namespace EduTech.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            
+
             // If we got this far, something failed, redisplay form
             return Page();
         }

@@ -30,6 +30,7 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        
         public string Username { get; set; }
 
         /// <summary>
@@ -57,11 +58,11 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
 
+            // Customized the InputModel to include the Name property
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
             public string Name { get; set; }
-
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -107,6 +108,11 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            if (Input.Name != user.Name)
+            {
+                user.Name = Input.Name;
+            }
+
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -117,12 +123,6 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
-            if (Input.Name != user.Name)
-            {
-                user.Name = Input.Name;
-            }
-
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
