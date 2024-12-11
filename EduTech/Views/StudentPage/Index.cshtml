@@ -1,0 +1,163 @@
+﻿@{
+    ViewData["Title"] = "Thông tin học viên";
+}
+<style>
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 1rem;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+
+    .icon-wrapper {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stretched-link::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        content: "";
+    }
+    
+
+    .row.h-100 > .col-6 {
+        height: calc(50% - 0.75rem);
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- Student Information Card -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm h-100 border-2">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Thông tin học viên</h5>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="position-relative">
+                                <div class="rounded-circle overflow-hidden bg-light d-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px;">
+                                    <i class="bi bi-person text-secondary" style="font-size: 3rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row g-2">
+                                <div class="col-12"><p class="mb-1"><strong>MSHV:</strong> 20033212</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Họ tên:</strong> Nguyễn Văn A</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Giới tính:</strong> Nam</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Ngày sinh:</strong> 01/10/2001</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Email:</strong> nguyenvana@gmail.com</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Khóa học:</strong> 2024</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Quick Access Cards -->
+        <div class="col-lg-4">
+            <div class="row g-3 h-100">
+                <!-- Study Results -->
+                <div class="col-6 d-flex">
+                    <div class="card flex-fill shadow-sm border-2">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center p-3">
+                            <div class="icon-wrapper mb-3">
+                                <i class="bi bi-file-earmark-text text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                            <h6 class="card-title text-center small mb-0">Kết quả học tập</h6>
+                            <a href="#" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exam Results Lookup -->
+                <div class="col-6 d-flex">
+                    <div class="card flex-fill shadow-sm border-2">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center p-3">
+                            <div class="icon-wrapper mb-3">
+                                <i class="bi bi-search text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                            <h6 class="card-title text-center small mb-0">Tra cứu kết quả thi</h6>
+                            <a href="#" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Schedule -->
+                <div class="col-6 d-flex">
+                    <div class="card flex-fill shadow-sm border-2">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center p-3">
+                            <div class="icon-wrapper mb-3">
+                                <i class="bi bi-calendar-week text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                            <h6 class="card-title text-center small mb-0">Lịch học trong tuần</h6>
+                            <a href="#" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exam Schedule -->
+                <div class="col-6 d-flex">
+                    <div class="card flex-fill shadow-sm border-2">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center p-3">
+                            <div class="icon-wrapper mb-3">
+                                <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                            <h6 class="card-title text-center small mb-0">Lịch thi trong tuần</h6>
+                            <a href="#" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Administrative Cards -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-pencil-square text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Đăng ký môn học</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-credit-card text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Thanh toán trực tuyến</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-file-text text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Hóa đơn</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

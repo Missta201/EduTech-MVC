@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Thông tin giảng viên";
+}
+
+<style>
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 1rem;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+
+    .icon-wrapper {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stretched-link::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        content: "";
+    }
+    
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <!-- Lecturer Information Card -->
+        <div class="col-12">
+            <div class="card shadow-sm border-2">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Thông tin giảng viên</h5>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="position-relative">
+                                <div class="rounded-circle overflow-hidden bg-light d-flex align-items-center justify-content-center" 
+                                     style="width: 120px; height: 120px;">
+                                    <i class="bi bi-person text-secondary" style="font-size: 3rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row g-2">
+                                <div class="col-12"><p class="mb-1"><strong>MSGV:</strong> 20033212</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Họ tên:</strong> Nguyễn Văn C</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Ngày sinh:</strong> 01/01/1994</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Email:</strong> vanC@edutech.com</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Cards Row -->
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-clipboard-plus text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Đăng ký dạy</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-calendar-week text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Lịch dạy theo tuần</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-pencil-square text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Chấm điểm</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-2">
+                <div class="card-body text-center p-4">
+                    <div class="icon-wrapper mb-3">
+                        <i class="bi bi-graph-up-arrow text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h6 class="card-title">Tra cứu lớp học đã thanh toán</h6>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
