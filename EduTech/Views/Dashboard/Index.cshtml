@@ -12,8 +12,8 @@
         <div class="nav-section-title">Contents Management</div>
         <nav class="nav flex-column">
             <a class="nav-link" href="/dashboard"><i class="bi bi-grid"></i> Dashboard</a>
-            <a class="nav-link" href="@Url.Action("Main", "Course")"><i class="bi bi-book"></i> Khoá học</a>
-            <a class="nav-link" href="@Url.Action("Add", "Class")"><i class="bi bi-mortarboard"></i> Lớp học</a>
+            <a class="nav-link" href="@Url.Action("Index", "Course")"><i class="bi bi-book"></i> Khoá học</a>
+            <a class="nav-link" href="@Url.Action("Index", "Class")"><i class="bi bi-mortarboard"></i> Lớp học</a>
         </nav>
     </div>
 
@@ -21,7 +21,7 @@
         <div class="nav-section-title">User Management</div>
         <nav class="nav flex-column">
             <a class="nav-link" href="@Url.Action("Index", "Student")"><i class="bi bi-people"></i> Học viên</a>
-            <a class="nav-link" href="#"><i class="bi bi-person-video3"></i> Giảng viên</a>
+            <a class="nav-link" href="@Url.Action("Index","Lecturer")"><i class="bi bi-person-video3"></i> Giảng viên</a>
         </nav>
     </div>
 </div>

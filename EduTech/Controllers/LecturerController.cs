@@ -4,23 +4,20 @@ namespace EduTech.Controllers
 {
     public class LecturerController : Controller
     {
-        public IActionResult Main()
+        public IActionResult Index()
         {
-            ViewData["Title"] = "Danh sách giảng viên";
-            return View("Main");
+            return View("Index");
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            ViewData["Title"] = "Thêm giảng viên";
             return View("Add");
         }
 
         [HttpGet]
         public IActionResult Edit()
         {
-            ViewData["Title"] = "Sửa giảng viên";
             return View("Edit");
         }
     }
