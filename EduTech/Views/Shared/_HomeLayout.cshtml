@@ -94,7 +94,7 @@
 <body>
     <!-- Top Bar -->
 
-    <header style="display:@(ViewData["HideHeader"] != null && (bool)ViewData["HideHeader"] ? "none" : "block");">
+    <header>
 
         <div class="top-bar py-2">
             <div class="container">
@@ -155,7 +155,7 @@
             @RenderBody()
         </div>
 
-        <footer class="main-footer" style="display: @(ViewData["HideFooter"] != null && (bool)ViewData["HideFooter"] ? "none" : "block");">
+        <footer class="main-footer">
             <div class="container">
                 <div class="row">
                     <!-- Thông tin liên hệ -->

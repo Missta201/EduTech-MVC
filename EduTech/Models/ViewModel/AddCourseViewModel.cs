@@ -11,5 +11,5 @@ namespace EduTech.Models
         public string? Description { get; set; }
     }
 
-    
+
 }

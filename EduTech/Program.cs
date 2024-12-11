@@ -2,6 +2,7 @@ using EduTech;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using EduTech.Models;
+using EduTech.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<EduTechDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IUserService, UserService>();
 // Adds the Identity system, including the default UI, and configures the user type as IdentityUser
 builder.Services.AddDefaultIdentity<ApplicationUser>(
     options => {
@@ -23,6 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

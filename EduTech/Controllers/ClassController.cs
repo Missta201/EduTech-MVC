@@ -4,16 +4,14 @@ namespace EduTech.Controllers
 {
     public class ClassController : Controller
     {
-        public IActionResult Main()
+        public IActionResult Index()
         {
-            ViewData["Title"] = "Danh sách lớp học";
-            return View("Main");
+            return View("Index");
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            ViewData["Title"] = "Thêm lớp học";
             return View("Add");
         }
 
@@ -21,7 +19,6 @@ namespace EduTech.Controllers
         public IActionResult Edit() 
         {
 
-            ViewData["Title"] = "Sửa lớp học";
             return View("Edit");
         }
     }
