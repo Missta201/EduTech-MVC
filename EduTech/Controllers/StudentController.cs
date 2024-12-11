@@ -6,17 +6,24 @@ namespace EduTech.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly IUserService userService;
-
-        public StudentController(IUserService userService)
+        public IActionResult Main()
         {
-            this.userService = userService;
+            ViewData["Title"] = "Danh sách học viên";
+            return View("Main");
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Add()
         {
-            IEnumerable<ApplicationUser> users = await userService.GetUsersAsync();
-            return View();
+            ViewData["Title"] = "Thêm học viên";
+            return View("Add");
+        }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            ViewData["Title"] = "Sửa học viên";
+            return View("Edit");
         }
     }
 }

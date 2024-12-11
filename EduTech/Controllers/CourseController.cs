@@ -18,7 +18,7 @@ namespace EduTech.Controllers
         public async Task<IActionResult> Main()
         {
 
-            ViewData["Title"] = "Main";
+            ViewData["Title"] = " Danh sách khoá học";
             var courses = await dbContext.Courses.AsNoTracking().ToListAsync();
             return View("Main", courses);
         }

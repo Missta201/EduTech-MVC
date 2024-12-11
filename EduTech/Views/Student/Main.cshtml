@@ -1,8 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Danh sách khoá học";
-    int i = 0;
+    ViewData["Title"] = "Danh sách học viên";
+    
 }
-@model List<EduTech.Models.Course>
 
 <div class="container-fluid mt-4">
     <nav aria-label="breadcrumb">
@@ -12,16 +11,16 @@
                     <i class="bi bi-house-door"></i> Back to Dashborad
                 </a>
             </li>
-            
+
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="card-title">Danh sách khóa học</h2>
-                <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Thêm khóa học
+                <h2 class="card-title">Danh sách học viên</h2>
+                <a href="@Url.Action("Add", "Student")" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Thêm học viên
                 </a>
             </div>
 
@@ -29,7 +28,7 @@
                 <div class="col-md-6">
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm khóa học...">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm học viên...">
                     </div>
                 </div>
             </div>
@@ -39,35 +38,38 @@
                     <thead class="table-light">
                         <tr>
                             <th>STT</th>
-                            <th>Tên khóa học</th>
-                            <th>Mô tả</th>
+                            <th>Tên học viên</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var course in Model)
-                        {
+                        
                             <tr>
-                                <td>@(++i)</td>
-                                <td>@course.Name</td>
-                                <td>@course.Description</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Course", new { id = course.Id })">
+                                    <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Student")">
                                         <i class="bi bi-pencil"></i> Sửa
                                     </a>
-                                    <form method="post" action="@Url.Action("Delete", "Course")" style="display:inline;">
+                                    <form method="post" action="@Url.Action("Delete", "Student")" style="display:inline;">
                                         @Html.AntiForgeryToken()
-                                        <input type="hidden" name="Id" value="@course.Id" />
+                                        <input type="hidden" name="Id" value="" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
                                     </form>
                                 </td>
                             </tr>
-                        }
+                        
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
