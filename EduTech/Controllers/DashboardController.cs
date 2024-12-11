@@ -4,11 +4,9 @@ namespace EduTech.Controllers
 {
     public class DashboardController : Controller
     {
-        [Route("dashboard")]
-        public IActionResult Page()
+        public IActionResult Index()
         {
-            ViewData["Title"] = "Dashboard";
-            return View("Page");
+            return View("Index");
         }
     }
 }
