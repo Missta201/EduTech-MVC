@@ -27,5 +27,6 @@ namespace EduTech
         }
 
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Class> Classes { get; set; }
     }
 }

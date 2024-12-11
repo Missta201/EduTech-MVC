@@ -8,10 +8,14 @@ namespace EduTech.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
+        public string RoomNumber { get; set; } = string.Empty;
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public int Capacity {  get; set; }
 
+        //Một lớp học mở cho một môn học
+        public int CourseId { get; set; }
+        public Course Course { get; set; } = new Course();
 
     }
 }

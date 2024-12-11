@@ -19,6 +19,7 @@ namespace EduTech.Controllers
         {
             var courses = await dbContext.Courses.AsNoTracking().ToListAsync();
             return View("Index", courses);
+            
         }
 
         [HttpGet]
