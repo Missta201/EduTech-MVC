@@ -11,11 +11,16 @@ namespace EduTech.Models
         public string RoomNumber { get; set; } = string.Empty;
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
-        public int Capacity {  get; set; }
+        public int Capacity { get; set; }
+        public double Tuition { get; set; }
+
 
         //Một lớp học mở cho một môn học
         public int CourseId { get; set; }
         public Course Course { get; set; } = new Course();
+
+        //Một lớp học có nhiều lịch học
+        public List<ClassSchedule> ClassSchedules { get; set; } = new List<ClassSchedule>();
 
     }
 }

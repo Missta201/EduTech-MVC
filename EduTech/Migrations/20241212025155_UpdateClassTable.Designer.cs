@@ -4,6 +4,7 @@ using EduTech;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduTech.Migrations
 {
     [DbContext(typeof(EduTechDbContext))]
-    partial class EduTechDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212025155_UpdateClassTable")]
+    partial class UpdateClassTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +155,7 @@ namespace EduTech.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("ClassSchedules");
+                    b.ToTable("ClassSchedule");
                 });
 
             modelBuilder.Entity("EduTech.Models.Course", b =>

@@ -10,8 +10,20 @@ namespace EduTech.Models.ViewModel
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public int Capacity { get; set; }
+        public double Tuition { get; set; }
+
         public int CourseId { get; set; }
 
         public List<SelectListItem> Courses { get; set; } = [];
+        public List<ClassScheduleViewModel> ClassSchedules { get; set; } = [];
+
+    }
+
+    public class ClassScheduleViewModel
+    {
+        public int Id { get; set; }
+        public DayOfWeek Day { get; set; }
+        public TimeOnly StartTime { get; set; }
+        public TimeOnly EndTime { get; set; }
     }
 }
