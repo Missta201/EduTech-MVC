@@ -20,6 +20,7 @@ namespace EduTech.Controllers
         {
             var classes = await _context.Classes
                 .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
                 .ToListAsync();
             return View("Index", classes);
         }
@@ -27,7 +28,8 @@ namespace EduTech.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            var viewModel = new ClassViewModel {
+            var viewModel = new ClassViewModel
+            {
                 Courses = _context.Courses
                 .Select(c => new SelectListItem
                 {
@@ -43,7 +45,8 @@ namespace EduTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ClassViewModel viewModel)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 var newClass = new Class
                 {
                     Name = viewModel.Name,
@@ -51,9 +54,17 @@ namespace EduTech.Controllers
                     Capacity = viewModel.Capacity,
                     StartDate = viewModel.StartDate,
                     EndDate = viewModel.EndDate,
+                    Tuition = viewModel.Tuition,
                     // Course
                     CourseId = viewModel.CourseId,
-                    Course = null
+                    Course = null,
+                    // ClassSchedules
+                    ClassSchedules = viewModel.ClassSchedules.Select(s => new ClassSchedule
+                    {
+                        Day = s.Day,
+                        StartTime = s.StartTime,
+                        EndTime = s.EndTime
+                    }).ToList()
                 };
                 _context.Classes.Add(newClass);
                 await _context.SaveChangesAsync();
@@ -67,15 +78,17 @@ namespace EduTech.Controllers
                     Text = c.Name
                 }).ToList();
 
-            return View("Edit",viewModel);
+            return View("Edit", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id) 
+        public async Task<IActionResult> Edit(int id)
         {
             var selectedClass = await _context.Classes
-                .Include(c => c.Course)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            .Include(c => c.Course)
+            .Include(c => c.ClassSchedules)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
 
             if (selectedClass == null)
             {
@@ -90,15 +103,25 @@ namespace EduTech.Controllers
                 Capacity = selectedClass.Capacity,
                 StartDate = selectedClass.StartDate,
                 EndDate = selectedClass.EndDate,
+                Tuition = selectedClass.Tuition,
+                // Course
                 CourseId = selectedClass.CourseId,
                 Courses = _context.Courses
                     .Select(c => new SelectListItem
                     {
                         Value = c.Id.ToString(),
                         Text = c.Name
-                    }).ToList()
+                    }).ToList(),
+                // ClassSchedules
+                ClassSchedules = selectedClass.ClassSchedules.Select(s => new ClassScheduleViewModel
+                {
+                    Id = s.Id,
+                    Day = s.Day,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime
+                }).ToList()
             };
-            return View("Edit",viewModel);
+            return View("Edit", viewModel);
         }
 
         [HttpPost]
@@ -114,6 +137,7 @@ namespace EduTech.Controllers
             {
                 var selectedClass = await _context.Classes
                     .Include(c => c.Course)
+                    .Include(c => c.ClassSchedules) // Include ClassSchedules
                     .FirstOrDefaultAsync(c => c.Id == viewModel.Id);
 
                 if (selectedClass == null)
@@ -127,9 +151,23 @@ namespace EduTech.Controllers
                 selectedClass.StartDate = viewModel.StartDate;
                 selectedClass.EndDate = viewModel.EndDate;
                 selectedClass.CourseId = viewModel.CourseId;
+                selectedClass.Tuition = viewModel.Tuition;
+
+                // Remove existing schedules
+                _context.ClassSchedules.RemoveRange(selectedClass.ClassSchedules);
+
+                // Add new schedules
+                selectedClass.ClassSchedules = viewModel.ClassSchedules.Select(s => new ClassSchedule
+                {
+                    Day = s.Day,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime
+                }).ToList();
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             // Repopulate courses dropdown if model is invalid
             viewModel.Courses = _context.Courses
                 .Select(c => new SelectListItem

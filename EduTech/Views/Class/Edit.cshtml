@@ -17,7 +17,7 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <a href="@Url.Action("Index", "Class")" class="btn btn-outline-primary mb-3">
+                            <a asp-action="Index" asp-controller="Class" class="btn btn-outline-primary mb-3">
                                 <i class="bi bi-arrow-left"></i> Quay lại
                             </a>
                             <h2 class="mb-0">@vnActionName lớp học</h2>
@@ -62,34 +62,103 @@
                             <!-- Sức chứa lớp -->
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input asp-for="Capacity" class="form-control" type="number" min="1" placeholder="Nhập sĩ số">
+                                    <input asp-for="Capacity" class="form-control" type="number" min="1"
+                                        placeholder="Nhập sĩ số">
                                     <label asp-for="Capacity">Sức chứa lớp</label>
                                     <span asp-validation-for="Capacity" class="text-danger"></span>
                                 </div>
                             </div>
 
-                            <!--Ngày bắt đầu -->
+                            <!-- Học phí -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="Tuition" class="form-control" type="number" min="0"
+                                        placeholder="Nhập học phí">
+                                    <label asp-for="Tuition">Học phí</label>
+                                    <span asp-validation-for="Tuition" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Ngày bắt đầu -->
                             <div class="col-6">
                                 <div class="form-floating">
-                                    <input asp-for="StartDate" class="form-control" type="date" value="@(Model.Id != 0 ? Model.StartDate.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))">
+                                    <input asp-for="StartDate" class="form-control" type="date"
+                                        value="@(Model.Id != 0 ? Model.StartDate.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))">
                                     <label asp-for="StartDate">Ngày bắt đầu</label>
                                     <span asp-validation-for="StartDate" class="text-danger"></span>
                                 </div>
                             </div>
-                            <!--Ngày kết thúc-->
+
+                            <!-- Ngày kết thúc -->
                             <div class="col-6">
                                 <div class="form-floating">
-                                    <input asp-for="EndDate" class="form-control" type="date" value="@(Model.Id != 0 ? Model.EndDate.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))">
+                                    <input asp-for="EndDate" class="form-control" type="date"
+                                        value="@(Model.Id != 0 ? Model.EndDate.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"))">
                                     <label asp-for="EndDate">Ngày kết thúc</label>
                                     <span asp-validation-for="EndDate" class="text-danger"></span>
                                 </div>
                             </div>
 
+                            <!-- Lịch học -->
+                            <div class="col-12">
+                                <label class="mb-2">Lịch học</label>
+                                <div id="schedules-container">
+                                    @if (Model.ClassSchedules?.Any() == true)
+                                    {
+                                        @for (var i = 0; i < Model.ClassSchedules.Count; i++)
+                                        {
+                                            <div class="schedule-item row g-2 mb-3">
+                                                <input type="hidden" name="ClassSchedules[@i].Id"
+                                                    value="@Model.ClassSchedules[i].Id" />
+                                                <div class="col-md-4">
+                                                    <select name="ClassSchedules[@i].Day" class="form-select">
+                                                        @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                                                        {
+                                                            var dayValue = (int)day;
+                                                            var isSelected = Model.ClassSchedules[i].Day == day;
+                                                            var dayName = day switch
+                                                            {
+                                                                DayOfWeek.Sunday => "Chủ nhật",
+                                                                DayOfWeek.Monday => "Thứ hai",
+                                                                DayOfWeek.Tuesday => "Thứ ba",
+                                                                DayOfWeek.Wednesday => "Thứ tư",
+                                                                DayOfWeek.Thursday => "Thứ năm",
+                                                                DayOfWeek.Friday => "Thứ sáu",
+                                                                DayOfWeek.Saturday => "Thứ bảy",
+                                                                _ => day.ToString()
+                                                            };
 
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-2"></i>@vnActionName
-                            </button>
+                                                            <option value="@dayValue" selected="@isSelected">
+                                                                @dayName
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="time" name="ClassSchedules[@i].StartTime" class="form-control"
+                                                        value="@Model.ClassSchedules[i].StartTime.ToString("HH:mm")" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="time" name="ClassSchedules[@i].EndTime" class="form-control"
+                                                        value="@Model.ClassSchedules[i].EndTime.ToString("HH:mm")" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-danger remove-schedule">Xóa</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <button type="button" id="add-schedule" class="btn btn-secondary mt-2">
+                                    <i class="bi bi-plus"></i> Thêm lịch học
+                                </button>
+                            </div>
+                            <!--Thêm/Chỉnh sửa lịch học-->
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-2"></i>@vnActionName
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -98,6 +167,52 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        const DayOfWeek = {
+            0: "Chủ nhật",
+            1: "Thứ hai",
+            2: "Thứ ba",
+            3: "Thứ tư",
+            4: "Thứ năm",
+            5: "Thứ sáu",
+            6: "Thứ bảy"
+        };
+
+        document.getElementById('add-schedule').addEventListener('click', function () {
+            const container = document.getElementById('schedules-container');
+            const index = container.children.length;
+
+            const scheduleHtml = `
+                <div class="schedule-item row g-2 mb-3">
+                    <input type="hidden" name="ClassSchedules[${index}].Id" value="0" />
+                    <div class="col-md-4">
+                        <select name="ClassSchedules[${index}].Day" class="form-select">
+                            ${Object.entries(DayOfWeek).map(([value, text]) =>
+                `<option value="${value}">${text}</option>`
+            ).join('')}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="ClassSchedules[${index}].StartTime" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="ClassSchedules[${index}].EndTime" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger remove-schedule">Xóa</button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', scheduleHtml);
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-schedule')) {
+                e.target.closest('.schedule-item').remove();
+            }
+        });
 
 
-
+    </script>
+}
