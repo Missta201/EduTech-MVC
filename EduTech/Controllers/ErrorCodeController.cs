@@ -4,7 +4,7 @@ namespace EduTech.Controllers
 {
     public class ErrorCodeController : Controller
     {
-        public IActionResult NotFound()
+        public new IActionResult NotFound()
         {
             return View("NotFound");
         }

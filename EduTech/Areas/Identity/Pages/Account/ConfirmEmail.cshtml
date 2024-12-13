@@ -1,0 +1,12 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Xác thực email";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a asp-controler="Home" asp-action="Index" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại trang chủ
+</a>
+<partial name="_StatusMessage" model="Model.StatusMessage" />

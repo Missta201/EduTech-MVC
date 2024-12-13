@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
     ViewData["Title"] = "Danh sách lớp học";
 
 }
@@ -21,9 +24,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="card-title">Danh sách lớp học</h2>
-                <a href="@Url.Action("Add", "Class")" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Thêm lớp học
-                </a>
+                @* Người dùng có policy  CanManageClasses thì mới hiển thị button Thêm lớp học*@
+                @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
+                {
+                    <a href="@Url.Action("Add", "Class")" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm lớp học
+                    </a>
+                }
             </div>
 
             <div class="row mb-3">
@@ -80,17 +87,42 @@
                                 <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                                 <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary me-2"
-                                        href="@Url.Action("Edit", "Class", new { id = item.Id })">
-                                        <i class="bi bi-pencil"></i> Sửa
-                                    </a>
-                                    <form method="post" action="@Url.Action("Delete", "Class")" style="display:inline;">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="Id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i> Xóa
-                                        </button>
-                                    </form>
+                                    @* Người dùng có policy CanManageClasses thì mới hiển thị nút Sửa / Xoá lớp học *@
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary me-2"
+                                            href="@Url.Action("Edit", "Class", new { id = item.Id })">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                        <form method="post" action="@Url.Action("Delete", "Class")" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="Id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (User != null &&  (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
+                                    {
+                                        <a class="btn btn-sm btn-outline-success"
+                                            href="@Url.Action("Register", "Class", new { id = item.Id })">
+                                            <i class="bi bi-person-check"></i> Đăng ký dạy
+                                        </a>
+                                    }
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+                                    {
+                                        <a class="btn btn-sm btn-outline-info"
+                                            href="@Url.Action("Enroll", "Class", new { id = item.Id })">
+                                            <i class="bi bi-journal-check"></i> Đăng ký học
+                                        </a>
+                                    }
+                                    else if (User?.Identity?.IsAuthenticated != true)
+                                    {
+                                        <a class="btn btn-sm btn-outline-info" asp-area="Identity" asp-page="/Account/Register">
+                                            <i class="bi bi-journal-check"></i> Đăng ký học
+                                        </a>
+                                    }
+
                                 </td>
                             </tr>
                         }
