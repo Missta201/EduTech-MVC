@@ -59,7 +59,7 @@ namespace EduTech.Controllers
                     Name = model.Name,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
-                    UserType = UserTypes.Student,
+                    UserType = UserTypes.Lecturer,
                     // Tạm thời set EmailConfirmed = true để không cần xác nhận email
                     EmailConfirmed = true
 

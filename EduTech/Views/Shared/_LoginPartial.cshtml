@@ -7,17 +7,17 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity"
-               asp-page="/Account/Manage/Index" title="Manage">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 Hello @(User.Identity?.Name ?? "User")!
             </a>
         </li>
         <li class="nav-item">
-            <form class="form-inline" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
-                  asp-area="Identity" method="post">
-                <button class=" btn btn-outline-primary"
-                        type="submit">
+            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                asp-area="Identity" method="post">
+                <button class=" btn btn-outline-primary" type="submit">
                     Logout
                 </button>
             </form>
@@ -26,10 +26,8 @@
     else
     {
         <div class="d-flex align-items-center gap-2">
-            <a class="btn btn-outline-primary btn-sm" asp-area="Identity"
-               asp-page="/Account/Login">ĐĂNG NHẬP</a>
-            <a class="btn btn-primary btn-sm" asp-area="Identity"
-               asp-page="/Account/Register">ĐĂNG KÝ</a>
+            <a class="btn btn-outline-primary btn-sm" asp-area="Identity" asp-page="/Account/Login">ĐĂNG NHẬP</a>
+            <a class="btn btn-primary btn-sm" asp-area="Identity" asp-page="/Account/Register">ĐĂNG KÝ</a>
         </div>
     }
 </ul>
