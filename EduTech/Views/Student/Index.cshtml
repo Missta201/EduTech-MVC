@@ -12,7 +12,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a asp-action="Index" asp-asp-controller="Dashboard" class="text-decoration-none">
+                <a asp-action="Index" asp-controller="Dashboard" class="text-decoration-none">
                     <i class="bi bi-house-door"></i> Back to Dashborad
                 </a>
             </li>
@@ -24,22 +24,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="card-title">Danh sách học viên</h2>
-                @* Người dùng có policy  CanManageStudentsLectures thì mới hiển thị button Thêm lớp học*@
+                @* Người dùng có policy CanManageStudentsLectures thì mới hiển thị button thêm học viên*@
                 @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageStudentsLectures")).Succeeded)
                 {
                     <a asp-action="Add" asp-controller="Student" class="btn btn-primary">
                         <i class="bi bi-plus-circle me-2"></i>Thêm học viên
                     </a>
                 }
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm học viên...">
-                    </div>
-                </div>
             </div>
 
             <div class="table-responsive">
@@ -62,7 +53,7 @@
                                 <td>@user.Email</td>
                                 <td>@user.PhoneNumber</td>
                                 <td>
-                                    @* Người dùng có policy CanManageStudentsLectures thì mới hiển thị nút Sửa học viên *@
+                                    @* Người dùng có policy CanManageStudentsLectures thì mới hiển thị nút sửa học viên *@
                                     @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
                                    "CanManageStudentsLectures")).Succeeded)
                                     {
@@ -71,7 +62,7 @@
                                             <i class="bi bi-pencil"></i> Sửa
                                         </a>
                                     }
-                                    @* Người dùng có policy CanDeleteStudentsLectures thì mới hiển thị nút Sửa học viên *@
+                                    @* Người dùng có policy CanDeleteStudentsLectures thì mới hiển thị nút xoá học viên *@
                                     @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
                                    "CanDeleteStudentsLectures")).Succeeded)
                                     {

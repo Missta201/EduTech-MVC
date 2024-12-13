@@ -1,8 +1,9 @@
 ﻿
 @{
     ViewData["Title"] = "Sửa giảng viên";
-
 }
+
+@model LecturerViewModel
 
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
@@ -11,7 +12,7 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <a href="@Url.Action("Index", "Lecturer")" class="btn btn-outline-primary mb-3">
+                            <a asp-action="Index" asp-controller="Lecturer" class="btn btn-outline-primary mb-3">
                                 <i class="bi bi-arrow-left"></i> Quay lại
                             </a>
                             <h2 class="mb-0">Sửa giảng viên</h2>
@@ -22,32 +23,33 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="row g-3">
-                            <!-- Tên lớp -->
+                            <!-- Tên giảng viên -->
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input class="form-control" placeholder="Nhập tên giảng viên">
-                                    <label>Tên giảng viên</label>
-                                    <span class="text-danger"></span>
+                                    <input asp-for="Name" class="form-control" placeholder="Nhập tên giảng viên">
+                                    <label asp-for="Name">Tên giảng viên</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
 
+                            <!-- Email giảng viên -->
 
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input class="form-control" placeholder="Nhập địa chỉ email">
-                                    <label>Email</label>
-                                    <span class="text-danger"></span>
+                                    <input asp-for="Email" class="form-control" placeholder="Nhập địa chỉ email">
+                                    <label asp-for="Email" >Email</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
+                            <!-- Số điện thoại giảng viên -->
 
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input class="form-control" placeholder="Nhập số điện thoại">
-                                    <label>SĐT</label>
-                                    <span class="text-danger"></span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại">
+                                    <label asp-for="PhoneNumber"> Số điện thoại</label>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="mt-4">
@@ -55,10 +57,6 @@
                                 <i class="bi bi-save me-2"></i>Lưu thay đổi
                             </button>
                         </div>
-
-
-
-
                     </form>
                 </div>
             </div>

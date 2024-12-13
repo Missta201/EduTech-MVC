@@ -1,7 +1,12 @@
-﻿
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 @{
     ViewData["Title"] = "Danh sách giảng viên";
+    int i = 1;
 }
+
+@model IEnumerable<ApplicationUser>
 
 <div class="container-fluid mt-4">
     <nav aria-label="breadcrumb">
@@ -19,18 +24,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="card-title">Danh sách giảng viên</h2>
-                <a href="@Url.Action("Add", "Lecturer")" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Thêm giảng viên
-                </a>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm giảng viên...">
-                    </div>
-                </div>
+                @* Người dùng có policy CanManageStudentsLectures thì mới hiển thị button Thêm giảng viên*@
+                @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageStudentsLectures")).Succeeded)
+                {
+                    <a asp-action="Add" asp-controller="Lecturer" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm giảng viên
+                    </a>
+                }
             </div>
 
             <div class="table-responsive">
@@ -45,26 +45,37 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Lecturer")">
-                                    <i class="bi bi-pencil"></i> Sửa
-                                </a>
-                                <form method="post" action="@Url.Action("Delete", "Lecturer")" style="display:inline;">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="Id" value="" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i> Xóa
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-
+                        @foreach(var user in Model) {
+                            <tr>
+                                <td>@(i++)</td>
+                                <td>@user.Name</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>
+                                    @* Người dùng có policy CanManageStudentsLectures thì mới hiển thị nút sửa giảng viên*@
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
+                                   "CanManageStudentsLectures")).Succeeded)
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary me-2" asp-action="Edit"
+                                           asp-controller="Lecturer" asp-route-id="@user.Id">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                    }
+                                    @* Người dùng có policy CanDeleteStudentsLectures thì mới hiển thị nút xoá giảng viên *@
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
+                                   "CanDeleteStudentsLectures")).Succeeded)
+                                    {
+                                        <form method="post" asp-action="Delete" asp-controller="Lecturer" asp-route-id="@user.Id"
+                                              style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger me-2">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
