@@ -15,19 +15,23 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace EduTech.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -110,11 +114,23 @@ namespace EduTech.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var claims = await _userManager.GetClaimsAsync(user);
+
+                    // Add UserType claim if it doesn't exist
+                    if (!claims.Any(c => c.Type == "UserType"))
+                    {
+                        await _userManager.AddClaimAsync(user, new Claim("UserType", user.UserType ?? UserTypes.Student));
+                    }
+
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

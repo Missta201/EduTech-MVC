@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using EduTech.Models;
 using EduTech.Services;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,7 +15,8 @@ builder.Services.AddDbContext<EduTechDbContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 // Adds the Identity system, including the default UI, and configures the user type as IdentityUser
 builder.Services.AddDefaultIdentity<ApplicationUser>(
-    options => {
+    options =>
+    {
         options.SignIn.RequireConfirmedAccount = true;
         options.Lockout.AllowedForNewUsers = true;
         options.Password.RequiredLength = 8;
@@ -22,6 +25,15 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(
     }
     )
     .AddEntityFrameworkStores<EduTechDbContext>(); // Configures Identity to store its data in EF Core
+
+// Configures policies
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("IsAdmin", policy => policy.RequireClaim("UserType", UserTypes.Admin))
+    .AddPolicy("IsScheduler", policy => policy.RequireClaim("UserType", UserTypes.Scheduler))
+    .AddPolicy("IsLecturer", policy => policy.RequireClaim("UserType", UserTypes.Lecturer))
+    .AddPolicy("IsStudent", policy => policy.RequireClaim("UserType", UserTypes.Student))
+    .AddPolicy("CanManageClasses", policy =>
+        policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

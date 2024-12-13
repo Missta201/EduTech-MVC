@@ -7,5 +7,8 @@ namespace EduTech.Models
     {
         [PersonalData]
         public string? Name { get; set; }
+
+        [PersonalData]
+        public string? UserType { get; set; }
     }
 }

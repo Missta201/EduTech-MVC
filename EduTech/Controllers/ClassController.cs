@@ -1,11 +1,13 @@
 ﻿using EduTech.Models;
 using EduTech.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduTech.Controllers
 {
+    [Authorize]
     public class ClassController : Controller
     {
         private readonly EduTechDbContext _context;
@@ -16,6 +18,7 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var classes = await _context.Classes
@@ -57,7 +60,6 @@ namespace EduTech.Controllers
                     Tuition = viewModel.Tuition,
                     // Course
                     CourseId = viewModel.CourseId,
-                    Course = null,
                     // ClassSchedules
                     ClassSchedules = viewModel.ClassSchedules.Select(s => new ClassSchedule
                     {

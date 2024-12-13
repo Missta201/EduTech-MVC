@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace EduTech.Areas.Identity.Pages.Account
 {
@@ -119,6 +120,7 @@ namespace EduTech.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.UserType = UserTypes.Student; // Set default type as Student
 
                 user.Name = Input.Name;
 
@@ -128,6 +130,8 @@ namespace EduTech.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    // Add UserType claim
+                    await _userManager.AddClaimAsync(user, new Claim("UserType", UserTypes.Student));
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

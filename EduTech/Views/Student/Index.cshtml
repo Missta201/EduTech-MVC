@@ -1,7 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Danh sách học viên";
-    
+    int i = 1;
 }
+
+
+@model IEnumerable<ApplicationUser>
 
 <div class="container-fluid mt-4">
     <nav aria-label="breadcrumb">
@@ -40,31 +43,31 @@
                             <th>STT</th>
                             <th>Tên học viên</th>
                             <th>Email</th>
-                            <th>SĐT</th>
+                            <th>Số điện thoại</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Student")">
-                                        <i class="bi bi-pencil"></i> Sửa
-                                    </a>
-                                    <form method="post" action="@Url.Action("Delete", "Student")" style="display:inline;">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="Id" value="" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i> Xóa
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        
+                            @foreach(var user in Model) {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>@user.Name</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.PhoneNumber</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Student")">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                        <form method="post" action="@Url.Action("Delete", "Student")" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="Id" value="" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                     </tbody>
                 </table>
             </div>
