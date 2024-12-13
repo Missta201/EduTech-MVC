@@ -2,6 +2,7 @@
     ViewData["Title"] = "Thêm học viên";
 }
 
+@model StudentViewModel
 
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
@@ -21,32 +22,42 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="row g-3">
-                            <!-- Tên lớp -->
-                            <div class="col-md-12">
+                            <!-- Tên học viên -->
+                            <div class="col-12">
                                 <div class="form-floating">
-                                    <input class="form-control"  placeholder="Nhập tên học viên">
-                                    <label>Tên học viên</label>
-                                    <span class="text-danger"></span>
+                                    <input asp-for="Name" class="form-control" placeholder="Nhập tên học viên">
+                                    <label asp-for="Name">Tên học viên</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
 
-
-                            <div class="col-md-12">
+                            <!-- Email -->
+                            <div class="col-12">
                                 <div class="form-floating">
-                                    <input class="form-control"  placeholder="Nhập địa chỉ email">
-                                    <label>Email</label>
-                                    <span class="text-danger"></span>
-                                </div>
-                            </div>
-                           
-                            <div class="col-md-12">
-                                <div class="form-floating">
-                                    <input class="form-control"  placeholder="Nhập số điện thoại">
-                                    <label>SĐT</label>
-                                    <span class="text-danger"></span>
+                                    <input asp-for="Email" class="form-control" placeholder="Nhập địa chỉ email">
+                                    <label asp-for="Email">Email</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
 
+                            <!-- Số điện thoại -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại">
+                                    <label asp-for="PhoneNumber">Số điện thoại</label>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Mật khẩu -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="Password" class="form-control" type="password"
+                                           placeholder="Nhập mật khẩu">
+                                    <label asp-for="Password">Mật khẩu</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mt-4">

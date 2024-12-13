@@ -32,9 +32,10 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("IsScheduler", policy => policy.RequireClaim("UserType", UserTypes.Scheduler))
     .AddPolicy("IsLecturer", policy => policy.RequireClaim("UserType", UserTypes.Lecturer))
     .AddPolicy("IsStudent", policy => policy.RequireClaim("UserType", UserTypes.Student))
-    .AddPolicy("CanManageClasses", policy =>
-        policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler));
-
+    .AddPolicy("CanManageClasses", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
+    .AddPolicy("CanViewStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
+    .AddPolicy("CanManageStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
+    .AddPolicy("CanDeleteStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

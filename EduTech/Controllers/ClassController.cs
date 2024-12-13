@@ -29,6 +29,7 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
         public IActionResult Add()
         {
             var viewModel = new ClassViewModel
@@ -45,6 +46,7 @@ namespace EduTech.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ClassViewModel viewModel)
         {
@@ -60,6 +62,7 @@ namespace EduTech.Controllers
                     Tuition = viewModel.Tuition,
                     // Course
                     CourseId = viewModel.CourseId,
+                    Course = null, //Don't touch this line please
                     // ClassSchedules
                     ClassSchedules = viewModel.ClassSchedules.Select(s => new ClassSchedule
                     {
@@ -84,6 +87,7 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
         public async Task<IActionResult> Edit(int id)
         {
             var selectedClass = await _context.Classes
@@ -127,6 +131,7 @@ namespace EduTech.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClassViewModel viewModel)
         {
@@ -181,6 +186,7 @@ namespace EduTech.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {

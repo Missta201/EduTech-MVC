@@ -30,9 +30,13 @@ namespace EduTech
             }
 
             // Seed default users with password: Demo123@
+            var adminId = Guid.NewGuid().ToString();
+            var schedulerId = Guid.NewGuid().ToString();
+            var lecturerId = Guid.NewGuid().ToString();
+
             var adminUser = new ApplicationUser
             {
-                Id = "1",
+                Id = adminId,
                 UserName = "admin@edutech.com",
                 NormalizedUserName = "ADMIN@EDUTECH.COM",
                 Email = "admin@edutech.com",
@@ -45,7 +49,7 @@ namespace EduTech
 
             var schedulerUser = new ApplicationUser
             {
-                Id = "2",
+                Id = schedulerId,
                 UserName = "giaovu@edutech.com",
                 NormalizedUserName = "GIAOVU@EDUTECH.COM",
                 Email = "giaovu@edutech.com",
@@ -58,7 +62,7 @@ namespace EduTech
 
             var lecturerUser = new ApplicationUser
             {
-                Id = "3",
+                Id = lecturerId,
                 UserName = "giangvien@edutech.com",
                 NormalizedUserName = "GIANGVIEN@EDUTECH.COM",
                 Email = "giangvien@edutech.com",
@@ -76,13 +80,14 @@ namespace EduTech
             schedulerUser.PasswordHash = hasher.HashPassword(schedulerUser, defaultPassword);
             lecturerUser.PasswordHash = hasher.HashPassword(lecturerUser, defaultPassword);
 
+            // Seed default users
             builder.Entity<ApplicationUser>().HasData(adminUser, schedulerUser, lecturerUser);
 
             // Seed user claims
             builder.Entity<IdentityUserClaim<string>>().HasData(
-                new IdentityUserClaim<string> { Id = 1, UserId = "1", ClaimType = "UserType", ClaimValue = UserTypes.Admin },
-                new IdentityUserClaim<string> { Id = 2, UserId = "2", ClaimType = "UserType", ClaimValue = UserTypes.Scheduler },
-                new IdentityUserClaim<string> { Id = 3, UserId = "3", ClaimType = "UserType", ClaimValue = UserTypes.Lecturer }
+                new IdentityUserClaim<string> { Id = 1, UserId = adminId, ClaimType = "UserType", ClaimValue = UserTypes.Admin },
+                new IdentityUserClaim<string> { Id = 2, UserId = schedulerId, ClaimType = "UserType", ClaimValue = UserTypes.Scheduler },
+                new IdentityUserClaim<string> { Id = 3, UserId = lecturerId, ClaimType = "UserType", ClaimValue = UserTypes.Lecturer }
             );
         }
 

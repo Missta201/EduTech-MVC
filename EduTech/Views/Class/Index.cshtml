@@ -24,7 +24,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="card-title">Danh sách lớp học</h2>
-                @* Người dùng có claim  CanManageClasses thì mới hiển thị button Thêm lớp học*@
+                @* Người dùng có policy  CanManageClasses thì mới hiển thị button Thêm lớp học*@
                 @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
                 {
                     <a href="@Url.Action("Add", "Class")" class="btn btn-primary">

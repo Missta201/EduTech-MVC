@@ -95,54 +95,54 @@ namespace EduTech.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "335cad7c-e3fa-4a85-962a-cf65d65ee7ab",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c15be29-80c8-4958-91d8-513755bfb6dc",
+                            ConcurrencyStamp = "f91a16ec-aa5a-4e87-880b-72defbd244d5",
                             Email = "admin@edutech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Admin User",
                             NormalizedEmail = "ADMIN@EDUTECH.COM",
                             NormalizedUserName = "ADMIN@EDUTECH.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKWxWlXCsDK3zkUQ2T7Zu3M3g34axcBcGe332J/Pf7stFXoqxB4sWByAIiyuASlbnQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHx1Wq/9OxDvXzAqbBlXvWT0zrw2uTPOt4FDYtB4rW4qlIrddD8xvDWsj3ZbuBb9SA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "abe58797-db48-4140-b2a4-410db5ef4e92",
+                            SecurityStamp = "fe84cc24-1b8d-4851-9981-2aa38af210c6",
                             TwoFactorEnabled = false,
                             UserName = "admin@edutech.com",
                             UserType = "Admin"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "24b7594d-25d3-4b2d-b634-cfffc40ce42f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00b7a3fe-639d-4781-977e-818e866293d9",
+                            ConcurrencyStamp = "bb6e9dab-2d8e-422e-9cbd-2c7600a55a74",
                             Email = "giaovu@edutech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Giáo vụ 1",
                             NormalizedEmail = "GIAOVU@EDUTECH.COM",
                             NormalizedUserName = "GIAOVU@EDUTECH.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMbghaqAR87/K9DmtOqI3npJ4vzbATSy2gB/PPS3hEnoC96MohzS/XvMSTI7hhyoUQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELLAa62GDbmAe5h+ZCMN0tB+DspKfV+Svl5Mr6NI1eaH2n9pVcAkWgYUyxrYhxEZ4g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "11bbdd48-a3a0-468f-b2f7-196ce23df791",
+                            SecurityStamp = "48821a54-ec74-475f-860c-db5f145ad2c4",
                             TwoFactorEnabled = false,
                             UserName = "giaovu@edutech.com",
                             UserType = "Scheduler"
                         },
                         new
                         {
-                            Id = "3",
+                            Id = "e0dd9f76-d78f-4b2d-a889-94c1a08c1bac",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e87ea7d8-8441-4aea-9fd6-ef1bc2c286c5",
+                            ConcurrencyStamp = "be14f35f-3ffb-4358-8585-0644901ebf5d",
                             Email = "giangvien@edutech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Giảng viên 1",
                             NormalizedEmail = "GIANGVIEN@EDUTECH.COM",
                             NormalizedUserName = "GIANGVIEN@EDUTECH.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN/7FSGhysLbASYaathc2Rs0/g2V0IddPW9T5KGxZamKGRvGh3eIGpDN30lJ9ciiTw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN+etor16HvQjnSYXDG2AzGNs0p3WoCg0iQccnOg1vwWg8OBiON5HhEvVOcEfnntsQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8db36db5-f9d7-43b5-ab82-1bb16a013ea4",
+                            SecurityStamp = "eed0f7ab-d665-44ff-ad78-ccd24cdd28e3",
                             TwoFactorEnabled = false,
                             UserName = "giangvien@edutech.com",
                             UserType = "Lecturer"
@@ -316,21 +316,21 @@ namespace EduTech.Migrations
                             Id = 1,
                             ClaimType = "UserType",
                             ClaimValue = "Admin",
-                            UserId = "1"
+                            UserId = "335cad7c-e3fa-4a85-962a-cf65d65ee7ab"
                         },
                         new
                         {
                             Id = 2,
                             ClaimType = "UserType",
                             ClaimValue = "Scheduler",
-                            UserId = "2"
+                            UserId = "24b7594d-25d3-4b2d-b634-cfffc40ce42f"
                         },
                         new
                         {
                             Id = 3,
                             ClaimType = "UserType",
                             ClaimValue = "Lecturer",
-                            UserId = "3"
+                            UserId = "e0dd9f76-d78f-4b2d-a889-94c1a08c1bac"
                         });
                 });
 
