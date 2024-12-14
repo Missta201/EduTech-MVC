@@ -42,5 +42,15 @@ namespace EduTech.Controllers
         {
             return View();
         }
+
+        public IActionResult ClassInfoStudent()
+        {
+            return View();
+        }
+
+        public IActionResult ClassInfoLecturer()
+        {
+            return View();
+        }
     }
 }
