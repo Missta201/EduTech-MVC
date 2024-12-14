@@ -95,6 +95,7 @@ namespace EduTech.Controllers
             return View("Edit", viewModel);
         }
 
+        // Giảng viên đăng ký dạy lớp học
         [HttpPost]
         [Authorize(Policy = "IsLecturer")]
         [ValidateAntiForgeryToken]
@@ -121,18 +122,16 @@ namespace EduTech.Controllers
             // Check if the lecturer is already assigned to this class
             if (classToTeach.Lecturers.Any(l => l.Id == lecturer.Id))
             {
-                ModelState.AddModelError(string.Empty, "You are already registered to teach this class.");
+                TempData["ErrorMessage"] = "Bạn đã đăng ký dạy lớp học này";
                 return RedirectToAction("Index");
             }
+
+            //TODO: Kiểm tra trùng lịch
 
             // Assign lecturer to the class
             classToTeach.Lecturers.Add(lecturer);
 
-            // Update class status if it's pending
-            if (classToTeach.Status == ClassStatus.Pending)
-            {
-                classToTeach.Status = ClassStatus.Open;
-            }
+            TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
 
             // Save changes to the database
             await _context.SaveChangesAsync();
@@ -140,6 +139,7 @@ namespace EduTech.Controllers
             return RedirectToAction("Index");
         }
 
+        // Học viên đăng ký học lớp học
         [HttpPost]
         [Authorize(Policy = "IsStudent")]
         [ValidateAntiForgeryToken]
@@ -166,14 +166,14 @@ namespace EduTech.Controllers
             // Check if the student is already enrolled
             if (selectedClass.Students.Any(s => s.Id == student.Id))
             {
-                ModelState.AddModelError(string.Empty, "You are already enrolled in this class.");
+                TempData["ErrorMessage"] = "Bạn đã đăng ký học lớp này";
                 return RedirectToAction("Index");
             }
 
             // Check if the class is full
-            if (selectedClass.NumberOfStudents > selectedClass.Capacity)
+            if (selectedClass.NumberOfStudents >= selectedClass.Capacity)
             {
-                ModelState.AddModelError(string.Empty, "This class is already full.");
+                TempData["ErrorMessage"] = "Lớp học này đã đủ sĩ số";
                 return RedirectToAction("Index");
             }
 
@@ -181,6 +181,8 @@ namespace EduTech.Controllers
             selectedClass.Students.Add(student);
             // Increase student numbers 
             selectedClass.NumberOfStudents++;
+
+            TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
 
             // Save changes to the database
             await _context.SaveChangesAsync();
@@ -302,6 +304,12 @@ namespace EduTech.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+
+        public IActionResult ClassDetail()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Lớp đã đăng ký học";
+}
+
+@model IEnumerable<ClassesEnrollViewModel>
+
+
+<a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại dashboard
+</a>
+
+<div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="card-title">Các lớp đã đăng ký học</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên lớp học</th>
+                            <th>Tên môn học</th>
+                            <th>Số phòng</th>
+                            <th>Lịch học</th>
+                            <th>Trạng thái lớp</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int index = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@index</td>
+                                    <td>@item.ClassName</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.RoomNumber</td>
+                                    <td>
+                                        @foreach (var classSchedule in item.Schedule)
+                                        {
+                                            var dayName = classSchedule.Day switch
+                                            {
+                                                DayOfWeek.Sunday => "Chủ nhật",
+                                                DayOfWeek.Monday => "Thứ hai",
+                                                DayOfWeek.Tuesday => "Thứ ba",
+                                                DayOfWeek.Wednesday => "Thứ tư",
+                                                DayOfWeek.Thursday => "Thứ năm",
+                                                DayOfWeek.Friday => "Thứ sáu",
+                                                DayOfWeek.Saturday => "Thứ bảy",
+                                                _ => classSchedule.Day.ToString()
+                                            };
+                                            @($"{dayName} {classSchedule.StartTime:HH:mm}-{classSchedule.EndTime:HH:mm}") <br />
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var statusClass = item.Status switch
+                                            {
+                                                ClassStatus.Pending => "text-warning",
+                                                ClassStatus.Open => "text-success",
+                                                ClassStatus.InProgress => "text-primary",
+                                                ClassStatus.PaymentPending => "text-danger",
+                                                ClassStatus.Archived => "text-secondary",
+                                                _ => ""
+                                            };
+                                            var status = item.Status switch
+                                            {
+                                                ClassStatus.Pending => "Đang chờ",
+                                                ClassStatus.Open => "Mở",
+                                                ClassStatus.InProgress => "Đang học",
+                                                ClassStatus.PaymentPending => "Chờ thanh toán",
+                                                ClassStatus.Archived => "Đã lưu trữ",
+                                                _ => item.Status.ToString()
+                                            };
+                                        }
+                                        <span class="@statusClass">@status</span>
+                                    </td>
+                                    <td>@item.StartDate</td>
+                                    <td>@item.EndDate</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="">
+                                            <i class="bi bi-people-fill"></i> Danh sách lớp
+                                        </a>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">Không có lớp học nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -54,7 +54,9 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("CanManageClasses", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
     .AddPolicy("CanViewStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
     .AddPolicy("CanManageStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler))
-    .AddPolicy("CanDeleteStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin));
+    .AddPolicy("CanDeleteStudentsLectures", policy => policy.RequireClaim("UserType", UserTypes.Admin))
+    .AddPolicy("CanManageCourses", policy => policy.RequireClaim("UserType", UserTypes.Admin, UserTypes.Scheduler));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
