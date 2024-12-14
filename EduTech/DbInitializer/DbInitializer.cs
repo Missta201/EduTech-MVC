@@ -26,15 +26,19 @@ namespace EduTech.DbInitializer
             }
             catch (Exception ex)
             {
-                // Handle exceptions
+                Console.WriteLine("An error occurred while applying migrations: " + ex);
             }
 
-            // Seed default users if they do not exist
-            if (!_userManager.Users.Any())
-            {
-                const string defaultPassword = "Demo123@";
 
-                var adminUser = new ApplicationUser
+            // Seed default users if they do not exist
+            const string defaultPassword = "Demo123@";
+            var adminUser = _userManager.FindByNameAsync("admin@edutech.com").Result;
+            var schedulerUser = _userManager.FindByNameAsync("giaovu@edutech.com").Result;
+            var lecturerUser = _userManager.FindByNameAsync("giangvien@edutech.com").Result;
+
+            if (adminUser == null)
+            {
+                adminUser = new ApplicationUser
                 {
                     UserName = "admin@edutech.com",
                     Email = "admin@edutech.com",
@@ -44,8 +48,11 @@ namespace EduTech.DbInitializer
                 };
                 _userManager.CreateAsync(adminUser, defaultPassword).Wait();
                 _userManager.AddClaimAsync(adminUser, new Claim("UserType", UserTypes.Admin)).Wait();
+            }
 
-                var schedulerUser = new ApplicationUser
+            if (schedulerUser == null)
+            {
+                schedulerUser = new ApplicationUser
                 {
                     UserName = "giaovu@edutech.com",
                     Email = "giaovu@edutech.com",
@@ -55,8 +62,11 @@ namespace EduTech.DbInitializer
                 };
                 _userManager.CreateAsync(schedulerUser, defaultPassword).Wait();
                 _userManager.AddClaimAsync(schedulerUser, new Claim("UserType", UserTypes.Scheduler)).Wait();
+            }
 
-                var lecturerUser = new ApplicationUser
+            if (lecturerUser == null)
+            {
+                lecturerUser = new ApplicationUser
                 {
                     UserName = "giangvien@edutech.com",
                     Email = "giangvien@edutech.com",
@@ -67,8 +77,7 @@ namespace EduTech.DbInitializer
                 _userManager.CreateAsync(lecturerUser, defaultPassword).Wait();
                 _userManager.AddClaimAsync(lecturerUser, new Claim("UserType", UserTypes.Lecturer)).Wait();
             }
-            return;
         }
-        
+
     }
 }
