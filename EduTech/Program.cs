@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<EduTechDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 // Add Azure Email service configuration
@@ -27,6 +26,7 @@ builder.Services.AddSingleton(sp =>
     }
     return new EmailClient(connectionString);
 });
+
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
