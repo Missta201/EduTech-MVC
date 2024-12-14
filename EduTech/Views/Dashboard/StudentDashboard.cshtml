@@ -92,15 +92,15 @@
                     </div>
                 </div>
 
-                <!-- Weekly Schedule -->
+                <!-- Schedule -->
                 <div class="col-6 d-flex">
                     <div class="card flex-fill shadow-sm border-2">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center p-3">
                             <div class="icon-wrapper mb-3">
                                 <i class="bi bi-calendar-week text-primary" style="font-size: 2rem;"></i>
                             </div>
-                            <h6 class="card-title text-center small mb-0">Lịch học trong tuần</h6>
-                            <a href="#" class="stretched-link"></a>
+                            <h6 class="card-title text-center small mb-0">Lịch học</h6>
+                        <a asp-action="ClassesEnroll" asp-controller="Student" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                             <div class="icon-wrapper mb-3">
                                 <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
                             </div>
-                            <h6 class="card-title text-center small mb-0">Lịch thi trong tuần</h6>
+                            <h6 class="card-title text-center small mb-0">Lịch thi</h6>
                             <a href="#" class="stretched-link"></a>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         <i class="bi bi-pencil-square text-primary" style="font-size: 2rem;"></i>
                     </div>
                     <h6 class="card-title">Đăng ký môn học</h6>
-                <a href="@Url.Action("ClassInfoStudent", "Dashboard")" class="stretched-link"></a>
+                <a asp-action="Index" asp-controller="Class" class="stretched-link"></a>
                 </div>
             </div>
         </div>

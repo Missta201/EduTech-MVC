@@ -19,7 +19,7 @@ namespace EduTech.Controllers
             _userManager = userManager;
         }
 
-
+        // Hiển thị danh sách học viên
         [HttpGet]
         [Authorize(Policy = "CanViewStudentsLectures")]
         public async Task<IActionResult> Index()
@@ -35,6 +35,38 @@ namespace EduTech.Controllers
                 .ToListAsync();
 
             return View("Index", students);
+        }
+
+        // Hiển thị danh sách lớp học mà học viên đó tham gia
+        [HttpGet]
+        [Authorize(Policy = "IsStudent")]
+        public async Task<IActionResult> ClassesEnroll()
+        {
+            var student = await _userManager.GetUserAsync(User);
+            if (student == null)
+            {
+                return Unauthorized();
+            }
+
+            List<ClassesEnrollViewModel> classesEnroll = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .Include(c => c.Students)
+                .Where(c => c.Students.Any(l => l.Id == student.Id))
+                .Select(c => new ClassesEnrollViewModel
+                {
+                    ClassId = c.Id,
+                    ClassName = c.Name,
+                    CourseName = c.Course.Name,
+                    RoomNumber = c.RoomNumber,
+                    Schedule = c.ClassSchedules,
+                    Status = c.Status,
+                    StartDate = c.StartDate.ToString("MM/dd/yyyy"),
+                    EndDate = c.EndDate.ToString("MM/dd/yyyy")
+                })
+                .ToListAsync();
+
+            return View("ClassesEnroll", classesEnroll);
         }
 
         [HttpGet]

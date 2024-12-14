@@ -69,7 +69,7 @@
                         <i class="bi bi-clipboard-plus text-primary" style="font-size: 2rem;"></i>
                     </div>
                     <h6 class="card-title">Đăng ký dạy</h6>
-                    <a href="@Url.Action("ClassInfoLecturer", "Dashboard")" class="stretched-link"></a>
+                <a asp-action="Index" asp-controller="Class" class="stretched-link"></a>
                 </div>
             </div>
         </div>
@@ -80,8 +80,8 @@
                     <div class="icon-wrapper mb-3">
                         <i class="bi bi-calendar-week text-primary" style="font-size: 2rem;"></i>
                     </div>
-                    <h6 class="card-title">Lịch dạy theo tuần</h6>
-                    <a href="#" class="stretched-link"></a>
+                    <h6 class="card-title">Lịch dạy</h6>
+                <a asp-action="ClassesTeaching" asp-controller="Lecturer" class="stretched-link"></a>
                 </div>
             </div>
         </div>

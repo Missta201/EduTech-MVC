@@ -38,6 +38,7 @@ namespace EduTech.Controllers
             return View("Index", lectures);
         }
 
+        // Hiển danh sách lớp học mà giảng viên đó dạy
         [HttpGet]
         [Authorize(Policy = "IsLecturer")]
         public async Task<IActionResult> ClassesTeaching()
