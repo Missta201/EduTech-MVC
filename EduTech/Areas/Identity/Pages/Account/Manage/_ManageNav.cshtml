@@ -5,13 +5,13 @@
 
 <div class="list-group shadow-sm">
     <a class="list-group-item list-group-item-action @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
-        <i class="bi bi-person-circle me-2"></i> Profile
+        <i class="bi bi-person-circle me-2"></i> Hồ sơ
     </a>
     <a class="list-group-item list-group-item-action @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
-        <i class="bi bi-envelope me-2"></i> Email
+        <i class="bi bi-envelope me-2"></i> Địa chỉ Email
     </a>
     <a class="list-group-item list-group-item-action @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
-        <i class="bi bi-key me-2"></i> Password
+        <i class="bi bi-key me-2"></i> Mật khẩu
     </a>
     @if (hasExternalLogins)
     {
@@ -20,7 +20,7 @@
         </a>
     }
     <a class="list-group-item list-group-item-action @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">
-        <i class="bi bi-shield-lock me-2"></i> Two-factor authentication
+        <i class="bi bi-shield-lock me-2"></i> Xác thực hai yếu tố
     </a>
     <a class="list-group-item list-group-item-action @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">
         <i class="bi bi-person-badge me-2"></i> Personal data

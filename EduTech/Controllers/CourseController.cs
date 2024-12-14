@@ -1,9 +1,11 @@
 ﻿using EduTech.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduTech.Controllers
 {
+    [Authorize]
     public class CourseController : Controller
     {
 
@@ -15,6 +17,7 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var courses = await dbContext.Courses.AsNoTracking().ToListAsync();
@@ -23,12 +26,14 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [Authorize (Policy = "CanManageCourses")]
         public IActionResult Add()
         {
             return View("Add");
         }
 
         [HttpPost]
+        [Authorize (Policy = "IsAdmin")]
         public async Task<IActionResult> Add(AddCourseViewModel viewModel)
         {
             // Kiểm tra xem dữ liệu có hợp lệ không
@@ -50,6 +55,8 @@ namespace EduTech.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanManageCourses")]
+
         public async Task<IActionResult> Edit(int id)
         {
             var course = await dbContext.Courses.FindAsync(id);
@@ -71,6 +78,8 @@ namespace EduTech.Controllers
 
 
         [HttpPost]
+        [Authorize(Policy = "CanManageCourses")]
+
         public async Task<IActionResult> Edit(AddCourseViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -97,6 +106,7 @@ namespace EduTech.Controllers
         
 
         [HttpPost]
+        [Authorize(Policy = "CanManageCourses")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
