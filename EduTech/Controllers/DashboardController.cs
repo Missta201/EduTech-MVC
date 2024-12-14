@@ -9,6 +9,7 @@ namespace EduTech.Controllers
     {
         public IActionResult Index()
         {
+            // Dựa vào claim UserType để xác định loại người dùng và sau đó chuyển hướng đến trang dashboard tương ứng
             if (User.HasClaim("UserType", UserTypes.Admin) || User.HasClaim("UserType", UserTypes.Scheduler))
             {
                 return RedirectToAction("AdminDashboard");
@@ -48,9 +49,6 @@ namespace EduTech.Controllers
             return View();
         }
 
-        public IActionResult ClassInfoLecturer()
-        {
-            return View();
-        }
+       
     }
 }

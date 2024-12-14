@@ -21,8 +21,6 @@ namespace EduTech.Controllers
 
         }
 
-
-
         [HttpGet]
         [Authorize(Policy = "CanViewStudentsLectures")]
         public async Task<IActionResult> Index()
@@ -38,6 +36,36 @@ namespace EduTech.Controllers
                 .ToListAsync();
 
             return View("Index", lectures);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "IsLecturer")]
+        public async Task<IActionResult> ClassesTeaching()
+        {
+            var lecturer = await _userManager.GetUserAsync(User);
+            if (lecturer == null)
+            {
+                return Unauthorized();
+            }
+
+            List<ClassesTeachingViewModel> classesTeaching = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .Where(c => c.Lecturers.Any(l => l.Id == lecturer.Id))
+                .Select(c => new ClassesTeachingViewModel
+                {
+                    ClassId = c.Id,
+                    ClassName = c.Name,
+                    CourseName = c.Course.Name,
+                    RoomNumber = c.RoomNumber,
+                    Schedule = c.ClassSchedules,
+                    Status = c.Status,
+                    StartDate = c.StartDate.ToString("MM/dd/yyyy"),
+                    EndDate = c.EndDate.ToString("MM/dd/yyyy")
+                })
+                .ToListAsync();
+
+            return View("ClassesTeaching", classesTeaching);
         }
 
         [HttpGet]
