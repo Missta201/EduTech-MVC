@@ -19,6 +19,17 @@ namespace EduTech
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Class>()
+                    .HasMany(c => c.Lecturers)
+                    .WithMany(u => u.ClassesTeaching)
+                    .UsingEntity(j => j.ToTable("ClassLecturers"));
+
+            builder.Entity<Class>()
+                    .HasMany(c => c.Students)
+                    .WithMany(u => u.ClassesAttending)
+                    .UsingEntity(j => j.ToTable("ClassStudents"));
+
+
             // Rename Identity tables
             foreach (var entityType in builder.Model.GetEntityTypes())
             {
