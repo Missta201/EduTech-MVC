@@ -5,32 +5,53 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<div class="container mt-4">
+    <h3 class="mb-4">
+        <i class="bi bi-person-circle me-2"></i>@ViewData["Title"]
+    </h3>
+    <partial name="_StatusMessage" for="StatusMessage" />
+    <div class="row">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form id="profile-form" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Name" class="form-control" />
-                <label asp-for="Input.Name" class="form-label"></label>
-            </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Name" class="form-control" placeholder="Your Name" />
+                            <label asp-for="Input.Name" class="form-label">
+                                <i class="bi bi-person me-2"></i>Name
+                            </label>
+                        </div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Username" class="form-control" placeholder="Your Username" disabled />
+                            <label asp-for="Username" class="form-label">
+                                <i class="bi bi-at me-2"></i>Username
+                            </label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Your Phone Number" />
+                            <label asp-for="Input.PhoneNumber" class="form-label">
+                                <i class="bi bi-telephone me-2"></i>Phone Number
+                            </label>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button id="update-profile-button" type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+

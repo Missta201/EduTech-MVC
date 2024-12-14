@@ -4,9 +4,23 @@
     ViewData["Title"] = "Xác thực email";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">
+                        <i class="bi bi-envelope-check text-primary me-2"></i>@ViewData["Title"]
+                    </h2>
 
-<a asp-controler="Home" asp-action="Index" class="text-decoration-none">
-    <i class="bi bi-house-door"></i> Quay lại trang chủ
-</a>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+                    <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">
+                        <i class="bi bi-house-door me-2"></i>Quay lại trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
