@@ -201,5 +201,11 @@ namespace EduTech.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        public IActionResult ClassDetail()
+        {
+            return View();
+        }
     }
 }
