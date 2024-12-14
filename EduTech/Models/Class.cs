@@ -12,8 +12,13 @@ namespace EduTech.Models
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public int Capacity { get; set; }
+        //Học phí
         public double Tuition { get; set; }
+        //Số lượng học viên đã đăng ký
+        public int NumberOfStudents { get; set; }
 
+        //Trạng thái của lớp học
+        public ClassStatus Status { get; set; }
 
         //Một lớp học mở cho một môn học
         public int CourseId { get; set; }
@@ -21,6 +26,10 @@ namespace EduTech.Models
 
         //Một lớp học có nhiều lịch học
         public List<ClassSchedule> ClassSchedules { get; set; } = new List<ClassSchedule>();
+        // Một lớp học được dạy bởi nhiều giảng viên
+        public List<ApplicationUser> Lecturers { get; set; } = new List<ApplicationUser>();
+        // Một lớp học có nhiều sinh viên
+        public List<ApplicationUser> Students { get; set; } = new List<ApplicationUser>();
 
     }
 }
