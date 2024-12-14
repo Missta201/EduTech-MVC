@@ -1,6 +1,7 @@
 ﻿using EduTech.Models;
 using EduTech.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,14 @@ namespace EduTech.Controllers
     public class ClassController : Controller
     {
         private readonly EduTechDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ClassController(EduTechDbContext context)
+        public ClassController(EduTechDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -24,6 +28,7 @@ namespace EduTech.Controllers
             var classes = await _context.Classes
                 .Include(c => c.Course)
                 .Include(c => c.ClassSchedules)
+                .Include(c => c.Lecturers)
                 .ToListAsync();
             return View("Index", classes);
         }
@@ -69,7 +74,11 @@ namespace EduTech.Controllers
                         Day = s.Day,
                         StartTime = s.StartTime,
                         EndTime = s.EndTime
-                    }).ToList()
+                    }).ToList(),
+                    // Khi thêm một class, ban đầu classstatus sẽ là Pending để đơi giảng viên đăng ký day lớp đó
+                    Status = ClassStatus.Pending,
+                    NumberOfStudents = 0
+
                 };
                 _context.Classes.Add(newClass);
                 await _context.SaveChangesAsync();
@@ -84,6 +93,99 @@ namespace EduTech.Controllers
                 }).ToList();
 
             return View("Edit", viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "IsLecturer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterToTeach(int classId)
+        {
+            // Retrieve the class
+            var classToTeach = await _context.Classes
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classId);
+
+            if (classToTeach == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current lecturer
+            var lecturer = await _userManager.GetUserAsync(User);
+
+            if (lecturer == null)
+            {
+                return Unauthorized();
+            }
+
+            // Check if the lecturer is already assigned to this class
+            if (classToTeach.Lecturers.Any(l => l.Id == lecturer.Id))
+            {
+                ModelState.AddModelError(string.Empty, "You are already registered to teach this class.");
+                return RedirectToAction("Index");
+            }
+
+            // Assign lecturer to the class
+            classToTeach.Lecturers.Add(lecturer);
+
+            // Update class status if it's pending
+            if (classToTeach.Status == ClassStatus.Pending)
+            {
+                classToTeach.Status = ClassStatus.Open;
+            }
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "IsStudent")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enroll(int classId)
+        {
+            // Retrieve the class including its Students
+            var selectedClass = await _context.Classes
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == classId);
+
+            if (selectedClass == null)
+            {
+                return NotFound();
+            }
+
+            // Get the current student
+            var student = await _userManager.GetUserAsync(User);
+
+            if (student == null)
+            {
+                return Unauthorized();
+            }
+
+            // Check if the student is already enrolled
+            if (selectedClass.Students.Any(s => s.Id == student.Id))
+            {
+                ModelState.AddModelError(string.Empty, "You are already enrolled in this class.");
+                return RedirectToAction("Index");
+            }
+
+            // Check if the class is full
+            if (selectedClass.NumberOfStudents > selectedClass.Capacity)
+            {
+                ModelState.AddModelError(string.Empty, "This class is already full.");
+                return RedirectToAction("Index");
+            }
+
+            // Enroll the student
+            selectedClass.Students.Add(student);
+            // Increase student numbers 
+            selectedClass.NumberOfStudents++;
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

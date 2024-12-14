@@ -51,7 +51,9 @@
                             <th>Môn học</th>
                             <th>Phòng học</th>
                             <th>Lịch học</th>
-                            <th>Sức chứa</th>
+                            <th>Sĩ số</th>
+                            <th>Giảng viên</th>
+                            <th>Trạng thái</th>
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
                             <th>Thao tác</th>
@@ -83,12 +85,40 @@
                                         @($"{dayName} {classSchedule.StartTime:HH:mm}-{classSchedule.EndTime:HH:mm}") <br />
                                     }
                                 </td>
-                                <td>@item.Capacity</td>
+                                <td>@item.NumberOfStudents / @item.Capacity</td>
+                                <td>@foreach (var lecturer in item.Lecturers)
+                                    {
+                                        @lecturer.Name <br />
+                                    }</td>
+                                <td>
+                                    @{
+                                        var statusClass = item.Status switch
+                                        {
+                                            ClassStatus.Pending => "text-warning",
+                                            ClassStatus.Open => "text-success",
+                                            ClassStatus.InProgress => "text-primary",
+                                            ClassStatus.PaymentPending => "text-danger",
+                                            ClassStatus.Archived => "text-secondary",
+                                            _ => ""
+                                        };
+                                        var status = item.Status switch
+                                        {
+                                            ClassStatus.Pending => "Đang chờ",
+                                            ClassStatus.Open => "Mở",
+                                            ClassStatus.InProgress => "Đang học",
+                                            ClassStatus.PaymentPending => "Chờ thanh toán",
+                                            ClassStatus.Archived => "Đã lưu trữ",
+                                            _ => item.Status.ToString()
+                                        };
+                                    }
+                                    <span class="@statusClass">@status</span>
+                                </td>
                                 <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                                 <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     @* Người dùng có policy CanManageClasses thì mới hiển thị nút Sửa / Xoá lớp học *@
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
+                                   "CanManageClasses")).Succeeded)
                                     {
                                         <a class="btn btn-sm btn-outline-primary me-2"
                                             href="@Url.Action("Edit", "Class", new { id = item.Id })">
@@ -102,19 +132,26 @@
                                             </button>
                                         </form>
                                     }
-                                    @if (User != null &&  (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
                                     {
-                                        <a class="btn btn-sm btn-outline-success"
-                                            href="@Url.Action("Register", "Class", new { id = item.Id })">
-                                            <i class="bi bi-person-check"></i> Đăng ký dạy
-                                        </a>
+                                        <form method="post" action="@Url.Action("RegisterToTeach", "Class")" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="classId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-person-check"></i> Đăng ký dạy
+                                            </button>
+                                        </form>
                                     }
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
+                                   "IsStudent")).Succeeded)
                                     {
-                                        <a class="btn btn-sm btn-outline-info"
-                                            href="@Url.Action("Enroll", "Class", new { id = item.Id })">
-                                            <i class="bi bi-journal-check"></i> Đăng ký học
-                                        </a>
+                                        <form method="post" action="@Url.Action("Enroll", "Class")" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="classId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-journal-check"></i> Đăng ký học
+                                            </button>
+                                        </form>
                                     }
                                     else if (User?.Identity?.IsAuthenticated != true)
                                     {
