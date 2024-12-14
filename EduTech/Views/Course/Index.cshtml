@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
     ViewData["Title"] = "Danh sách khoá học";
     int i = 0;
 }
@@ -20,9 +23,14 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="card-title">Danh sách khóa học</h2>
-                <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Thêm khóa học
-                </a>
+                @* Người dùng có policy  CanManageClasses thì mới hiển thị button Thêm lớp học*@
+                @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageCourses")).Succeeded)
+                {
+                    <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm khóa học
+                    </a>
+                }
+                
             </div>
 
             <div class="row mb-3">
@@ -52,16 +60,20 @@
                                 <td>@course.Name</td>
                                 <td>@course.Description</td>
                                 <td>
-                                    <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Course", new { id = course.Id })">
-                                        <i class="bi bi-pencil"></i> Sửa
-                                    </a>
-                                    <form method="post" action="@Url.Action("Delete", "Course")" style="display:inline;">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="Id" value="@course.Id" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i> Xóa
-                                        </button>
-                                    </form>
+                                    @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageCourses")).Succeeded)
+                                    {
+
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Course", new { id = course.Id })">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                        <form method="post" action="@Url.Action("Delete", "Course")" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="Id" value="@course.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    }
                                 </td>
                             </tr>
                         }
