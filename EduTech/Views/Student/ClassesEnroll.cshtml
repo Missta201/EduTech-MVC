@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Lớp tham gia giảng dạy";
+    ViewData["Title"] = "Lớp đã đăng ký học";
 }
 
-@model IEnumerable<ClassesTeachingViewModel>
+@model IEnumerable<ClassesEnrollViewModel>
 
-   
+
 <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
     <i class="bi bi-house-door"></i> Quay lại dashboard
 </a>
@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="card-title">Các lớp giảng dạy</h2>
+                <h2 class="card-title">Các lớp đã đăng ký học</h2>
             </div>
 
             <div class="table-responsive">
