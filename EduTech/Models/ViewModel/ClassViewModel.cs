@@ -12,6 +12,8 @@ namespace EduTech.Models.ViewModel
         public int Capacity { get; set; }
         public double Tuition { get; set; }
 
+        public ClassStatus Status { get; set; }
+
         public int CourseId { get; set; }
 
         public List<SelectListItem> Courses { get; set; } = [];
