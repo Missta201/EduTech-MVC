@@ -1,0 +1,54 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Xác nhận đăng ký";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-center mb-4">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>@ViewData["Title"]
+                    </h2>
+                    <div class="text-center">
+                        @{
+                            if (@Model.DisplayConfirmAccountLink)
+                            {
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    Ứng dụng này hiện không có người gửi email thực sự được đăng ký.
+                                </div>
+                                // <p class="mb-3">
+                                //     See <a href="#" class="text-decoration-none">these docs</a> for how to configure a real email sender.
+                                // </p>
+                                <p class="mb-4">
+                                    Thông thường điều này sẽ được gửi qua email:
+                                </p>
+                                <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-envelope-check me-2"></i> Nhấp vào đây để xác nhận tài khoản của bạn
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="alert alert-success" role="alert">
+                                    <i class="bi bi-envelope-check me-2"></i>
+                                    Vui lòng kiểm tra email của bạn để xác nhận tài khoản của bạn.
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a asp-page="/Index" class="text-decoration-none">
+                    <i class="bi bi-house-door me-2"></i> Trở về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
