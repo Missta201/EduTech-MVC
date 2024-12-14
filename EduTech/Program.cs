@@ -2,6 +2,9 @@ using EduTech;
 using Microsoft.EntityFrameworkCore;
 using EduTech.Models;
 using EduTech.DbInitializer;
+using Azure.Communication.Email;
+using EduTech.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 
 
@@ -13,6 +16,18 @@ builder.Services.AddDbContext<EduTechDbContext>(options =>
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+// Add Azure Email service configuration
+builder.Services.AddSingleton(sp =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("EmailConnectionString");
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("Email connection string is not configured");
+    }
+    return new EmailClient(connectionString);
+});
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Adds the Identity system, including the default UI, and configures the user type as IdentityUser
 builder.Services.AddDefaultIdentity<ApplicationUser>(
@@ -73,6 +88,6 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-    
+
 app.MapRazorPages();
 app.Run();
