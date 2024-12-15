@@ -84,10 +84,18 @@
                                     </td>
                                     <td>@item.StartDate</td>
                                     <td>@item.EndDate</td>
+
                                     <td>
-                                        <a class="btn btn-sm btn-outline-primary me-2" href="">
-                                            <i class="bi bi-people-fill"></i> Danh sách lớp
+                                        <a class="btn btn-sm btn-outline-primary me-2"
+                                           href="@Url.Action("Grades", "Student", new { classId = item.ClassId })">
+                                            <i class="bi bi-people-fill"></i> Xem điểm
                                         </a>
+
+                                        @if (item.HasGrades)
+                                        {
+                                            <span class="badge bg-success ms-2">Đã có điểm</span>
+                                        }
+                                        
                                     </td>
                                 </tr>
                                 index++;
