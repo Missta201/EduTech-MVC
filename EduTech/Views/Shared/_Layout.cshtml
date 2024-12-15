@@ -14,7 +14,10 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="@Url.Content("~/css/site.css")" asp-append-version="true" />
 
-    
+    <!-- Syncfusion ASP.NET Core controls styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/28.1.33/material.css" />
+    <!-- Syncfusion ASP.NET Core controls scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/28.1.33/dist/ej2.min.js"></script>
 </head>
 <body>
     <!-- Main Content -->
@@ -28,5 +31,8 @@
     <!-- Custom JS -->
     <script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+
+    <!-- Syncfusion Script Manager -->
+    @Html.EJS().ScriptManager()
 </body>
 </html>

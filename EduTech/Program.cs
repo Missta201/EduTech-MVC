@@ -16,6 +16,10 @@ builder.Services.AddDbContext<EduTechDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+//Register Syncfusion license
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBPh8sVXJ8S0d+X1JPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9nSHxSckdjXXtbcnRSRWA=");
+
+
 // Add Azure Email service configuration
 builder.Services.AddSingleton(sp =>
 {
