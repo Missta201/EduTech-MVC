@@ -2,6 +2,8 @@
     ViewData["Title"] = "Thông tin giảng viên";
 }
 
+@model ApplicationUser
+
 <style>
     .card {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -50,10 +52,9 @@
                         </div>
                         <div class="col">
                             <div class="row g-2">
-                                <div class="col-12"><p class="mb-1"><strong>MSGV:</strong> 20033212</p></div>
-                                <div class="col-12"><p class="mb-1"><strong>Họ tên:</strong> Nguyễn Văn C</p></div>
-                                <div class="col-12"><p class="mb-1"><strong>Ngày sinh:</strong> 01/01/1994</p></div>
-                                <div class="col-12"><p class="mb-1"><strong>Email:</strong> vanC@edutech.com</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Họ tên:</strong> @Model.Name</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Email:</strong> @Model.Email</p></div>
+                                <div class="col-12"><p class="mb-1"><strong>Số điện thoại:</strong> @Model.PhoneNumber</p></div>
                             </div>
                         </div>
                     </div>

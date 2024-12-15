@@ -119,6 +119,8 @@
         .Readonly()
         .StartHour("06:00")
         .EndHour("22:00")
+        .RowAutoHeight(true)
+        .TimeScale(new ScheduleTimeScale { Interval = 60, SlotCount = 1 })
         .Render()
         )
 </div>

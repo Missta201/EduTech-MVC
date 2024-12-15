@@ -1,5 +1,9 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Danh sách lớp";
+    int i = 1;
+}
 
+@model Class
 
 <div class="container-fluid mt-4">
     <nav aria-label="breadcrumb">
@@ -9,27 +13,40 @@
                     <i class="bi bi-house-door"></i> Trở về trang chủ
                 </a>
             </li>
-
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="mb-4">
                 <h2 class="card-title">Danh sách lớp</h2>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tên lớp:</strong> @Model.Name</p>
+                        <p><strong>Môn học:</strong> @Model.Course.Name</p>
+                        <p>
+                            <strong>Giảng viên:</strong>
+                            @foreach (var lecturer in Model.Lecturers)
+                            {
+                                @lecturer.Name <br />
+                            }
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <p><strong>Phòng học:</strong> @Model.RoomNumber</p>
+                        <p><strong>Ngày bắt đầu:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Ngày kết thúc:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
             </div>
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
+                            <th>STT</th>
                             <th>Tên học viên</th>
-                            <th>Địa chỉ Email</th>
-                            <th>Điểm giữa kỳ</th>
-                            <th>Điểm cuối kỳ</th>
-                            <th>TBM</th>
                             <th>Thao tác</th>
-
                         </tr>
                     </thead>
 
@@ -37,20 +54,8 @@
 
                         <tr>
                             
-                            <td>Nguyễn Văn Ánh</td>
-                            <td>anh@gmail.com</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td>
-                                <form method="post" action="@Url.Action("Grade", "Class")" style="display:inline;">
-                                    @* @Html.AntiForgeryToken() *@
-                                   @*  <input type="hidden" name="Id" value="@course.Id" /> *@
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <i class="bi bi-pencil-square"></i> Chấm điểm
-                                    </button>
-                                </form>
-                            </td>
 
                         </tr>
                         
