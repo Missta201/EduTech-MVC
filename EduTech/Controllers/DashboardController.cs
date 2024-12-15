@@ -1,5 +1,6 @@
 ﻿using EduTech.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduTech.Controllers
@@ -7,6 +8,13 @@ namespace EduTech.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        
+        public DashboardController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
         public IActionResult Index()
         {
             // Dựa vào claim UserType để xác định loại người dùng và sau đó chuyển hướng đến trang dashboard tương ứng
@@ -33,15 +41,17 @@ namespace EduTech.Controllers
         }
 
         [Authorize(Policy = "IsLecturer")]
-        public IActionResult LecturerDashboard()
+        public async Task<IActionResult> LecturerDashboard()
         {
-            return View();
+            ApplicationUser? lecturer = await _userManager.GetUserAsync(User);
+            return View(lecturer);
         }
 
         [Authorize(Policy = "IsStudent")]
-        public IActionResult StudentDashboard()
+        public async Task<IActionResult> StudentDashboard()
         {
-            return View();
+            ApplicationUser? student = await _userManager.GetUserAsync(User);
+            return View(student);
         }
 
     }

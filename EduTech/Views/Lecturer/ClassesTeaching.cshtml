@@ -37,7 +37,7 @@
                             foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@index</td>
+                                    <td>@(index++)</td>
                                     <td>@item.ClassName</td>
                                     <td>@item.CourseName</td>
                                     <td>@item.RoomNumber</td>
@@ -84,12 +84,11 @@
                                     <td>@item.StartDate</td>
                                     <td>@item.EndDate</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("ClassList", "Class")">
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("ClassList", "Class", new { id = item.ClassId })">
                                             <i class="bi bi-people-fill"></i> Danh sách lớp
                                         </a>
                                     </td>
                                 </tr>
-                                index++;
                             }
                         }
                         else
@@ -117,6 +116,8 @@
         .Readonly()
         .StartHour("06:00")
         .EndHour("22:00")
+        .RowAutoHeight(true)
+        .TimeScale(new ScheduleTimeScale { Interval = 60, SlotCount = 1 })
         .Render()
         )
 </div>

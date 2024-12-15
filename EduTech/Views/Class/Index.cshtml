@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @inject IAuthorizationService AuthorizationService
-
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Danh sách lớp học";
 
@@ -19,7 +20,7 @@
 
         </ol>
     </nav>
-    
+
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -34,22 +35,13 @@
             </div>
 
 
-            @* <div class="row mb-3"> *@
-            @*     <div class="col-md-6"> *@
-            @*         <div class="input-group"> *@
-            @*             <span class="input-group-text"><i class="bi bi-search"></i></span> *@
-            @*             <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm lớp học..."> *@
-            @*         </div> *@
-            @*     </div> *@
-            @* </div> *@
-
 
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger">
                     @TempData["ErrorMessage"]
                 </div>
-                
+
             }
             @if (TempData["SuccessMessage"] != null)
             {
@@ -59,7 +51,7 @@
             }
 
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped table-bordered">
                     <thead class="table-light">
                         <tr>
                             <th>Mã</th>
@@ -133,13 +125,68 @@
                                 <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     @* Người dùng có policy CanManageClasses thì mới hiển thị nút Sửa / Xoá lớp học *@
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
-                                   "CanManageClasses")).Succeeded)
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
                                     {
-                                        <a class="btn btn-sm btn-outline-primary me-2"
-                                            href="@Url.Action("Edit", "Class", new { id = item.Id })">
+                                        <a class="btn btn-sm btn-outline-primary"
+                                        href="@Url.Action("Edit", "Class", new { id = item.Id })">
                                             <i class="bi bi-pencil"></i> Sửa
                                         </a>
+                                        @* Conditional forms based on class status *@
+                                        @if (item.Status == ClassStatus.Pending)
+                                        {
+                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="newStatus" value="Open" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-up-circle"></i> Đăng
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (item.Status == ClassStatus.Open)
+                                        {
+                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="newStatus" value="InProgress" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-up-circle"></i> Khai giảng
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (item.Status == ClassStatus.InProgress)
+                                        {
+                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="newStatus" value="PaymentPending" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-up-circle"></i> Chờ thanh toán
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (item.Status == ClassStatus.PaymentPending)
+                                        {
+                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="newStatus" value="Archived" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-up-circle"></i> Lưu trữ
+                                                </button>
+                                            </form>
+                                        } else {
+                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="newStatus" value="Pending" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-up-circle"></i> Chờ
+                                                </button>
+                                            </form>
+                                        }
+                                        
+                                       
                                         <form method="post" action="@Url.Action("Delete", "Class")" style="display:inline;">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="Id" value="@item.Id" />
@@ -150,24 +197,52 @@
                                     }
                                     @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
                                     {
-                                        <form method="post" action="@Url.Action("RegisterToTeach", "Class")" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="classId" value="@item.Id" />
-                                            <button type="submit" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-person-check"></i> Đăng ký dạy
-                                            </button>
-                                        </form>
+                                        var lecturer = await UserManager.GetUserAsync(User);
+                                        if (item.Lecturers.Any(l => l.Id == lecturer.Id))
+                                        {
+                                            <form method="post" action="@Url.Action("CancelTeaching", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="classId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-person-x"></i> Hủy dạy
+                                                </button>
+                                            </form>
+                                        }
+                                        else 
+                                        {
+                                            <form method="post" action="@Url.Action("RegisterToTeach", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="classId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-person-check"></i> Đăng ký dạy
+                                                </button>
+                                            </form>
+                                        }
                                     }
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User,
-                                   "IsStudent")).Succeeded)
+
+                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
                                     {
-                                        <form method="post" action="@Url.Action("Enroll", "Class")" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="classId" value="@item.Id" />
-                                            <button type="submit" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-journal-check"></i> Đăng ký học
-                                            </button>
-                                        </form>
+                                        var student = await UserManager.GetUserAsync(User);
+                                        if (item.Students.Any(s => s.Id == student.Id))
+                                        {
+                                            <form method="post" action="@Url.Action("CancelEnrollment", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="classId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-journal-x"></i> Hủy học
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="@Url.Action("Enroll", "Class")" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="classId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-journal-check"></i> Đăng ký học
+                                                </button>
+                                            </form>
+                                        }
                                     }
                                     else if (User?.Identity?.IsAuthenticated != true)
                                     {

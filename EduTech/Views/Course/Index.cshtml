@@ -12,7 +12,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
-                    <i class="bi bi-house-door"></i> Back to Dashborad
+                    <i class="bi bi-house-door"></i> Quay lại Dashboard
                 </a>
             </li>
             
@@ -33,14 +33,6 @@
                 
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm khóa học...">
-                    </div>
-                </div>
-            </div>
 
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -49,7 +41,10 @@
                             <th>STT</th>
                             <th>Tên khóa học</th>
                             <th>Mô tả</th>
-                            <th>Thao tác</th>
+                            @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsAdminOrScheduler")).Succeeded)
+                            {
+                                <th>Thao tác</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>

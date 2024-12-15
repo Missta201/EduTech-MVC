@@ -13,11 +13,12 @@ namespace EduTech.Controllers
     {
         private readonly EduTechDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public ClassController(EduTechDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly IAuthorizationService authorizationService;
+        public ClassController(EduTechDbContext context, UserManager<ApplicationUser> userManager, IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            this.authorizationService = authorizationService;
         }
 
 
@@ -25,13 +26,31 @@ namespace EduTech.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var classes = await _context.Classes
-                .Include(c => c.Course)
-                .Include(c => c.ClassSchedules)
-                .Include(c => c.Lecturers)
-                .ToListAsync();
-            return View("Index", classes);
+            // Nếu là học viên hay người dùng chưa đăng nhập thì chỉ xem được các lớp học đang mở
+            if (User?.Identity?.IsAuthenticated != true || (await authorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+            {
+                var classes = await _context.Classes
+                    .Include(c => c.Course)
+                    .Include(c => c.ClassSchedules)
+                    .Include(c => c.Lecturers)
+                    .Include(c => c.Students)
+                    .Where(c => c.Status == ClassStatus.Open)
+                    .AsNoTracking()
+                    .ToListAsync();
+                return View("Index", classes);
+            }
+            else
+            {
+                var classes = await _context.Classes
+                    .Include(c => c.Course)
+                    .Include(c => c.ClassSchedules)
+                    .Include(c => c.Lecturers)
+                    .AsNoTracking()
+                    .ToListAsync();
+                return View("Index", classes);
+            }
         }
+
 
         [HttpGet]
         [Authorize(Policy = "CanManageClasses")]
@@ -125,8 +144,14 @@ namespace EduTech.Controllers
                 TempData["ErrorMessage"] = "Bạn đã đăng ký dạy lớp học này";
                 return RedirectToAction("Index");
             }
-            //Tạm thời đổi trạng thái của lớp học sang Open
-            classToTeach.Status = ClassStatus.Open;
+
+            // Nếu trạng thái của lớp học không phải là Pending thì không thể đăng ký dạy
+            if (classToTeach.Status != ClassStatus.Pending)
+            {
+                TempData["ErrorMessage"] = "Không thể đăng ký dạy lớp học đã mở";
+                return RedirectToAction("Index");
+            }
+
 
             //TODO: Kiểm tra trùng lịch
 
@@ -179,6 +204,13 @@ namespace EduTech.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Nếu trạng thái của lớp học không phải là Open thì không thể đăng ký học
+            if (selectedClass.Status != ClassStatus.Open)
+            {
+                TempData["ErrorMessage"] = "Không thể đăng ký học lớp học đã tiến hành";
+                return RedirectToAction("Index");
+            }
+
             // Enroll the student
             selectedClass.Students.Add(student);
             // Increase student numbers 
@@ -191,6 +223,123 @@ namespace EduTech.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // Giáo vụ hoặc admin thay đổi trạng khái của lớp học
+        [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeStatus(int id, ClassStatus newStatus)
+        {
+            var classToUpdate = await _context.Classes
+                .Include(c => c.Lecturers)
+                .Include(s => s.Students)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (classToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            // Kiểm tra nếu lớp học chưa có giảng viên nào đăng ký dạy thì không thể mở lớp
+            if (newStatus == ClassStatus.Open && classToUpdate.Lecturers.Count == 0)
+            {
+                TempData["ErrorMessage"] = "Không thể mở lớp học khi chưa có giảng viên nào đăng ký dạy";
+                return RedirectToAction("Index");
+            }
+
+            // Kiểm tra nếu lớp học chưa có sinh viên nào đăng ký học thì không thể tiến hành lớp
+            if (newStatus == ClassStatus.InProgress && classToUpdate.Students.Count == 0)
+            {
+                TempData["ErrorMessage"] = "Không thể tiến hành học khi chưa có sinh viên nào đăng ký học";
+                return RedirectToAction("Index");
+            }
+
+            classToUpdate.Status = newStatus;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        // Giảng viên hủy đăng ký dạy lớp học
+        [HttpPost]
+        [Authorize(Policy = "IsLecturer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelTeaching(int classId)
+        {
+            var classToCancel = await _context.Classes
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classId);
+
+            if (classToCancel == null)
+            {
+                return NotFound();
+            }
+
+            var lecturer = await _userManager.GetUserAsync(User);
+            if (lecturer == null)
+            {
+                return Unauthorized();
+            }
+
+            var lecturerToRemove = classToCancel.Lecturers.FirstOrDefault(l => l.Id == lecturer.Id);
+            if (lecturerToRemove != null)
+            {
+                // Nếu lớp học đã mở thì không thể hủy đăng ký dạy
+                if (classToCancel.Status != ClassStatus.Pending)
+                {
+                    TempData["ErrorMessage"] = "Không thể hủy đăng ký dạy lớp học đã mở";
+                    return RedirectToAction("Index");
+                }
+
+                classToCancel.Lecturers.Remove(lecturerToRemove);
+               
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã hủy đăng ký dạy lớp học thành công";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // Học viên hủy đăng ký học lớp
+        [HttpPost]
+        [Authorize(Policy = "IsStudent")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelEnrollment(int classId)
+        {
+            var classToCancel = await _context.Classes
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == classId);
+
+            if (classToCancel == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _userManager.GetUserAsync(User);
+            if (student == null)
+            {
+                return Unauthorized();
+            }
+
+            // Nếu lớp học đã tiến hành thì không thể hủy đăng ký học
+            if (classToCancel.Status != ClassStatus.Open)
+            {
+                TempData["ErrorMessage"] = "Không thể hủy đăng ký học lớp học đã tiến hành";
+                return RedirectToAction("Index");
+            }
+
+            var studentToRemove = classToCancel.Students.FirstOrDefault(s => s.Id == student.Id);
+            if (studentToRemove != null)
+            {
+                classToCancel.Students.Remove(studentToRemove);
+                classToCancel.NumberOfStudents--;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đã hủy đăng ký học lớp thành công";
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         [HttpGet]
         [Authorize(Policy = "CanManageClasses")]
@@ -308,8 +457,20 @@ namespace EduTech.Controllers
             return RedirectToAction("Index");
         }
 
+        // Danh sách lớp trong một lớp học
+        [HttpGet]
+        public async Task<IActionResult> ClassList(int id)
+        {
+            var selectedClass = await _context.Classes
+            .Include(c => c.Course)
+            .Include(c => c.Lecturers)
+            .Include(c => c.Students)
+            .FirstOrDefaultAsync(c => c.Id == id);
 
-        public IActionResult ClassList()
+            return View(selectedClass);
+        }
+
+        public IActionResult Grade()
         {
             return View();
         }
