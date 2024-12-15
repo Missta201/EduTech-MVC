@@ -46,24 +46,19 @@
                         <tr>
                             <th>STT</th>
                             <th>Tên học viên</th>
-                            <th>Email học viên</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach(var student in Model.Students) {
-                            <tr>
-                                <td>@(i++)</td>
-                                <td>@student.Name</td>
-                                <td>@student.Email</td>
-                                <td>
-                                    <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Scoring", "Lecturer", new { classId = Model.Id, studentId = student.Id})">
-                                        <i class="bi bi-pencil-square"></i> Chấm điểm
-                                    </a>
-                                </td>
-                            </tr>
-                        }
+
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        
                     </tbody>
 
                 </table>
