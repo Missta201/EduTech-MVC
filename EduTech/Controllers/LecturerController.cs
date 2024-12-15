@@ -49,22 +49,57 @@ namespace EduTech.Controllers
                 return Unauthorized();
             }
 
-            List<ClassesTeachingViewModel> classesTeaching = await _context.Classes
+            // Fetch classes taught by the lecturer
+            var classes = await _context.Classes
                 .Include(c => c.Course)
                 .Include(c => c.ClassSchedules)
                 .Where(c => c.Lecturers.Any(l => l.Id == lecturer.Id))
-                .Select(c => new ClassesTeachingViewModel
-                {
-                    ClassId = c.Id,
-                    ClassName = c.Name,
-                    CourseName = c.Course.Name,
-                    RoomNumber = c.RoomNumber,
-                    Schedule = c.ClassSchedules,
-                    Status = c.Status,
-                    StartDate = c.StartDate.ToString("MM/dd/yyyy"),
-                    EndDate = c.EndDate.ToString("MM/dd/yyyy")
-                })
                 .ToListAsync();
+
+            var classesTeaching = new List<ClassesTeachingViewModel>();
+            int scheduleDataId = 1;
+
+            foreach (var aClass in classes)
+            {
+                var viewModel = new ClassesTeachingViewModel
+                {
+                    ClassId = aClass.Id,
+                    ClassName = aClass.Name,
+                    CourseName = aClass.Course.Name,
+                    RoomNumber = aClass.RoomNumber,
+                    Schedule = aClass.ClassSchedules,
+                    ScheduleData = new List<ScheduleData>(),
+                    Status = aClass.Status,
+                    StartDate = aClass.StartDate.ToString("MM/dd/yyyy"),
+                    EndDate = aClass.EndDate.ToString("MM/dd/yyyy")
+                };
+
+                // Generate ScheduleData based on ClassSchedule
+                var startDate = aClass.StartDate.ToDateTime(TimeOnly.MinValue);
+                var endDate = aClass.EndDate.ToDateTime(TimeOnly.MinValue);
+
+                for (var date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    foreach (var cs in aClass.ClassSchedules)
+                    {
+                        if (date.DayOfWeek == cs.Day)
+                        {
+                            var startDateTime = date.Date.Add(cs.StartTime.ToTimeSpan());
+                            var endDateTime = date.Date.Add(cs.EndTime.ToTimeSpan());
+
+                            viewModel.ScheduleData.Add(new ScheduleData
+                            {
+                                Id = scheduleDataId++,
+                                Subject = aClass.Name,
+                                StartTime = startDateTime,
+                                EndTime = endDateTime
+                            });
+                        }
+                    }
+                }
+
+                classesTeaching.Add(viewModel);
+            }
 
             return View("ClassesTeaching", classesTeaching);
         }

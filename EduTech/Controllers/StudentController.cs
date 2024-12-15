@@ -48,23 +48,57 @@ namespace EduTech.Controllers
                 return Unauthorized();
             }
 
-            List<ClassesEnrollViewModel> classesEnroll = await _context.Classes
-                .Include(c => c.Course)
-                .Include(c => c.ClassSchedules)
-                .Include(c => c.Students)
-                .Where(c => c.Students.Any(l => l.Id == student.Id))
-                .Select(c => new ClassesEnrollViewModel
+            // Fetch classes attended by the student
+            var classes = await _context.Classes
+               .Include(c => c.Course)
+               .Include(c => c.ClassSchedules)
+               .Where(c => c.Students.Any(s => s.Id == student.Id))
+               .ToListAsync();
+
+            var classesEnroll = new List<ClassesEnrollViewModel>();
+            int scheduleDataId = 1;
+
+            foreach (var aClass in classes)
+            {
+                var viewModel = new ClassesEnrollViewModel
                 {
-                    ClassId = c.Id,
-                    ClassName = c.Name,
-                    CourseName = c.Course.Name,
-                    RoomNumber = c.RoomNumber,
-                    Schedule = c.ClassSchedules,
-                    Status = c.Status,
-                    StartDate = c.StartDate.ToString("MM/dd/yyyy"),
-                    EndDate = c.EndDate.ToString("MM/dd/yyyy")
-                })
-                .ToListAsync();
+                    ClassId = aClass.Id,
+                    ClassName = aClass.Name,
+                    CourseName = aClass.Course.Name,
+                    RoomNumber = aClass.RoomNumber,
+                    Schedule = aClass.ClassSchedules,
+                    ScheduleData = new List<ScheduleData>(),
+                    Status = aClass.Status,
+                    StartDate = aClass.StartDate.ToString("MM/dd/yyyy"),
+                    EndDate = aClass.EndDate.ToString("MM/dd/yyyy")
+                };
+
+                // Generate ScheduleData based on ClassSchedule
+                var startDate = aClass.StartDate.ToDateTime(TimeOnly.MinValue);
+                var endDate = aClass.EndDate.ToDateTime(TimeOnly.MinValue);
+
+                for (var date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    foreach (var cs in aClass.ClassSchedules)
+                    {
+                        if (date.DayOfWeek == cs.Day)
+                        {
+                            var startDateTime = date.Date.Add(cs.StartTime.ToTimeSpan());
+                            var endDateTime = date.Date.Add(cs.EndTime.ToTimeSpan());
+
+                            viewModel.ScheduleData.Add(new ScheduleData
+                            {
+                                Id = scheduleDataId++,
+                                Subject = aClass.Name,
+                                StartTime = startDateTime,
+                                EndTime = endDateTime
+                            });
+                        }
+                    }
+                }
+
+                classesEnroll.Add(viewModel);
+            }
 
             return View("ClassesEnroll", classesEnroll);
         }

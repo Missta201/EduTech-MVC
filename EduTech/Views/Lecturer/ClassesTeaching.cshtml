@@ -1,15 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Lớp tham gia giảng dạy";
 }
-
 @model IEnumerable<ClassesTeachingViewModel>
 
-   
+
 <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
     <i class="bi bi-house-door"></i> Quay lại dashboard
 </a>
 
-<div>
+<div class="mb-3">
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -85,7 +84,7 @@
                                     <td>@item.StartDate</td>
                                     <td>@item.EndDate</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-primary me-2" href="">
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("ClassList", "Class")">
                                             <i class="bi bi-people-fill"></i> Danh sách lớp
                                         </a>
                                     </td>
@@ -104,4 +103,20 @@
             </div>
         </div>
     </div>
+</div>
+@{
+    // Combine all ScheduleData from the model into one list
+    var scheduleData = Model.SelectMany(c => c.ScheduleData).ToList();
+}
+<div>
+   
+    @(Html.EJS().Schedule("schedule")
+        .EventSettings(new ScheduleEventSettings { DataSource = scheduleData })
+        .SelectedDate(DateTime.Now)
+        .FirstDayOfWeek(1)
+        .Readonly()
+        .StartHour("06:00")
+        .EndHour("22:00")
+        .Render()
+        )
 </div>

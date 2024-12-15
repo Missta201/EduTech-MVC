@@ -125,6 +125,8 @@ namespace EduTech.Controllers
                 TempData["ErrorMessage"] = "Bạn đã đăng ký dạy lớp học này";
                 return RedirectToAction("Index");
             }
+            //Tạm thời đổi trạng thái của lớp học sang Open
+            classToTeach.Status = ClassStatus.Open;
 
             //TODO: Kiểm tra trùng lịch
 
@@ -307,7 +309,7 @@ namespace EduTech.Controllers
         }
 
 
-        public IActionResult ClassDetail()
+        public IActionResult ClassList()
         {
             return View();
         }
