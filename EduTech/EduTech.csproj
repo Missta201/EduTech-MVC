@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="8.0.7" />
+	  <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="28.1.33" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 
