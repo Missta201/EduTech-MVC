@@ -307,7 +307,7 @@ namespace EduTech.Controllers
         }
 
 
-        public IActionResult ClassDetail()
+        public IActionResult ClassList()
         {
             return View();
         }
