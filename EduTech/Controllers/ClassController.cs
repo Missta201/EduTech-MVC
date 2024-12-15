@@ -123,6 +123,7 @@ namespace EduTech.Controllers
             // Retrieve the class
             var classToTeach = await _context.Classes
                 .Include(c => c.Lecturers)
+                .Include(c => c.ClassSchedules)
                 .FirstOrDefaultAsync(c => c.Id == classId);
 
             if (classToTeach == null)
@@ -152,9 +153,38 @@ namespace EduTech.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Kiểm tra trùng lịch
+            // Retrieve all the classes the lecturer is already teaching, including their schedules
+            var teachingClasses = await _context.Classes
+                .Include(c => c.ClassSchedules)
+                .Where(c => c.Lecturers.Any(l => l.Id == lecturer.Id))
+                .ToListAsync();
 
-            //TODO: Kiểm tra trùng lịch
+            foreach (var teachingClass in teachingClasses)
+            {
+                // Skip if the date ranges do not overlap
+                if (classToTeach.EndDate < teachingClass.StartDate || classToTeach.StartDate > teachingClass.EndDate)
+                {
+                    continue;
+                }
 
+                foreach (var existingSchedule in teachingClass.ClassSchedules)
+                {
+                    foreach (var newSchedule in classToTeach.ClassSchedules)
+                    {
+                        if (existingSchedule.Day == newSchedule.Day)
+                        {
+                            // Check if time overlaps
+                            if (newSchedule.StartTime < existingSchedule.EndTime &&
+                                existingSchedule.StartTime < newSchedule.EndTime)
+                            {
+                                TempData["ErrorMessage"] = $"Lịch dạy bị trùng với lớp {teachingClass.Name}";
+                                return RedirectToAction("Index");
+                            }
+                        }
+                    }
+                }
+            }
             // Assign lecturer to the class
             classToTeach.Lecturers.Add(lecturer);
 
@@ -173,11 +203,12 @@ namespace EduTech.Controllers
         public async Task<IActionResult> Enroll(int classId)
         {
             // Retrieve the class including its Students
-            var selectedClass = await _context.Classes
+            var classToEnroll = await _context.Classes
                 .Include(c => c.Students)
+                .Include(c => c.ClassSchedules)
                 .FirstOrDefaultAsync(c => c.Id == classId);
 
-            if (selectedClass == null)
+            if (classToEnroll == null)
             {
                 return NotFound();
             }
@@ -191,30 +222,63 @@ namespace EduTech.Controllers
             }
 
             // Check if the student is already enrolled
-            if (selectedClass.Students.Any(s => s.Id == student.Id))
+            if (classToEnroll.Students.Any(s => s.Id == student.Id))
             {
                 TempData["ErrorMessage"] = "Bạn đã đăng ký học lớp này";
                 return RedirectToAction("Index");
             }
 
             // Check if the class is full
-            if (selectedClass.NumberOfStudents >= selectedClass.Capacity)
+            if (classToEnroll.NumberOfStudents >= classToEnroll.Capacity)
             {
                 TempData["ErrorMessage"] = "Lớp học này đã đủ sĩ số";
                 return RedirectToAction("Index");
             }
 
             // Nếu trạng thái của lớp học không phải là Open thì không thể đăng ký học
-            if (selectedClass.Status != ClassStatus.Open)
+            if (classToEnroll.Status != ClassStatus.Open)
             {
                 TempData["ErrorMessage"] = "Không thể đăng ký học lớp học đã tiến hành";
                 return RedirectToAction("Index");
             }
 
+            // Kiểm tra trùng lịch
+            // Retrieve all the classes the lecturer is already teaching, including their schedules
+            var enrollClasses = await _context.Classes
+                .Include(c => c.ClassSchedules)
+                .Where(c => c.Students.Any(s => s.Id == student.Id))
+                .ToListAsync();
+
+            foreach (var enrollClass in enrollClasses)
+            {
+                // Skip if the date ranges do not overlap
+                if (classToEnroll.EndDate < enrollClass.StartDate || classToEnroll.StartDate > enrollClass.EndDate)
+                {
+                    continue;
+                }
+
+                foreach (var existingSchedule in enrollClass.ClassSchedules)
+                {
+                    foreach (var newSchedule in classToEnroll.ClassSchedules)
+                    {
+                        if (existingSchedule.Day == newSchedule.Day)
+                        {
+                            // Check if time overlaps
+                            if (newSchedule.StartTime < existingSchedule.EndTime &&
+                                existingSchedule.StartTime < newSchedule.EndTime)
+                            {
+                                TempData["ErrorMessage"] = $"Lịch học bị trùng với lớp {enrollClass.Name}";
+                                return RedirectToAction("Index");
+                            }
+                        }
+                    }
+                }
+            }
+
             // Enroll the student
-            selectedClass.Students.Add(student);
+            classToEnroll.Students.Add(student);
             // Increase student numbers 
-            selectedClass.NumberOfStudents++;
+            classToEnroll.NumberOfStudents++;
 
             TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
 
@@ -292,7 +356,7 @@ namespace EduTech.Controllers
                 }
 
                 classToCancel.Lecturers.Remove(lecturerToRemove);
-               
+
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Đã hủy đăng ký dạy lớp học thành công";
             }
@@ -445,12 +509,22 @@ namespace EduTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var selectedClass = await _context.Classes.FindAsync(id);
+            var selectedClass = await _context.Classes
+                .Include(c => c.ClassSchedules)  // Include related schedules
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (selectedClass == null)
             {
                 return NotFound();
             }
 
+            // Remove related schedules first
+            if (selectedClass.ClassSchedules != null)
+            {
+                _context.ClassSchedules.RemoveRange(selectedClass.ClassSchedules);
+            }
+
+            // Then remove the class
             _context.Classes.Remove(selectedClass);
             await _context.SaveChangesAsync();
 
@@ -462,17 +536,20 @@ namespace EduTech.Controllers
         public async Task<IActionResult> ClassList(int id)
         {
             var selectedClass = await _context.Classes
-            .Include(c => c.Course)
-            .Include(c => c.Lecturers)
-            .Include(c => c.Students)
-            .FirstOrDefaultAsync(c => c.Id == id);
+                .Include(c => c.Course)
+                .Include(c => c.Lecturers)
+                .Include(c => c.Students)
+                .Include(c => c.StudentGrades)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (selectedClass == null)
+            {
+                return NotFound();
+            }
 
             return View(selectedClass);
         }
 
-        public IActionResult Grade()
-        {
-            return View();
-        }
+
     }
 }

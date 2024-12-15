@@ -11,5 +11,6 @@
         public ClassStatus Status { get; set; }
         public string StartDate { get; set; } = string.Empty;
         public string EndDate { get; set; } = string.Empty;
+        public bool HasGrades { get; set; }
     }
 }

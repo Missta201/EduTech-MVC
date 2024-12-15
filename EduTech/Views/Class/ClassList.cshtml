@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Danh sách lớp";
-    int i = 1;
 }
 
 @model Class
@@ -46,19 +45,39 @@
                         <tr>
                             <th>STT</th>
                             <th>Tên học viên</th>
+                            <th>Email học viên</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        @foreach (var student in Model.Students)
+                        {
+                            var hasMidtermGrade = Model.StudentGrades
+                            .Any(g => g.StudentId == student.Id && g.AssignmentType == AssignmentType.Midterm);
+                            var hasFinalGrade = Model.StudentGrades
+                            .Any(g => g.StudentId == student.Id && g.AssignmentType == AssignmentType.Final);
 
-                        <tr>
-                            
-                            <td></td>
-                            <td></td>
+                            <tr>
+                                <td>@(Model.Students.IndexOf(student) + 1)</td>
+                                <td>@student.Name</td>
+                                <td>@student.Email</td>
+                                <td>
+                                    <a href="@Url.Action("Grade", "Lecturer", new { classId = Model.Id, studentId = student.Id })" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Chấm điểm
+                                    </a>
 
-                        </tr>
-                        
+                                    @if (hasMidtermGrade)
+                                    {
+                                        <span class="badge bg-success ms-2">Đã chấm giữa kì</span>
+                                    }
+                                    @if (hasFinalGrade)
+                                    {
+                                        <span class="badge bg-success ms-2">Đã chấm cuối kì</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
                     </tbody>
 
                 </table>

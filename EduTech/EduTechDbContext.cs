@@ -14,6 +14,8 @@ namespace EduTech
         public DbSet<Course> Courses { get; set; }
         public DbSet<ClassSchedule> ClassSchedules { get; set; }
         public DbSet<Class> Classes { get; set; }
+        public DbSet<StudentGrade> StudentGrades { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,7 +31,15 @@ namespace EduTech
                     .WithMany(u => u.ClassesAttending)
                     .UsingEntity(j => j.ToTable("ClassStudents"));
 
+            builder.Entity<StudentGrade>()
+                   .HasOne(sg => sg.Class)
+                   .WithMany(c => c.StudentGrades)
+                   .HasForeignKey(sg => sg.ClassId);
 
+            builder.Entity<StudentGrade>()
+                    .HasOne(sg => sg.Student)
+                    .WithMany()
+                    .HasForeignKey(sg => sg.StudentId);
             // Rename Identity tables
             foreach (var entityType in builder.Model.GetEntityTypes())
             {

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EduTech.Models.StudentGrade>
+
+@{
+    ViewData["Title"] = "My Grades";
+    var class_info = Model.FirstOrDefault()?.Class;
+}
+
+<a asp-controller="Student" asp-action="ClassesEnroll" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại lớp đăng ký học
+</a>
+
+<div class="container mt-4">
+    @if (class_info != null)
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Thông tin lớp học</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tên lớp:</strong> @class_info.Course.Name</p>
+                        <p><strong>Tên môn học:</strong> @class_info.Name</p>
+                        <p><strong>Giảng viên:</strong> @foreach (var lecturer in class_info.Lecturers)
+                            {
+                                <span>@lecturer.Name</span>
+                            }
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phòng học:</strong> @class_info.RoomNumber</p>
+                        <p><strong>Ngày bắt đầu:</strong> @class_info.StartDate</p>
+                        <p><strong>Ngày kết thúc:</strong> @class_info.StartDate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="container mt-4">
+
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Loại</th>
+                        <th>Điểm</th>
+                        <th>Nhận xét</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grade in Model)
+                    {
+                        <tr>
+                            <td>@grade.AssignmentType</td>
+                            <td>@grade.Score</td>
+                            <td>@grade.Comments</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f5f5f5;
+        transition: background-color 0.3s ease;
+    }
+</style>
+</div>
