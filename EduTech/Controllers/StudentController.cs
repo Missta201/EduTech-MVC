@@ -50,10 +50,11 @@ namespace EduTech.Controllers
 
             // Fetch classes attended by the student
             var classes = await _context.Classes
-               .Include(c => c.Course)
-               .Include(c => c.ClassSchedules)
-               .Where(c => c.Students.Any(s => s.Id == student.Id))
-               .ToListAsync();
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .Include(c => c.StudentGrades)
+                .Where(c => c.Students.Any(s => s.Id == student.Id))
+                .ToListAsync();
 
             var classesEnroll = new List<ClassesEnrollViewModel>();
             int scheduleDataId = 1;
@@ -70,7 +71,8 @@ namespace EduTech.Controllers
                     ScheduleData = new List<ScheduleData>(),
                     Status = aClass.Status,
                     StartDate = aClass.StartDate.ToString("MM/dd/yyyy"),
-                    EndDate = aClass.EndDate.ToString("MM/dd/yyyy")
+                    EndDate = aClass.EndDate.ToString("MM/dd/yyyy"),
+                    HasGrades = aClass.StudentGrades.Any(sg => sg.StudentId == student.Id)
                 };
 
                 // Generate ScheduleData based on ClassSchedule
@@ -219,6 +221,34 @@ namespace EduTech.Controllers
             _context.Users.Remove(student);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // Xem bảng điểm một lớp của học viên
+        [HttpGet]
+        [Authorize(Policy = "IsStudent")]
+        public async Task<IActionResult> Grades(int classId)
+        {
+            var student = await _userManager.GetUserAsync(User);
+
+            if (student == null)
+            {
+                return Unauthorized();
+            }
+
+            var studentGrades = await _context.StudentGrades
+                .Include(sg => sg.Class)
+                    .ThenInclude(c => c.Course)
+                .Include(sg => sg.Class)
+                    .ThenInclude(c => c.Lecturers)
+                .Where(sg => sg.ClassId == classId && sg.StudentId == student.Id)
+                .ToListAsync();
+
+            if (!studentGrades.Any())
+            {
+                return NotFound();
+            }
+
+            return View(studentGrades);
         }
     }
 }

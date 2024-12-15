@@ -30,6 +30,9 @@ namespace EduTech.Models
         public List<ApplicationUser> Lecturers { get; set; } = [];
         // Một lớp học có nhiều sinh viên
         public List<ApplicationUser> Students { get; set; } = [];
+        // Danh sách điểm của sinh viên trong lớp học
+        public List<StudentGrade> StudentGrades { get; set; } = new List<StudentGrade>();
+
 
     }
 }

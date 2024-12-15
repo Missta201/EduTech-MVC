@@ -221,5 +221,73 @@ namespace EduTech.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // Xem form Chấm điểm cho sinh viên
+        [HttpGet]
+        [Authorize(Policy = "IsLecturer")]
+        public async Task<IActionResult> Grade(int classId, string studentId)
+        {
+            var model = new GradeViewModel
+            {
+                ClassId = classId,
+                StudentId = studentId,
+                AssignmentType = AssignmentType.Midterm
+            };
+
+            return View(model);
+        }
+
+        // Chấm điểm cho sinh viên
+        [HttpPost]
+        [Authorize(Policy = "IsLecturer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Grade(GradeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Verify that the lecturer is teaching this class
+                var lecturerId = _userManager.GetUserId(User);
+                var isLecturerAssigned = await _context.Classes
+                    .AnyAsync(c => c.Id == model.ClassId && c.Lecturers.Any(l => l.Id == lecturerId));
+
+                if (!isLecturerAssigned)
+                {
+                    return Forbid();
+                }
+
+                // Check if the grade already exists
+                var existingGrade = await _context.StudentGrades
+                    .FirstOrDefaultAsync(g =>
+                        g.ClassId == model.ClassId &&
+                        g.StudentId == model.StudentId &&
+                        g.AssignmentType == model.AssignmentType);
+
+                if (existingGrade != null)
+                {
+                    // Update existing grade
+                    existingGrade.Score = model.Score;
+                    existingGrade.Comments = model.Comments;
+                }
+                else
+                {
+                    // Create a new grade
+                    var studentGrade = new StudentGrade
+                    {
+                        ClassId = model.ClassId,
+                        StudentId = model.StudentId,
+                        AssignmentType = model.AssignmentType,
+                        Score = model.Score,
+                        Comments = model.Comments
+                    };
+                    _context.StudentGrades.Add(studentGrade);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("ClassList", "Class", new { id = model.ClassId });
+            }
+
+            return View(model);
+        }
+
     }
 }
