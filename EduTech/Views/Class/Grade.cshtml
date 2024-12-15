@@ -1,0 +1,70 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
+                    <i class="bi bi-house-door"></i> Trở về trang chủ
+                </a>
+            </li>
+
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="card-title text-center mb-4">
+                        <i class="bi bi-mortarboard-fill text-primary me-2"></i>Chấm điểm
+                    </h2>
+                    <form>
+                        
+                        
+                       
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="assignmentType" class="form-label">
+                                    <i class="bi bi-list-check me-2"></i>Loại điểm
+                                </label>
+                                <select class="form-select" id="assignmentType" required>
+                                    <option value="">Chọn</option>
+                                    <option value="diemgiuaki">Điểm giữa kì</option>
+                                    <option value="diemcuoiki">Điểm cuối kì</option>
+                                    <option value="trungbinhmon">Trung bình môn</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="diem" class="form-label">
+                                    <i class="bi bi-star-fill me-2"></i>Điểm
+                                </label>
+                                <input type="number" class="form-control" id="diem" min="0" max="100" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nhanxet" class="form-label">
+                                <i class="bi bi-chat-left-text me-2"></i>Nhận xét
+                            </label>
+                            <textarea class="form-control" id="nhanxet" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save me-2"></i>Lưu thông tin
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>Đặt lại
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

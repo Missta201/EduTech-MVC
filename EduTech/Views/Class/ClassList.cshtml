@@ -23,8 +23,11 @@
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            
                             <th>Tên học viên</th>
+                            <th>Địa chỉ Email</th>
+                            <th>Điểm giữa kỳ</th>
+                            <th>Điểm cuối kỳ</th>
+                            <th>TBM</th>
                             <th>Thao tác</th>
 
                         </tr>
@@ -34,8 +37,20 @@
 
                         <tr>
                             
+                            <td>Nguyễn Văn Ánh</td>
+                            <td>anh@gmail.com</td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td>
+                                <form method="post" action="@Url.Action("Grade", "Class")" style="display:inline;">
+                                    @* @Html.AntiForgeryToken() *@
+                                   @*  <input type="hidden" name="Id" value="@course.Id" /> *@
+                                    <button type="submit" class="btn btn-outline-primary">
+                                        <i class="bi bi-pencil-square"></i> Chấm điểm
+                                    </button>
+                                </form>
+                            </td>
 
                         </tr>
                         

@@ -311,5 +311,10 @@ namespace EduTech.Controllers
         {
             return View();
         }
+
+        public IActionResult Grade()
+        {
+            return View();
+        }
     }
 }
