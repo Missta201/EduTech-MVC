@@ -25,11 +25,11 @@ namespace EduTech.Models
         public Course Course { get; set; } = new Course();
 
         //Một lớp học có nhiều lịch học
-        public List<ClassSchedule> ClassSchedules { get; set; } = new List<ClassSchedule>();
+        public List<ClassSchedule> ClassSchedules { get; set; } = [];
         // Một lớp học được dạy bởi nhiều giảng viên
-        public List<ApplicationUser> Lecturers { get; set; } = new List<ApplicationUser>();
+        public List<ApplicationUser> Lecturers { get; set; } = [];
         // Một lớp học có nhiều sinh viên
-        public List<ApplicationUser> Students { get; set; } = new List<ApplicationUser>();
+        public List<ApplicationUser> Students { get; set; } = [];
 
     }
 }
