@@ -27,7 +27,7 @@
                     <form method="post" asp-action="@enActionName" asp-controller="Class">
                         <input asp-for="Id" type="hidden" />
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                         <div class="row g-3">
                             <!-- Tên lớp -->
@@ -170,6 +170,7 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
         const DayOfWeek = {
             0: "Chủ nhật",
