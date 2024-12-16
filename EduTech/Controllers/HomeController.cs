@@ -24,9 +24,19 @@ namespace EduTech.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            switch (statusCode)
+            {
+                case 404:
+                    return View("NotFound");
+                case 403:
+                    return View("Forbid");
+                case 401:
+                    return View("Unauthorized");
+                default:
+                    return View("Error");
+            }
         }
     }
 }

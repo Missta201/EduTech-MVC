@@ -1,7 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "404 - Page Not Found";
+    Layout = "_Layout";
+    ViewData["Title"] = "NotFound - Không tìm thấy";
 }
-
 
 <style>
     .card {
@@ -9,10 +9,10 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
-        }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
 </style>
 
 <div class="container">
@@ -22,10 +22,10 @@
                 <div class="card-body p-5">
                     <i class="bi bi-question-circle text-primary" style="font-size: 5rem;"></i>
                     <h1 class="mt-4 mb-3">404</h1>
-                    <h2 class="mb-3">Page Not Found</h2>
-                    <p class="mb-4">Oops! The page you're looking for doesn't exist or has been moved.</p>
+                    <h2 class="mb-3">Không tìm thấy trang</h2>
+                    <p class="mb-4">Rất tiếc! Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.</p>
                     <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
-                        <i class="bi bi-house-door me-2"></i>Return to Dashboard
+                        <i class="bi bi-house-door me-2"></i>Quay lại trang chủ
                     </a>
                 </div>
             </div>

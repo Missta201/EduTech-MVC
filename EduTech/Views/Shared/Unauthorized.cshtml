@@ -1,7 +1,6 @@
-﻿@page
-@model AccessDeniedModel
 @{
-    ViewData["Title"] = "Access denied";
+    Layout = "_Layout";
+    ViewData["Title"] = "Unauthorized - Không được phép";
 }
 
 <style>
@@ -12,7 +11,7 @@
 
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
     }
 </style>
 
@@ -21,10 +20,10 @@
         <div class="col-md-6 text-center">
             <div class="card shadow-sm border-2">
                 <div class="card-body p-5">
-                    <i class="bi bi-shield-exclamation text-danger" style="font-size: 5rem;"></i>
-                    <h1 class="mt-4 mb-3">403</h1>
-                    <h2 class="mb-3">Truy cập bị cấm</h2>
-                    <p class="mb-4">Xin lỗi, bạn không có quyền truy cập trang này.</p>
+                    <i class="bi bi-lock text-warning" style="font-size: 5rem;"></i>
+                    <h1 class="mt-4 mb-3">401</h1>
+                    <h2 class="mb-3">Không được phép</h2>
+                    <p class="mb-4">Bạn cần phải xác thực để truy cập tài nguyên này.</p>
                     <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
                         <i class="bi bi-house-door me-2"></i>Quay lại trang chủ
                     </a>

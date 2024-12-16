@@ -13,12 +13,12 @@ namespace EduTech.Controllers
     {
         private readonly EduTechDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAuthorizationService authorizationService;
+        private readonly IAuthorizationService _authorizationService;
         public ClassController(EduTechDbContext context, UserManager<ApplicationUser> userManager, IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
-            this.authorizationService = authorizationService;
+            this._authorizationService = authorizationService;
         }
 
 
@@ -27,7 +27,7 @@ namespace EduTech.Controllers
         public async Task<IActionResult> Index()
         {
             // Nếu là giảng thì chỉ xem được các lớp học đang chờ để đăng ký dạy
-            if (User != null && (await authorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
+            if (User != null && (await _authorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
             {
                 var classes = await _context.Classes
                     .Include(c => c.Course)
@@ -39,7 +39,7 @@ namespace EduTech.Controllers
                 return View("Index", classes);
             }
             // Nếu là học viên hay người dùng chưa đăng nhập thì chỉ xem được các lớp học đang mở
-            else if (User?.Identity?.IsAuthenticated != true || (await authorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+            else if (User?.Identity?.IsAuthenticated != true || (await _authorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
             {
                 var classes = await _context.Classes
                     .Include(c => c.Course)
