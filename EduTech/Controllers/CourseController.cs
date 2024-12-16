@@ -33,7 +33,7 @@ namespace EduTech.Controllers
         }
 
         [HttpPost]
-        [Authorize (Policy = "IsAdmin")]
+        [Authorize (Policy = "CanManageCourses")]
         public async Task<IActionResult> Add(AddCourseViewModel viewModel)
         {
             // Kiểm tra xem dữ liệu có hợp lệ không
@@ -44,7 +44,7 @@ namespace EduTech.Controllers
 
             var course = new Course
             {
-                Name = viewModel.Name ?? string.Empty, 
+                Name = viewModel.Name, 
                 Description = viewModel.Description
             };
 
@@ -106,7 +106,7 @@ namespace EduTech.Controllers
         
 
         [HttpPost]
-        [Authorize(Policy = "CanManageCourses")]
+        [Authorize(Policy = "IsAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
