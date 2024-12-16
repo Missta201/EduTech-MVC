@@ -26,8 +26,20 @@ namespace EduTech.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            // Nếu là giảng thì chỉ xem được các lớp học đang chờ để đăng ký dạy
+            if (User != null && (await authorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
+            {
+                var classes = await _context.Classes
+                    .Include(c => c.Course)
+                    .Include(c => c.ClassSchedules)
+                    .Include(c => c.Lecturers)
+                    .Where(c => c.Status == ClassStatus.Pending)
+                    .AsNoTracking()
+                    .ToListAsync();
+                return View("Index", classes);
+            }
             // Nếu là học viên hay người dùng chưa đăng nhập thì chỉ xem được các lớp học đang mở
-            if (User?.Identity?.IsAuthenticated != true || (await authorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+            else if (User?.Identity?.IsAuthenticated != true || (await authorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
             {
                 var classes = await _context.Classes
                     .Include(c => c.Course)
@@ -41,12 +53,28 @@ namespace EduTech.Controllers
             }
             else
             {
+                // Define the priority order for ClassStatus
+                var statusOrder = new[]
+                {
+                    ClassStatus.Pending,
+                    ClassStatus.Open,
+                    ClassStatus.InProgress,
+                    ClassStatus.PaymentPending,
+                    ClassStatus.Archived
+                };
+
+                // Nếu là giáo vụ hoặc admin thì xem được tất cả các lớp học và sắp xếp theo trạng thái
                 var classes = await _context.Classes
                     .Include(c => c.Course)
                     .Include(c => c.ClassSchedules)
                     .Include(c => c.Lecturers)
+                    .Include(c => c.Students)
                     .AsNoTracking()
                     .ToListAsync();
+
+                // Sort classes by status order
+                classes = classes.OrderBy(c => Array.IndexOf(statusOrder, c.Status)).ToList();
+
                 return View("Index", classes);
             }
         }
@@ -548,6 +576,75 @@ namespace EduTech.Controllers
             }
 
             return View(selectedClass);
+        }
+        
+        // Form gộp lớp
+        [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
+        public IActionResult Merge()
+        {
+            var viewModel = new MergeClassesViewModel
+            {
+                Classes = _context.Classes
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }).ToList()
+            };
+            return View(viewModel);
+        }
+        
+        // Gộp lớp, ghép lớp
+        [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MergeClasses(int classAId, int classBId)
+        {
+            var classA = await _context.Classes
+                .Include(c => c.Students)
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classAId);
+
+            var classB = await _context.Classes
+                .Include(c => c.Students)
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classBId);
+
+            if (classA == null || classB == null)
+            {
+                return NotFound();
+            }
+
+            // Transfer students from class B to class A
+            foreach (var student in classB.Students)
+            {
+                if (!classA.Students.Any(s => s.Id == student.Id))
+                {
+                    classA.Students.Add(student);
+                    classB.Students.Remove(student);
+                }
+            }
+
+            // Transfer lecturers from class B to class A
+            foreach (var lecturer in classB.Lecturers)
+            {
+                if (!classA.Lecturers.Any(l => l.Id == lecturer.Id))
+                {
+                    classA.Lecturers.Add(lecturer);
+                    classB.Lecturers.Remove(lecturer);
+                }
+            }
+
+            // Update the number of students in class A
+            classA.NumberOfStudents = classA.Students.Count;
+            classB.NumberOfStudents = classB.Students.Count;
+            
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Gép lớp thành công";
+            return RedirectToAction("Index");
         }
 
 

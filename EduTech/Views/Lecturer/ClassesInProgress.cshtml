@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Lớp đang giảng dạy";
+}
+@model IEnumerable<Class>
+
+<a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại dashboard
+</a>
+
+<div class="mb-3">
+    <h2>Các lớp đang giảng dạy</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="list-group">
+            @foreach (var item in Model)
+            {
+                <a href="@Url.Action("ClassList", "Class", new { id = item.Id })" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@item.Name</h5>
+                        <small>@item.StartDate - @item.EndDate</small>
+                    </div>
+                    <p class="mb-1">Môn học: @item.Course.Name</p>
+                    <small>Số phòng: @item.RoomNumber</small>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Không có lớp học nào.
+        </div>
+    }
+</div>
