@@ -55,7 +55,8 @@
                     @foreach (var grade in Model)
                     {
                         <tr>
-                            <td>@grade.AssignmentType</td>
+                            <td>@(grade.AssignmentType == AssignmentType.Midterm ? "Giữa kỳ" : grade.AssignmentType ==
+                                    AssignmentType.Final ? "Cuối kỳ" : grade.AssignmentType)</td>
                             <td>@grade.Score</td>
                             <td>@grade.Comments</td>
                         </tr>
