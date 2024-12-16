@@ -21,6 +21,7 @@ namespace EduTech.Controllers
 
         }
 
+        // Hiển thị danh sách giảng viên
         [HttpGet]
         [Authorize(Policy = "CanViewStudentsLectures")]
         public async Task<IActionResult> Index()
@@ -53,7 +54,7 @@ namespace EduTech.Controllers
             var classes = await _context.Classes
                 .Include(c => c.Course)
                 .Include(c => c.ClassSchedules)
-                .Where(c => c.Lecturers.Any(l => l.Id == lecturer.Id))
+                .Where(c => c.Status == ClassStatus.InProgress && c.Lecturers.Any(l => l.Id == lecturer.Id))
                 .ToListAsync();
 
             var classesTeaching = new List<ClassesTeachingViewModel>();
@@ -104,6 +105,65 @@ namespace EduTech.Controllers
             return View("ClassesTeaching", classesTeaching);
         }
 
+        // Class đang dạy của giảng viên
+        [HttpGet]
+        [Authorize(Policy = "IsLecturer")]
+        public async Task<IActionResult> ClassesInProgress()
+        {
+            var lecturer = await _userManager.GetUserAsync(User);
+            if (lecturer == null)
+            {
+                return Unauthorized();
+            }
+
+            // Fetch InProgress classes taught by the lecturer
+            var classes = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .Where(c => c.Status == ClassStatus.InProgress && c.Lecturers.Any(l => l.Id == lecturer.Id))
+                .ToListAsync();
+
+            return View("ClassesInProgress", classes);
+        }
+
+        // Hiển thị lịch sử các lớp giảng dạy của giảng viên
+        [HttpGet]
+        [Authorize(Policy = "IsLecturer")]
+        public async Task<IActionResult> ClassesHistory()
+        {
+            var lecturer = await _userManager.GetUserAsync(User);
+            if (lecturer == null)
+            {
+                return Unauthorized();
+            }
+
+            // Fetch all classes taught by the lecturer
+            var classes = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .Where(c => c.Lecturers.Any(l => l.Id == lecturer.Id))
+                .ToListAsync();
+
+            // Define the priority order for ClassStatus
+            var orderedStatuses = new List<ClassStatus>
+            {
+                ClassStatus.Archived,
+                ClassStatus.PaymentPending,
+                ClassStatus.InProgress,
+                ClassStatus.Open,
+                ClassStatus.Pending
+            };
+
+            // Group classes by status based on priority order
+            var groupedClasses = classes
+                .GroupBy(c => c.Status)
+                .OrderBy(g => orderedStatuses.IndexOf(g.Key))
+                .ToList();
+
+            return View("ClassesHistory", groupedClasses);
+        }
+
+        // Hiển thị form thêm giảng viên
         [HttpGet]
         [Authorize(Policy = "CanManageStudentsLectures")]
         public IActionResult Add()
@@ -111,6 +171,7 @@ namespace EduTech.Controllers
             return View(new LecturerViewModel());
         }
 
+        // Thêm giảng viên
         [HttpPost]
         [Authorize(Policy = "CanManageStudentsLectures")]
         public async Task<IActionResult> Add(LecturerViewModel model)
@@ -288,6 +349,8 @@ namespace EduTech.Controllers
 
             return View(model);
         }
+
+       
 
     }
 }

@@ -47,7 +47,13 @@ namespace EduTech.Controllers
             {
                 return Unauthorized();
             }
-
+            // Define the priority order for ClassStatus
+            var statusOrder = new[]
+            {
+                 ClassStatus.InProgress,
+                 ClassStatus.PaymentPending,
+                 ClassStatus.Archived
+            };
             // Fetch classes attended by the student
             var classes = await _context.Classes
                 .Include(c => c.Course)
@@ -55,6 +61,9 @@ namespace EduTech.Controllers
                 .Include(c => c.StudentGrades)
                 .Where(c => c.Students.Any(s => s.Id == student.Id))
                 .ToListAsync();
+
+            // Sort classes by status order
+            classes = classes.OrderBy(c => Array.IndexOf(statusOrder, c.Status)).ToList();
 
             var classesEnroll = new List<ClassesEnrollViewModel>();
             int scheduleDataId = 1;
@@ -242,11 +251,6 @@ namespace EduTech.Controllers
                     .ThenInclude(c => c.Lecturers)
                 .Where(sg => sg.ClassId == classId && sg.StudentId == student.Id)
                 .ToListAsync();
-
-            if (!studentGrades.Any())
-            {
-                return NotFound();
-            }
 
             return View(studentGrades);
         }

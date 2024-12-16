@@ -1,0 +1,86 @@
+﻿@model IEnumerable<IGrouping<ClassStatus, Class>>
+@{
+    ViewData["Title"] = "Lịch sử các lớp đã tham gia giảng dạy";
+
+    string GetStatusClass(ClassStatus status) => status switch
+    {
+        ClassStatus.Pending => "text-warning",
+        ClassStatus.Open => "text-success",
+        ClassStatus.InProgress => "text-primary",
+        ClassStatus.PaymentPending => "text-danger",
+        ClassStatus.Archived => "text-secondary",
+        _ => ""
+    };
+
+    string GetStatusText(ClassStatus status) => status switch
+    {
+        ClassStatus.Pending => "Đang chờ",
+        ClassStatus.Open => "Mở",
+        ClassStatus.InProgress => "Đang dạy",
+        ClassStatus.PaymentPending => "Chờ thanh toán",
+        ClassStatus.Archived => "Đã thanh toán",
+        _ => status.ToString()
+    };
+
+    string GetDayName(DayOfWeek day) => day switch
+    {
+        DayOfWeek.Sunday => "Chủ nhật",
+        DayOfWeek.Monday => "Thứ hai",
+        DayOfWeek.Tuesday => "Thứ ba",
+        DayOfWeek.Wednesday => "Thứ tư",
+        DayOfWeek.Thursday => "Thứ năm",
+        DayOfWeek.Friday => "Thứ sáu",
+        DayOfWeek.Saturday => "Thứ bảy",
+        _ => day.ToString()
+    };
+
+    var statusOrder = new[] {
+        ClassStatus.Archived,
+        ClassStatus.PaymentPending,
+        ClassStatus.InProgress,
+        ClassStatus.Open,
+        ClassStatus.Pending
+    };
+}
+
+<a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại dashboard
+</a>
+
+@foreach (var group in Model.OrderBy(g => Array.IndexOf(statusOrder, g.Key)))
+{
+    <h2 class="@GetStatusClass(group.Key)">@GetStatusText(group.Key)</h2>
+
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Tên lớp học</th>
+                <th>Tên môn học</th>
+                <th>Lịch học</th>
+                <th>Trạng thái</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in group)
+            {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>@c.Course.Name</td>
+                    <td>
+                        @foreach (var schedule in c.ClassSchedules)
+                        {
+                            <div>@($"{GetDayName(schedule.Day)} {schedule.StartTime:HH:mm}-{schedule.EndTime:HH:mm}")</div>
+                        }
+                    </td>
+                    <td>
+                        <span class="@GetStatusClass(c.Status)">@GetStatusText(c.Status)</span>
+                    </td>
+                    <td>@c.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@c.EndDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

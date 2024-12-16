@@ -1,0 +1,25 @@
+@model EduTech.Models.ViewModel.MergeClassesViewModel
+
+@{
+    ViewData["Title"] = "Gộp lớp";
+}
+<a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại Dashborad
+</a>
+<h2>Gộp lớp</h2>
+
+<form asp-action="MergeClasses" method="post">
+    <div class="form-group">
+        <label asp-for="ClassAId" class="control-label"></label>
+        <select asp-for="ClassAId" class="form-control" asp-items="Model.Classes">
+            <option value="">Vui lòng chọn lớp muốn ghép vô</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClassBId" class="control-label"></label>
+        <select asp-for="ClassBId" class="form-control" asp-items="Model.Classes">
+            <option value="">Vui lòng chọn lớp bị ghép</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Ghép</button>
+</form>

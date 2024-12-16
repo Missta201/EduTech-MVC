@@ -1,12 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
 }
+@model AdminDashboardViewModel
+
+<style>
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 1rem;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+
+    .icon-wrapper {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stretched-link::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        content: "";
+    }
+</style>
 
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="/" class="logo">EduTech</a>
-
-
 
     <div class="nav-section">
         <div class="nav-section-title">Contents Management</div>
@@ -51,52 +79,69 @@
 
     <!-- Statistics Cards -->
     <div class="container-fluid">
+        <div class="row g-4 mb-3">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm border-2">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="card-title">Lớp học</h6>
+                        <div class="stats-number">@Model.TotalClasses</div>
+                        <a asp-action="Index" asp-controller="Class" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm border-2">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-journal-text text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="card-title">Khoá học</h6>
+                        <div class="stats-number">@Model.TotalCourses</div>
+                        <a asp-action="Index" asp-controller="Course" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm border-2">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-person-video3 text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="card-title">Giảng viên</h6>
+                        <div class="stats-number">@Model.TotalLecturers</div>
+                        <a asp-action="Index" asp-controller="Lecturer" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm border-2">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <h6 class="card-title">Học viên</h6>
+                        <div class="stats-number">@Model.TotalStudents</div>
+                        <a asp-action="Index" asp-controller="Student" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
-                <div class="stats-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stats-title">Lớp học</div>
-                            <div class="stats-number">200</div>
+                <div class="card h-100 shadow-sm border-2">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
                         </div>
-                        <i class="bi bi-building stats-icon"></i>
+                        <h6 class="card-title">Ghép lớp</h6>
+                        <a asp-action="Merge" asp-controller="Class" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="stats-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stats-title">Khoá học</div>
-                            <div class="stats-number">7</div>
-                        </div>
-                        <i class="bi bi-journal-text stats-icon"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="stats-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stats-title">Giảng viên</div>
-                            <div class="stats-number">5</div>
-                        </div>
-                        <i class="bi bi-person-video3 stats-icon"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="stats-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="stats-title">Học viên</div>
-                            <div class="stats-number">10</div>
-                        </div>
-                        <i class="bi bi-people stats-icon"></i>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
