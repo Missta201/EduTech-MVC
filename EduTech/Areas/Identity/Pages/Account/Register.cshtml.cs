@@ -144,7 +144,17 @@ namespace EduTech.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $@"<div style='font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.5;'>
+                            <p>Dear User,</p>
+                            <p>Cảm ơn bạn đã đăng ký với chúng tôi! Vui lòng xác nhận tài khoản của bạn bằng cách nhấp vào nút bên dưới:</p>
+                            <p style='text-align: center; margin: 20px 0;'>
+                                <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' 
+                                   style='background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>
+                                   Xác nhận địa chỉ email
+                                </a>
+                            </p>
+                            <p>Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+                        </div>");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
