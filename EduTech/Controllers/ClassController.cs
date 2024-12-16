@@ -577,6 +577,75 @@ namespace EduTech.Controllers
 
             return View(selectedClass);
         }
+        
+        // Form gộp lớp
+        [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
+        public IActionResult Merge()
+        {
+            var viewModel = new MergeClassesViewModel
+            {
+                Classes = _context.Classes
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }).ToList()
+            };
+            return View(viewModel);
+        }
+        
+        // Gộp lớp, ghép lớp
+        [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MergeClasses(int classAId, int classBId)
+        {
+            var classA = await _context.Classes
+                .Include(c => c.Students)
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classAId);
+
+            var classB = await _context.Classes
+                .Include(c => c.Students)
+                .Include(c => c.Lecturers)
+                .FirstOrDefaultAsync(c => c.Id == classBId);
+
+            if (classA == null || classB == null)
+            {
+                return NotFound();
+            }
+
+            // Transfer students from class B to class A
+            foreach (var student in classB.Students)
+            {
+                if (!classA.Students.Any(s => s.Id == student.Id))
+                {
+                    classA.Students.Add(student);
+                    classB.Students.Remove(student);
+                }
+            }
+
+            // Transfer lecturers from class B to class A
+            foreach (var lecturer in classB.Lecturers)
+            {
+                if (!classA.Lecturers.Any(l => l.Id == lecturer.Id))
+                {
+                    classA.Lecturers.Add(lecturer);
+                    classB.Lecturers.Remove(lecturer);
+                }
+            }
+
+            // Update the number of students in class A
+            classA.NumberOfStudents = classA.Students.Count;
+            classB.NumberOfStudents = classB.Students.Count;
+            
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Gép lớp thành công";
+            return RedirectToAction("Index");
+        }
 
 
     }
