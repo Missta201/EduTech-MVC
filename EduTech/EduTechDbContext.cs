@@ -15,6 +15,7 @@ namespace EduTech
         public DbSet<ClassSchedule> ClassSchedules { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<StudentGrade> StudentGrades { get; set; }
+        public DbSet<ExamSchedule> ExamSchedules { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

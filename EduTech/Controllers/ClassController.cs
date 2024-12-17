@@ -594,13 +594,49 @@ namespace EduTech.Controllers
             };
             return View(viewModel);
         }
-        
+        // Lấy thông tin lớp học để gộp
+        [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
+        public async Task<IActionResult> GetClassInfo(int classAId, int classBId)
+        {
+
+            var classA = await _context.Classes
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == classAId);
+            var classB = await _context.Classes
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == classBId);
+
+            if (classA == null || classB == null)
+            {
+                return NotFound();
+            }
+
+            var duplicateStudents = classA.Students.Count(s => classB.Students.Any(b => b.Id == s.Id));
+            var expectedNumberOfStudents = classA.NumberOfStudents + classB.NumberOfStudents - duplicateStudents;
+
+            var result = new
+            {
+                classA = new { classA.Name, classA.NumberOfStudents, classA.Capacity },
+                classB = new { classB.Name, classB.NumberOfStudents },
+                expectedNumberOfStudents,
+                classA.Capacity
+            };
+
+            return Json(result);
+        }
         // Gộp lớp, ghép lớp
         [HttpPost]
         [Authorize(Policy = "CanManageClasses")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MergeClasses(int classAId, int classBId)
         {
+            if (classAId == classBId)
+            {
+                TempData["ErrorMessage"] = "Không thể gộp cùng một lớp.";
+                return RedirectToAction("Merge");
+            }
+
             var classA = await _context.Classes
                 .Include(c => c.Students)
                 .Include(c => c.Lecturers)
@@ -616,31 +652,38 @@ namespace EduTech.Controllers
                 return NotFound();
             }
 
+            var duplicateStudents = classA.Students.Count(s => classB.Students.Any(b => b.Id == s.Id));
+            var expectedNumberOfStudents = classA.NumberOfStudents + classB.NumberOfStudents - duplicateStudents;
+
+            if (expectedNumberOfStudents > classA.Capacity)
+            {
+                TempData["ErrorMessage"] = "Số học viên sau khi ghép vượt quá sức chứa!";
+                return RedirectToAction("Merge");
+            }
+
             // Transfer students from class B to class A
             foreach (var student in classB.Students)
             {
-                if (!classA.Students.Any(s => s.Id == student.Id))
+                if (classA.Students.All(s => s.Id != student.Id))
                 {
                     classA.Students.Add(student);
-                    classB.Students.Remove(student);
                 }
             }
 
             // Transfer lecturers from class B to class A
             foreach (var lecturer in classB.Lecturers)
             {
-                if (!classA.Lecturers.Any(l => l.Id == lecturer.Id))
+                if (classA.Lecturers.All(l => l.Id != lecturer.Id))
                 {
                     classA.Lecturers.Add(lecturer);
-                    classB.Lecturers.Remove(lecturer);
                 }
             }
 
             // Update the number of students in class A
             classA.NumberOfStudents = classA.Students.Count;
-            classB.NumberOfStudents = classB.Students.Count;
-            
 
+            // Remove class B
+            await Delete(classB.Id);
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Gép lớp thành công";

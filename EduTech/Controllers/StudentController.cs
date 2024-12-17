@@ -254,5 +254,26 @@ namespace EduTech.Controllers
 
             return View(studentGrades);
         }
+        
+        //Xem lịch thi của học viên
+        [HttpGet]
+        [Authorize(Policy = "IsStudent")]
+        public async Task<IActionResult> CurrentExamSchedule()
+        {
+            var student = await _userManager.GetUserAsync(User);
+            
+            if (student == null)
+            {
+                return Unauthorized();
+            }
+
+            // Fetch InProgress classes of the student
+            var classes = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ExamSchedules)
+                .Where(c => c.Status == ClassStatus.InProgress && c.Students.Any(s => s.Id == student.Id))
+                .ToListAsync();
+            return View("CurrentExamSchedule", classes);
+        }
     }
 }

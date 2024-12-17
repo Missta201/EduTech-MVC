@@ -119,7 +119,6 @@ namespace EduTech.Controllers
             // Fetch InProgress classes taught by the lecturer
             var classes = await _context.Classes
                 .Include(c => c.Course)
-                .Include(c => c.ClassSchedules)
                 .Where(c => c.Status == ClassStatus.InProgress && c.Lecturers.Any(l => l.Id == lecturer.Id))
                 .ToListAsync();
 
@@ -292,7 +291,7 @@ namespace EduTech.Controllers
             {
                 ClassId = classId,
                 StudentId = studentId,
-                AssignmentType = AssignmentType.Midterm
+                AssignmentType = AssignmentType.Practice
             };
 
             return View(model);

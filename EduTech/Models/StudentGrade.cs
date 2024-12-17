@@ -12,12 +12,8 @@ namespace EduTech.Models
         public ApplicationUser? Student { get; set; }
         public AssignmentType AssignmentType { get; set; }
         public double Score { get; set; }
-        public string? Comments { get; set; }
+        public string? Comments { get; set; } = string.Empty;
     }
 
-    public enum AssignmentType
-    {
-        Midterm,
-        Final
-    }
+    
 }
