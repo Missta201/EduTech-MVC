@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using EduTech.Models;
 using EduTech.DbInitializer;
 using Azure.Communication.Email;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using EduTech.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +32,9 @@ builder.Services.AddSingleton(_ =>
     }
     return new EmailClient(connectionString);
 });
+
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddTransient<PdfConverter>();
 
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();

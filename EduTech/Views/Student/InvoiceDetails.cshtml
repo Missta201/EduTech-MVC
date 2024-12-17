@@ -1,0 +1,59 @@
+@model Invoice
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+}
+
+<div class="container-fluid mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
+                    <i class="bi bi-house-door"></i> Quay lại Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("GetInvoices", "Student")" class="text-decoration-none">
+                    Danh sách hóa đơn
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Chi tiết hóa đơn</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="card-title">Chi tiết hóa đơn</h2>
+                <a class="btn btn-outline-primary" href="@Url.Action("ExportToPdf", "Student", new { id = Model.Id })">
+                    <i class="bi bi-file-earmark-pdf"></i> Xuất PDF
+                </a>
+            </div>
+            <dl class="row">
+                <dt class="col-sm-3">Tên lớp học</dt>
+                <dd class="col-sm-9">@Model.Class.Name</dd>
+
+                <dt class="col-sm-3">Tên môn học</dt>
+                <dd class="col-sm-9">@Model.Class.Course.Name</dd>
+
+                <dt class="col-sm-3">Học viên</dt>
+                <dd class="col-sm-9">@Model.Student.Name</dd>
+
+                <dt class="col-sm-3">Email học viên</dt>
+                <dd class="col-sm-9">@Model.Student.Email</dd>
+
+                <dt class="col-sm-3">Số tiền</dt>
+                <dd class="col-sm-9">@Model.Amount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</dd>
+
+                <dt class="col-sm-3">Trạng thái</dt>
+                <dd class="col-sm-9">@(Model.Status == InvoiceStatus.Unpaid ? "Chưa thanh toán" : "Đã thanh toán")</dd>
+
+                <dt class="col-sm-3">Ngày tạo</dt>
+                <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">Ngày cập nhật</dt>
+                <dd class="col-sm-9">@Model.UpdatedDate.ToString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
+    </div>
+</div>

@@ -77,7 +77,7 @@
                                 <i class="bi bi-file-earmark-text text-primary" style="font-size: 2rem;"></i>
                             </div>
                             <h6 class="card-title text-center small mb-0">Kết quả học tập</h6>
-                            <a href="#" class="stretched-link"></a>
+                            <a asp-action="AllGrades" asp-controller="Student" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             <div class="icon-wrapper mb-3">
                                 <i class="bi bi-search text-primary" style="font-size: 2rem;"></i>
                             </div>
-                            <h6 class="card-title text-center small mb-0">Tra cứu kết quả thi</h6>
+                            <h6 class="card-title text-center small mb-0">Tra cứu kết quả học</h6>
                         <a href="@Url.Action("ExamResults", "Exam")" class="stretched-link"></a>
                         </div>
                     </div>
@@ -136,17 +136,6 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-2">
-                <div class="card-body text-center p-4">
-                    <div class="icon-wrapper mb-3">
-                        <i class="bi bi-credit-card text-primary" style="font-size: 2rem;"></i>
-                    </div>
-                    <h6 class="card-title">Thanh toán trực tuyến</h6>
-                    <a href="#" class="stretched-link"></a>
-                </div>
-            </div>
-        </div>
 
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-2">
@@ -155,7 +144,7 @@
                         <i class="bi bi-file-text text-primary" style="font-size: 2rem;"></i>
                     </div>
                     <h6 class="card-title">Hóa đơn</h6>
-                    <a href="#" class="stretched-link"></a>
+                    <a asp-controller="Student" asp-action="GetInvoices" class="stretched-link"></a>
                 </div>
             </div>
         </div>

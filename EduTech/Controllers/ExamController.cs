@@ -184,10 +184,44 @@ namespace EduTech.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult ExamResults()
         {
-            ViewData["Title"] = "Tra cứu điểm / Kết quả học tập EduTECH";
-            return View("ExamResults");
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ExamResults( string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["ErrorMessage"] = "Email là bắt buộc.";
+                return View();
+            }
+
+            var student = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (student == null)
+            {
+                TempData["ErrorMessage"] = "Không tim thấy thông tin học viên.";
+                return View();
+            }
+
+            var studentGrades = await _context.StudentGrades
+                .Include(sg => sg.Class)
+                .ThenInclude(c => c.Course)
+                .Where(sg => sg.StudentId == student.Id)
+                .ToListAsync();
+
+            var viewModel = new ExamResultsViewModel
+            {
+                StudentName = student.Name,
+                Grades = studentGrades
+            };
+
+            return View("ExamResults", viewModel);
         }
     }
 }

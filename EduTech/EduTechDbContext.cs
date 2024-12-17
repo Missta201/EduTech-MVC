@@ -16,6 +16,8 @@ namespace EduTech
         public DbSet<Class> Classes { get; set; }
         public DbSet<StudentGrade> StudentGrades { get; set; }
         public DbSet<ExamSchedule> ExamSchedules { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -41,6 +43,15 @@ namespace EduTech
                     .HasOne(sg => sg.Student)
                     .WithMany()
                     .HasForeignKey(sg => sg.StudentId);
+            
+            builder.Entity<Invoice>()
+                .Property(i => i.CreatedDate)
+                .HasDefaultValueSql("GETDATE()");
+
+            builder.Entity<Invoice>()
+                .Property(i => i.UpdatedDate)
+                .HasDefaultValueSql("GETDATE()");
+            
             // Rename Identity tables
             foreach (var entityType in builder.Model.GetEntityTypes())
             {

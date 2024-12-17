@@ -1,0 +1,64 @@
+@model List<Invoice>
+
+@{
+    ViewData["Title"] = "Danh sách hóa đơn";
+    int i = 0;
+}
+
+<div class="container-fluid mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
+                    <i class="bi bi-house-door"></i> Quay lại Dashboard
+                </a>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="card-title">Danh sách hóa đơn</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên lớp học</th>
+                            <th>Tên môn học</th>
+                            <th>Số tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var invoice in Model)
+                        {
+                            <tr>
+                                <td>@(++i)</td>
+                                <td>@invoice.Class.Name</td>
+                                <td>@invoice.Class.Course.Name</td>
+                                <td>@invoice.Amount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                <td>@(invoice.Status == InvoiceStatus.Unpaid ? "Chưa thanh toán" : "Đã thanh toán" ) </td>
+                                <td>
+                                    @if (invoice.Status == InvoiceStatus.Unpaid)
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("PayInvoice", "Student", new { id = invoice.Id })">
+                                            <i class="bi bi-credit-card"></i> Thanh toán
+                                        </a>
+                                    }
+                                    <a class="btn btn-sm btn-outline-success" href="@Url.Action("InvoiceDetails", "Student", new { id = invoice.Id })">
+                                        <i class="bi bi-eye"></i> Xem chi tiết
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

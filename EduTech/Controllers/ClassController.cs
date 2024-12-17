@@ -307,7 +307,18 @@ namespace EduTech.Controllers
             classToEnroll.Students.Add(student);
             // Increase student numbers 
             classToEnroll.NumberOfStudents++;
-
+            
+            // Tạo hoá đơn cho học viên
+            var invoice = new Invoice
+            {
+                ClassId = classToEnroll.Id,
+                StudentId = student.Id,
+                Amount = classToEnroll.Tuition,
+                Status = InvoiceStatus.Unpaid
+            };
+            _context.Invoices.Add(invoice);
+            
+            
             TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
 
             // Save changes to the database
