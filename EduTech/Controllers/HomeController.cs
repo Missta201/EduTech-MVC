@@ -28,6 +28,8 @@ namespace EduTech.Controllers
         {
             switch (statusCode)
             {
+                case 400:
+                    return View("BadRequest");
                 case 404:
                     return View("NotFound");
                 case 403:

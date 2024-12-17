@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <p><strong>Phòng học:</strong> @class_info.RoomNumber</p>
                         <p><strong>Ngày bắt đầu:</strong> @class_info.StartDate</p>
-                        <p><strong>Ngày kết thúc:</strong> @class_info.StartDate</p>
+                        <p><strong>Ngày kết thúc:</strong> @class_info.EndDate</p>
                     </div>
                 </div>
             </div>
@@ -55,8 +55,8 @@
                     @foreach (var grade in Model)
                     {
                         <tr>
-                            <td>@(grade.AssignmentType == AssignmentType.Midterm ? "Giữa kỳ" : grade.AssignmentType ==
-                                    AssignmentType.Final ? "Cuối kỳ" : grade.AssignmentType)</td>
+                            <td>@(grade.AssignmentType == AssignmentType.Practice ? "Giữa kỳ" : grade.AssignmentType ==
+                                    AssignmentType.Theory ? "Cuối kỳ" : grade.AssignmentType)</td>
                             <td>@grade.Score</td>
                             <td>@grade.Comments</td>
                         </tr>

@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Lịch thi hiện tại";
+}
+@model IEnumerable<Class>
+
+<a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
+    <i class="bi bi-house-door"></i> Quay lại dashboard
+</a>
+
+<div class="mb-3">
+    <h2>Lịch thi hiện tại</h2>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tên lớp</th>
+                        <th>Thời gian</th>
+                        <th>Môn học</th>
+                        <th>Lịch thi</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var aClass in Model)
+                    {
+                        <tr>
+                            <td>@aClass.Name</td>
+                            <td>@aClass.StartDate - @aClass.EndDate</td>
+                            <td>@aClass.Course.Name</td>
+                            <td>
+                                @if (aClass.ExamSchedules.Any())
+                                {
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Loại</th>
+                                                <th>Ngày thi</th>
+                                                <th>Giờ thi</th>
+                                                <th>Phòng thi</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var schedule in aClass.ExamSchedules)
+                                            {
+                                                <tr>
+                                                    <td>@(schedule.AssignmentType == AssignmentType.Practice ? "Thực hành" : "Lý thuyết")</td>                                                    <td>@schedule.ExamDate</td>
+                                                    <td>@schedule.StartTime - @schedule.EndTime</td>
+                                                    <td>@schedule.RoomNumber</td>
+                                                    <td>
+                                                        <a asp-action="Edit" asp-route-id="@schedule.Id" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                                                        <form asp-action="Delete" asp-route-id="@schedule.Id" method="post" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>Không có lịch thi nào.</p>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Create" asp-route-classId="@aClass.Id" class="btn btn-primary btn-sm">Thêm lịch thi</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Không có lớp học nào.
+        </div>
+    }
+</div>
