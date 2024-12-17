@@ -4,6 +4,7 @@ using EduTech;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduTech.Migrations
 {
     [DbContext(typeof(EduTechDbContext))]
-    partial class EduTechDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216233328_AddExamSchedule")]
+    partial class AddExamSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,10 +236,6 @@ namespace EduTech.Migrations
 
                     b.Property<DateOnly>("ExamDate")
                         .HasColumnType("date");
-
-                    b.Property<string>("RoomNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
