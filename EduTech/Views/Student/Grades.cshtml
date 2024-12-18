@@ -55,8 +55,9 @@
                     @foreach (var grade in Model)
                     {
                         <tr>
-                            <td>@(grade.AssignmentType == AssignmentType.Practice ? "Giữa kỳ" : grade.AssignmentType ==
-                                    AssignmentType.Theory ? "Cuối kỳ" : grade.AssignmentType)</td>
+                            <td>@(grade.AssignmentType == AssignmentType.Practice ? "Điểm thực hành" : grade.AssignmentType ==
+                                    AssignmentType.Theory ? "Điểm lý thuyết" : grade.AssignmentType)
+                            </td>
                             <td>@grade.Score</td>
                             <td>@grade.Comments</td>
                         </tr>
