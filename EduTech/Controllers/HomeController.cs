@@ -13,32 +13,38 @@ namespace EduTech.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(int statusCode)
+        public IActionResult Error(int? statusCode = null)
         {
-            switch (statusCode)
+            var model = new ErrorViewModel
             {
-                case 400:
-                    return View("BadRequest");
-                case 404:
-                    return View("NotFound");
-                case 403:
-                    return View("Forbid");
-                case 401:
-                    return View("Unauthorized");
-                default:
-                    return View("Error");
-            }
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                StatusCode = statusCode ?? 500,
+                Message = statusCode switch
+                {
+                    400 => "Bad Request",
+                    401 => "Unauthorized",
+                    403 => "Forbidden",
+                    404 => "Not Found",
+                    405 => "Method Not Allowed",
+                    _ => "An error occurred while processing your request."
+                }
+            };
+
+            Response.StatusCode = model.StatusCode;
+            return View(model);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EduTech.Models;
 using EduTech.Models.ViewModel;
+using EduTech.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace EduTech.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            // Nếu là giảng thì chỉ xem được các lớp học đang chờ để đăng ký dạy
+            // Nếu là giảng viên thì chỉ xem được các lớp học đang chờ để đăng ký dạy
             if (User != null && (await _authorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
             {
                 var classes = await _context.Classes
@@ -307,7 +308,7 @@ namespace EduTech.Controllers
             classToEnroll.Students.Add(student);
             // Increase student numbers 
             classToEnroll.NumberOfStudents++;
-            
+
             // Tạo hoá đơn cho học viên
             var invoice = new Invoice
             {
@@ -317,8 +318,8 @@ namespace EduTech.Controllers
                 Status = InvoiceStatus.Unpaid
             };
             _context.Invoices.Add(invoice);
-            
-            
+
+
             TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
 
             // Save changes to the database
@@ -588,7 +589,7 @@ namespace EduTech.Controllers
 
             return View(selectedClass);
         }
-        
+
         // Form gộp lớp
         [HttpGet]
         [Authorize(Policy = "CanManageClasses")]
@@ -700,6 +701,137 @@ namespace EduTech.Controllers
             TempData["SuccessMessage"] = "Gép lớp thành công";
             return RedirectToAction("Index");
         }
+
+        // Chuyển lớp cho học viên
+        [HttpGet]
+        [Authorize(Policy = "CanManageClasses")]
+        public async Task<IActionResult> Switch(int? currentClassId)
+        {
+            var viewModel = new SwitchClassViewModel
+            {
+                Classes = await _context.Classes
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }).ToListAsync()
+            };
+
+            if (currentClassId.HasValue)
+            {
+                var currentClass = await _context.Classes
+                    .Include(c => c.Students)
+                    .FirstOrDefaultAsync(c => c.Id == currentClassId.Value);
+
+                if (currentClass != null)
+                {
+                    viewModel.CurrentClassId = currentClassId.Value;
+                    viewModel.Students = currentClass.Students
+                        .Select(s => new SelectListItem
+                        {
+                            Value = s.Name,
+                            Text = s.Name
+                        }).ToList();
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "CanManageClasses")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Switch(SwitchClassViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.CurrentClassId == model.NewClassId)
+                {
+                    TempData["ErrorMessage"] = "Lớp hiện tại và lớp chuyển qua không thể giống nhau.";
+                    return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
+                }
+
+                var currentClass = await _context.Classes
+                    .Include(c => c.Students)
+                    .FirstOrDefaultAsync(c => c.Id == model.CurrentClassId);
+
+                var newClass = await _context.Classes
+                    .Include(c => c.Students)
+                    .FirstOrDefaultAsync(c => c.Id == model.NewClassId);
+
+                if (currentClass == null || newClass == null)
+                {
+                    TempData["ErrorMessage"] = "Lớp học không tồn tại.";
+                    return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
+                }
+
+                // Check if the new class is full
+                if (newClass.NumberOfStudents >= newClass.Capacity)
+                {
+                    TempData["ErrorMessage"] = "Lớp học mới đã đầy.";
+                    return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
+                }
+
+                // Check if the current class and new class are in a valid state for switching
+                if (currentClass.Status != ClassStatus.Open || newClass.Status != ClassStatus.Open)
+                {
+                    TempData["ErrorMessage"] = "Chỉ có thể chuyển học viên giữa các lớp đang mở.";
+                    return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
+                }
+
+                // Get the student to switch based on name
+                var student = currentClass.Students.FirstOrDefault(s => s.Name == model.SelectedStudentName);
+                if (student == null)
+                {
+                    TempData["ErrorMessage"] = "Học viên không tồn tại trong lớp hiện tại.";
+                    return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
+                }
+
+                // Remove student from current class
+                currentClass.Students.Remove(student);
+                currentClass.NumberOfStudents--;
+
+                // Add student to new class
+                newClass.Students.Add(student);
+                newClass.NumberOfStudents++;
+
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Chuyển lớp thành công.";
+                return RedirectToAction("Index");
+            }
+
+            // Repopulate the students list if model is invalid
+            model.Classes = await _context.Classes
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToListAsync();
+
+            if (model.CurrentClassId != 0)
+            {
+                var currentClass = await _context.Classes
+                    .Include(c => c.Students)
+                    .FirstOrDefaultAsync(c => c.Id == model.CurrentClassId);
+
+                if (currentClass != null)
+                {
+                    model.Students = currentClass.Students
+                        .Select(s => new SelectListItem
+                        {
+                            Value = s.Name,
+                            Text = s.Name
+                        }).ToList();
+                }
+            }
+
+            return View(model);
+        }
+
+
+
+
 
 
     }
