@@ -23,6 +23,9 @@ namespace EduTech.Controllers
         }
 
 
+        
+        
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -318,6 +321,8 @@ namespace EduTech.Controllers
                 Status = InvoiceStatus.Unpaid
             };
             _context.Invoices.Add(invoice);
+            classToEnroll.Invoices.Add(invoice);
+
 
 
             TempData["SuccessMessage"] = "Đăng ký lớp học thành công";
@@ -831,8 +836,76 @@ namespace EduTech.Controllers
 
 
 
+        // Hóa đơn 
+        // Hiển thị danh sách các lớp học
+        [HttpGet]
+        [Authorize(Policy = "IsAdminOrScheduler")]
+        public async Task<IActionResult> GetClasses()
+        {
+            var classes = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.ClassSchedules)
+                .AsNoTracking()
+                .ToListAsync();
 
+            return View("GetClasses", classes);
+        }
 
+        // Hiển thị danh sách các học viên trong một lớp học
+        [HttpGet]
+        [Authorize(Policy = "IsAdminOrScheduler")]
+        public async Task<IActionResult> GetStudents(int classId)
+        {
+            var selectedClass = await _context.Classes
+                .Include(c => c.Course)
+                .Include(c => c.Students)
+                .Include(c => c.Invoices)
+                .FirstOrDefaultAsync(c => c.Id == classId);
+
+            if (selectedClass == null)
+            {
+                return NotFound();
+            }
+
+            return View("GetStudents", selectedClass);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "IsAdminOrScheduler")]
+        public async Task<IActionResult> PayInvoice(int id)
+        {
+            var invoice = await _context.Invoices.FindAsync(id);
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+
+            // Implement payment logic here
+
+            invoice.Status = InvoiceStatus.Paid;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Thanh toán thành công";
+            return RedirectToAction("GetStudents", new { classId = invoice.ClassId });
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "IsAdminOrScheduler")]
+        public async Task<IActionResult> InvoiceDetails(int id)
+        {
+            var invoice = await _context.Invoices
+                .Include(i => i.Class)
+                .ThenInclude(c => c.Course)
+                .Include(i => i.Student)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+
+            return View("InvoiceDetails", invoice);
+        }
 
     }
 }

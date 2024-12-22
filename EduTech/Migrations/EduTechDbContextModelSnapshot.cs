@@ -520,7 +520,7 @@ namespace EduTech.Migrations
             modelBuilder.Entity("EduTech.Models.Invoice", b =>
                 {
                     b.HasOne("EduTech.Models.Class", "Class")
-                        .WithMany()
+                        .WithMany("Invoices")
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -611,6 +611,8 @@ namespace EduTech.Migrations
                     b.Navigation("ClassSchedules");
 
                     b.Navigation("ExamSchedules");
+
+                    b.Navigation("Invoices");
 
                     b.Navigation("StudentGrades");
                 });

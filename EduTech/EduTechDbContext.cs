@@ -34,6 +34,11 @@ namespace EduTech
                     .WithMany(u => u.ClassesAttending)
                     .UsingEntity(j => j.ToTable("ClassStudents"));
 
+            builder.Entity<Class>()
+                .HasMany(i => i.Invoices)
+                .WithOne(c => c.Class)
+                .HasForeignKey(i => i.ClassId);
+
             builder.Entity<StudentGrade>()
                    .HasOne(sg => sg.Class)
                    .WithMany(c => c.StudentGrades)

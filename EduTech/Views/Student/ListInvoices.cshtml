@@ -44,12 +44,7 @@
                                 <td>@invoice.Amount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
                                 <td>@(invoice.Status == InvoiceStatus.Unpaid ? "Chưa thanh toán" : "Đã thanh toán" ) </td>
                                 <td>
-                                    @if (invoice.Status == InvoiceStatus.Unpaid)
-                                    {
-                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("PayInvoice", "Student", new { id = invoice.Id })">
-                                            <i class="bi bi-credit-card"></i> Thanh toán
-                                        </a>
-                                    }
+                                    
                                     <a class="btn btn-sm btn-outline-success" href="@Url.Action("InvoiceDetails", "Student", new { id = invoice.Id })">
                                         <i class="bi bi-eye"></i> Xem chi tiết
                                     </a>

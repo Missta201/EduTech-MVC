@@ -31,14 +31,5 @@
 	  <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="28.1.33" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="libwkhtmltox.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="libwkhtmltox.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
 
 </Project>

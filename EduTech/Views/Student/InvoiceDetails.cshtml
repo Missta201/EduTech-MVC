@@ -23,12 +23,7 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="card-title">Chi tiết hóa đơn</h2>
-                <a class="btn btn-outline-primary" href="@Url.Action("ExportToPdf", "Student", new { id = Model.Id })">
-                    <i class="bi bi-file-earmark-pdf"></i> Xuất PDF
-                </a>
-            </div>
+            
             <dl class="row">
                 <dt class="col-sm-3">Tên lớp học</dt>
                 <dd class="col-sm-9">@Model.Class.Name</dd>

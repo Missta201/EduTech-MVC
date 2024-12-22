@@ -14,13 +14,11 @@ namespace EduTech.Controllers
     {
         private readonly EduTechDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly PdfConverter _pdfConverter;
 
-        public StudentController(EduTechDbContext context, UserManager<ApplicationUser> userManager, PdfConverter pdfConverter)
+        public StudentController(EduTechDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _pdfConverter = pdfConverter;
         }
 
         // Hiển thị danh sách học viên
@@ -302,7 +300,7 @@ namespace EduTech.Controllers
                 .ToListAsync();
             return View("CurrentExamSchedule", classes);
         }
-        
+
         // Xem hoá đơn của học viên
         [HttpGet]
         [Authorize(Policy = "IsStudent")]
@@ -322,25 +320,25 @@ namespace EduTech.Controllers
 
             return View("ListInvoices", invoices);
         }
-        
-        [HttpGet]
-        [Authorize(Policy = "IsStudent")]
-        public async Task<IActionResult> PayInvoice(int id)
-        {
-            var invoice = await _context.Invoices.FindAsync(id);
-            if (invoice == null || invoice.StudentId != _userManager.GetUserId(User))
-            {
-                return NotFound();
-            }
 
-            // Implement payment logic here
+        //[HttpGet]
+        //[Authorize(Policy = "IsStudent")]
+        //public async Task<IActionResult> PayInvoice(int id)
+        //{
+        //    var invoice = await _context.Invoices.FindAsync(id);
+        //    if (invoice == null || invoice.StudentId != _userManager.GetUserId(User))
+        //    {
+        //        return NotFound();
+        //    }
 
-            invoice.Status = InvoiceStatus.Paid;
-            await _context.SaveChangesAsync();
+        //    // Implement payment logic here
 
-            TempData["SuccessMessage"] = "Thanh toán thành công";
-            return RedirectToAction("GetInvoices");
-        }
+        //    invoice.Status = InvoiceStatus.Paid;
+        //    await _context.SaveChangesAsync();
+
+        //    TempData["SuccessMessage"] = "Thanh toán thành công";
+        //    return RedirectToAction("GetInvoices");
+        //}
 
         [HttpGet]
         [Authorize(Policy = "IsStudent")]
@@ -359,96 +357,8 @@ namespace EduTech.Controllers
 
             return View("InvoiceDetails", invoice);
         }
-        
-        [HttpGet]
-    [Authorize(Policy = "IsStudent")]
-    public async Task<IActionResult> ExportToPdf(int id)
-    {
-        var invoice = await _context.Invoices
-            .Include(i => i.Class)
-                .ThenInclude(c => c.Course)
-            .Include(i => i.Student)
-            .FirstOrDefaultAsync(i => i.Id == id);
 
-        if (invoice == null || invoice.StudentId != _userManager.GetUserId(User))
-        {
-            return NotFound();
-        }
 
-        var htmlContent = $@"
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: Arial, sans-serif; }}
-                    .invoice-box {{ max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }}
-                    .invoice-box table {{ width: 100%; line-height: inherit; text-align: left; }}
-                    .invoice-box table td {{ padding: 5px; vertical-align: top; }}
-                    .invoice-box table tr td:nth-child(2) {{ text-align: right; }}
-                    .invoice-box table tr.top table td {{ padding-bottom: 20px; }}
-                    .invoice-box table tr.information table td {{ padding-bottom: 40px; }}
-                    .invoice-box table tr.heading td {{ background: #eee; border-bottom: 1px solid #ddd; font-weight: bold; }}
-                    .invoice-box table tr.details td {{ padding-bottom: 20px; }}
-                    .invoice-box table tr.item td {{ border-bottom: 1px solid #eee; }}
-                    .invoice-box table tr.item.last td {{ border-bottom: none; }}
-                    .invoice-box table tr.total td:nth-child(2) {{ border-top: 2px solid #eee; font-weight: bold; }}
-                </style>
-            </head>
-            <body>
-                <div class='invoice-box'>
-                    <table cellpadding='0' cellspacing='0'>
-                        <tr class='top'>
-                            <td colspan='2'>
-                                <table>
-                                    <tr>
-                                        <td class='title'>
-                                            <h2>Hóa đơn</h2>
-                                        </td>
-                                        <td>
-                                            Hóa đơn #: {invoice.Id}<br>
-                                            Ngày tạo: {invoice.CreatedDate:dd/MM/yyyy}<br>
-                                            Ngày cập nhật: {invoice.UpdatedDate:dd/MM/yyyy}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr class='information'>
-                            <td colspan='2'>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            Tên lớp học: {invoice.Class.Name}<br>
-                                            Tên môn học: {invoice.Class.Course.Name}
-                                        </td>
-                                        <td>
-                                            Học viên: {invoice.Student.Name}<br>
-                                            Email: {invoice.Student.Email}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr class='heading'>
-                            <td>Thông tin</td>
-                            <td>Chi tiết</td>
-                        </tr>
-                        <tr class='item'>
-                            <td>Số tiền</td>
-                            <td>{invoice.Amount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))}</td>
-                        </tr>
-                        <tr class='item'>
-                            <td>Trạng thái</td>
-                            <td>{(invoice.Status == InvoiceStatus.Unpaid ? "Chưa thanh toán" : "Đã thanh toán")}</td>
-                        </tr>
-                    </table>
-                </div>
-            </body>
-            </html>";
 
-        var pdfBytes = _pdfConverter.ConvertToPdf(htmlContent);
-
-        return File(pdfBytes, "application/pdf", $"Invoice_{invoice.Id}.pdf");
-    }
-        
     }
 }
