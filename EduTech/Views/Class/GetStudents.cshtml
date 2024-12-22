@@ -1,0 +1,66 @@
+﻿@model EduTech.Models.Class
+
+
+
+@{
+    ViewData["Title"] = "Danh sách học viên";
+    int i = 0;
+    
+}
+
+<a asp-controller="Class" asp-action="GetClasses" class="text-decoration-none">
+    <i class="bi bi-arrow-left"></i> Quay lại danh sách lớp
+</a>
+
+<div class="mb-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="card-title">Danh sách học viên - @Model.Name</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên học viên</th>
+                            <th>Email</th>
+                            <th>Số tiền</th>
+                            <th>Trạng thái thanh toán</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                            @foreach (var invoice in Model.Invoices)
+                            {
+                                
+                                <tr>
+                                    <td>@(++i)</td>
+                                <td>@invoice.Student.Name</td>
+                                <td>@invoice.Student.Email</td>
+                                <td>@invoice.Amount.ToString("C0", new System.Globalization.CultureInfo("vi-VN")) </td>
+                                <td>@(invoice.Status == InvoiceStatus.Unpaid ? "Chưa thanh toán" : "Đã thanh toán")  </td>
+                                    <td>
+                                         @if (invoice.Status == InvoiceStatus.Unpaid)
+                                        {
+                                            <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("PayInvoice", "Class", new { id = invoice.Id })">
+                                                <i class="bi bi-credit-card"></i> Thanh toán
+                                            </a>
+                                        }
+                                    <a class="btn btn-sm btn-outline-success" href="@Url.Action("InvoiceDetails", "Class", new { id = invoice.Id })">
+                                            <i class="bi bi-eye"></i> Xem chi tiết
+                                        </a> 
+                                    </td>
+                                </tr>
+                            
+                        }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-using EduTech;
+﻿using EduTech;
 using Microsoft.EntityFrameworkCore;
 using EduTech.Models;
 using EduTech.DbInitializer;
@@ -8,6 +8,7 @@ using DinkToPdf.Contracts;
 using EduTech.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 
 
@@ -78,16 +79,18 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize();
 }
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-} else
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+// Thêm middleware xử lý status code
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
 app.UseHttpsRedirection();

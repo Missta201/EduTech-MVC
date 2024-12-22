@@ -1,0 +1,76 @@
+﻿@model EduTech.ViewModels.SwitchClassViewModel
+
+@{
+    ViewData["Title"] = "Chuyển lớp";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-arrow-left-right"></i> Chuyển lớp</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-primary mb-3">
+                        <i class="bi bi-house-door"></i> Quay lại Dashboard
+                    </a>
+                    <h2 class="mb-0">Chuyển lớp</h2>
+                </div>
+            </div>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <form asp-action="Switch" method="post">
+                <div class="mb-3">
+                    <label asp-for="CurrentClassId" class="form-label">Lớp hiện tại</label>
+                    <select asp-for="CurrentClassId" class="form-select" asp-items="Model.Classes" onchange="this.form.submit()">
+                        <option value="">-- Chọn lớp hiện tại --</option>
+                    </select>
+                    <span asp-validation-for="CurrentClassId" class="text-danger"></span>
+                </div>
+
+                @if (Model.Students.Any())
+                {
+                    <div class="mb-3">
+                        <label asp-for="SelectedStudentName" class="form-label">Học viên</label>
+                        <select asp-for="SelectedStudentName" class="form-select" asp-items="Model.Students">
+                            <option value="">-- Chọn học viên --</option>
+                        </select>
+                        <span asp-validation-for="SelectedStudentName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewClassId" class="form-label">Chuyển qua lớp</label>
+                        <select asp-for="NewClassId" class="form-select" asp-items="Model.Classes">
+                            <option value="">-- Chọn lớp chuyển qua --</option>
+                        </select>
+                        <span asp-validation-for="NewClassId" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-arrow-right-circle"></i> Chuyển lớp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
