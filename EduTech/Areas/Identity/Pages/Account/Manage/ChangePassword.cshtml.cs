@@ -4,24 +4,29 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using EduTech.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 
-namespace EduTech.Areas.Identity.Pages.Account
+namespace EduTech.Areas.Identity.Pages.Account.Manage
 {
-    public class ResetPasswordModel : PageModel
+    public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
+        public ChangePasswordModel(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -35,6 +40,13 @@ namespace EduTech.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        [TempData]
+        public string StatusMessage { get; set; }
+
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         public class InputModel
         {
             /// <summary>
@@ -42,8 +54,9 @@ namespace EduTech.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [DataType(DataType.Password)]
+            [Display(Name = "Current password")]
+            public string OldPassword { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -52,40 +65,34 @@ namespace EduTech.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "{0} phải có độ dài ít nhất là {2} và tối đa là {1} ký tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            [Display(Name = "Mật khẩu mới")]
+            public string NewPassword { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "Mật khẩu và mật khẩu xác nhận không khớp.")]
+            [Display(Name = "Xác nhận mật khẩu mới")]
+            [Compare("Mật khẩu mới", ErrorMessage = "Mật khẩu mới và mật khẩu xác nhận không khớp.")]
             public string ConfirmPassword { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            public string Code { get; set; }
-
         }
 
-        public IActionResult OnGet(string code = null)
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (code == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            else
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+            if (!hasPassword)
             {
-                Input = new InputModel
-                {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
-                };
-                return Page();
+                return RedirectToPage("./SetPassword");
             }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -95,24 +102,27 @@ namespace EduTech.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToPage("./ResetPasswordConfirmation");
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
-            if (result.Succeeded)
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            if (!changePasswordResult.Succeeded)
             {
-                return RedirectToPage("./ResetPasswordConfirmation");
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return Page();
+            await _signInManager.RefreshSignInAsync(user);
+            _logger.LogInformation("Bạn đã thay đổi mật khẩu thành công.");
+            StatusMessage = "Mật khẩu của bạn đã được thay đổi.";
+
+            return RedirectToPage();
         }
     }
 }

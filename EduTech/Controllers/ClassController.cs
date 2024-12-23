@@ -22,10 +22,6 @@ namespace EduTech.Controllers
             this._authorizationService = authorizationService;
         }
 
-
-        
-        
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -703,7 +699,7 @@ namespace EduTech.Controllers
             await Delete(classB.Id);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Gép lớp thành công";
+            TempData["SuccessMessage"] = "Ghép lớp thành công";
             return RedirectToAction("Index");
         }
 
@@ -715,6 +711,7 @@ namespace EduTech.Controllers
             var viewModel = new SwitchClassViewModel
             {
                 Classes = await _context.Classes
+                    .Where(c => c.Status == ClassStatus.Open || c.Status == ClassStatus.InProgress)
                     .Select(c => new SelectListItem
                     {
                         Value = c.Id.ToString(),
@@ -778,9 +775,10 @@ namespace EduTech.Controllers
                 }
 
                 // Check if the current class and new class are in a valid state for switching
-                if (currentClass.Status != ClassStatus.Open || newClass.Status != ClassStatus.Open)
+                if ((currentClass.Status != ClassStatus.Open && currentClass.Status != ClassStatus.InProgress) ||
+                    (newClass.Status != ClassStatus.Open && newClass.Status != ClassStatus.InProgress))
                 {
-                    TempData["ErrorMessage"] = "Chỉ có thể chuyển học viên giữa các lớp đang mở.";
+                    TempData["ErrorMessage"] = "Chỉ có thể chuyển học viên giữa các lớp đang mở hoặc đang học.";
                     return RedirectToAction("Switch", new { currentClassId = model.CurrentClassId });
                 }
 
@@ -808,6 +806,7 @@ namespace EduTech.Controllers
 
             // Repopulate the students list if model is invalid
             model.Classes = await _context.Classes
+                .Where(c => c.Status == ClassStatus.Open || c.Status == ClassStatus.InProgress)
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -835,8 +834,7 @@ namespace EduTech.Controllers
         }
 
 
-
-        // Hóa đơn 
+        // Quản lý thanh toán, hóa đơn các học viên trong lớp
         // Hiển thị danh sách các lớp học
         [HttpGet]
         [Authorize(Policy = "IsAdminOrScheduler")]

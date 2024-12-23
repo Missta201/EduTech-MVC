@@ -38,12 +38,12 @@
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>STT</th>
-                            <th>Tên khóa học</th>
-                            <th>Mô tả</th>
+                            <th class="align-middle">STT</th>
+                            <th class="align-middle text-nowrap">Tên khóa học</th>
+                            <th class="align-middle">Mô tả</th>
                             @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsAdminOrScheduler")).Succeeded)
                             {
-                                <th>Thao tác</th>
+                                <th class="align-middle">Thao tác</th>
                             }
                         </tr>
                     </thead>
