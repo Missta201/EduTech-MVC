@@ -65,7 +65,7 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
             [Required]
             [StringLength(100, ErrorMessage = "{0} phải có độ dài ít nhất là {2} và tối đa là {1} ký tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Mật khẩu mới")]
+            [Display(Name = "New password")]
             public string NewPassword { get; set; }
 
             /// <summary>
@@ -73,8 +73,8 @@ namespace EduTech.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Xác nhận mật khẩu mới")]
-            [Compare("Mật khẩu mới", ErrorMessage = "Mật khẩu mới và mật khẩu xác nhận không khớp.")]
+            [Display(Name = "Confirm new password")]
+            [Compare("NewPassword", ErrorMessage = "Mật khẩu mới và mật khẩu xác nhận không khớp.")]
             public string ConfirmPassword { get; set; }
         }
 

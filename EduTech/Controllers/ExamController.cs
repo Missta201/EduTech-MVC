@@ -38,13 +38,92 @@ namespace EduTech.Controllers
 
             return View("CurrentExamSchedule", classes);
         }
+        //// Form tạo lịch thi cho lớp học
+        //[HttpGet]
+        //[Authorize(Policy = "IsAdminOrScheduler")]
+        //public async Task<IActionResult> Create(int classId)
+        //{
+        //    var classEntity = await _context.Classes.FindAsync(classId);
+
+        //    if (classEntity == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var viewModel = new ExamScheduleViewModel
+        //    {
+        //        ClassId = classId,
+        //        ClassName = classEntity.Name
+        //    };
+
+        //    return View("Edit",viewModel);
+        //}
+
+        //[HttpPost]
+        //[Authorize(Policy = "IsAdminOrScheduler")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(ExamScheduleViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Check if the ClassId exists in the Classes table
+        //        var classExists = await _context.Classes.AnyAsync(c => c.Id == viewModel.ClassId);
+        //        if (!classExists)
+        //        {
+        //            TempData["ErrorMessage"]= "Lớp học không tồn tại";
+        //            return View("Edit",viewModel);
+        //        }
+
+        //        // Mỗi một lớp học chỉ được tạo một lịch thi cho mỗi loại bài kiểm tra
+        //        //Check if AssignmentType exists
+        //        var assignmentTypeExists = await _context.ExamSchedules
+        //            .AnyAsync(es => es.ClassId == viewModel.ClassId && es.AssignmentType == viewModel.AssignmentType);
+
+        //        if (assignmentTypeExists)
+        //        {
+        //            TempData["ErrorMessage"] = "Lịch thi cho loại bài kiểm tra này đã tồn tại.";
+        //            return View("Edit", viewModel);
+        //        }
+
+        //        // Kiểm tra nếu ngày thi vượt quá thời gian học của lớp 
+        //        var classEntity = await _context.Classes.FindAsync(viewModel.ClassId);
+        //        if (viewModel.ExamDate > classEntity.EndDate)
+        //        {
+        //            TempData["ErrorMessage"] = "Ngày thi không được vượt quá thời gian học của lớp.";
+        //            return View("Edit", viewModel);
+        //        }
+        //        // Kiểm tra nếu ngày thi  ngày thi nhỏ hơn ngày bắt đầu học của lớp
+        //        if (viewModel.ExamDate < classEntity.StartDate)
+        //        {
+        //            TempData["ErrorMessage"] = "Ngày thi không được nhỏ hơn thời gian học của lớp.";
+        //            return View("Edit", viewModel);
+        //        }
+
+        //        var examSchedule = new ExamSchedule
+        //        {
+        //            ClassId = viewModel.ClassId,
+        //            AssignmentType = viewModel.AssignmentType,
+        //            ExamDate = viewModel.ExamDate,
+        //            StartTime = viewModel.StartTime,
+        //            EndTime = viewModel.EndTime,
+        //            RoomNumber = viewModel.RoomNumber
+        //        };
+
+        //        _context.ExamSchedules.Add(examSchedule);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("CurrentExamSchedule", "Exam");
+        //    }
+
+        //    return View("Edit",viewModel);
+        //}
+
         // Form tạo lịch thi cho lớp học
         [HttpGet]
         [Authorize(Policy = "IsAdminOrScheduler")]
         public async Task<IActionResult> Create(int classId)
         {
             var classEntity = await _context.Classes.FindAsync(classId);
-            
+
             if (classEntity == null)
             {
                 return NotFound();
@@ -56,9 +135,9 @@ namespace EduTech.Controllers
                 ClassName = classEntity.Name
             };
 
-            return View("Edit",viewModel);
+            return View("Edit", viewModel);
         }
-        
+
         [HttpPost]
         [Authorize(Policy = "IsAdminOrScheduler")]
         [ValidateAntiForgeryToken]
@@ -70,32 +149,17 @@ namespace EduTech.Controllers
                 var classExists = await _context.Classes.AnyAsync(c => c.Id == viewModel.ClassId);
                 if (!classExists)
                 {
-                    TempData["ErrorMessage"]= "Lớp học không tồn tại";
-                    return View("Edit",viewModel);
+                    TempData["ErrorMessage"] = "Lớp học không tồn tại";
+                    return View("Edit", viewModel);
                 }
-                
+
                 // Mỗi một lớp học chỉ được tạo một lịch thi cho mỗi loại bài kiểm tra
-                //Check if AssignmentType exists
                 var assignmentTypeExists = await _context.ExamSchedules
                     .AnyAsync(es => es.ClassId == viewModel.ClassId && es.AssignmentType == viewModel.AssignmentType);
 
                 if (assignmentTypeExists)
                 {
                     TempData["ErrorMessage"] = "Lịch thi cho loại bài kiểm tra này đã tồn tại.";
-                    return View("Edit", viewModel);
-                }
-                
-                // Kiểm tra nếu ngày thi vượt quá thời gian học của lớp 
-                var classEntity = await _context.Classes.FindAsync(viewModel.ClassId);
-                if (viewModel.ExamDate > classEntity.EndDate)
-                {
-                    TempData["ErrorMessage"] = "Ngày thi không được vượt quá thời gian học của lớp.";
-                    return View("Edit", viewModel);
-                }
-                // Kiểm tra nếu ngày thi  ngày thi nhỏ hơn ngày bắt đầu học của lớp
-                if (viewModel.ExamDate < classEntity.StartDate)
-                {
-                    TempData["ErrorMessage"] = "Ngày thi không được nhỏ hơn thời gian học của lớp.";
                     return View("Edit", viewModel);
                 }
 
@@ -114,8 +178,9 @@ namespace EduTech.Controllers
                 return RedirectToAction("CurrentExamSchedule", "Exam");
             }
 
-            return View("Edit",viewModel);
+            return View("Edit", viewModel);
         }
+
 
         [HttpGet]
         [Authorize(Policy = "IsAdminOrScheduler")]
@@ -205,7 +270,7 @@ namespace EduTech.Controllers
 
             if (student == null)
             {
-                TempData["ErrorMessage"] = "Không tim thấy thông tin học viên.";
+                TempData["ErrorMessage"] = "Không tìm thấy thông tin học viên.";
                 return View();
             }
 

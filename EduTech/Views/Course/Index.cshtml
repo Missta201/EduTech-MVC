@@ -1,49 +1,46 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-
 @{
     ViewData["Title"] = "Danh sách khoá học";
     int i = 0;
 }
 @model List<EduTech.Models.Course>
 
-<div class="container-fluid mt-4">
-    <nav aria-label="breadcrumb">
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
-                    <i class="bi bi-house-door"></i> Quay lại Dashboard
+                <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none text-primary">
+                    <i class="bi bi-house-door-fill"></i> Quay lại Dashboard
                 </a>
             </li>
-            
         </ol>
     </nav>
 
-    <div class="card">
-        <div class="card-body">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="card-title">Danh sách khóa học</h2>
-                @* Người dùng có policy  CanManageClasses thì mới hiển thị button Thêm lớp học*@
+                <h2 class="card-title fs-2 mb-0">
+                    Danh sách khóa học
+                </h2>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageCourses")).Succeeded)
                 {
-                    <a href="@Url.Action("Add", "Course")" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i>Thêm khóa học
+                    <a href="@Url.Action("Add", "Course")" class="btn btn-primary btn-lg">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Thêm khóa học
                     </a>
                 }
-                
             </div>
 
-
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover table-striped border">
                     <thead class="table-light">
                         <tr>
-                            <th class="align-middle">STT</th>
-                            <th class="align-middle text-nowrap">Tên khóa học</th>
-                            <th class="align-middle">Mô tả</th>
+                            <th class="align-middle px-4 py-3" style="width: 80px">STT</th>
+                            <th class="align-middle px-4 text-nowrap">Tên khóa học</th>
+                            <th class="align-middle px-4" style="min-width: 400px">Mô tả</th>
                             @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsAdminOrScheduler")).Succeeded)
                             {
-                                <th class="align-middle">Thao tác</th>
+                                <th class="align-middle px-4" style="width: 200px">Thao tác</th>
                             }
                         </tr>
                     </thead>
@@ -51,23 +48,36 @@
                         @foreach (var course in Model)
                         {
                             <tr>
-                                <td>@(++i)</td>
-                                <td>@course.Name</td>
-                                <td>@course.Description</td>
-                                <td>
+                                <td class="align-middle px-4">
+                                    <span>@(++i)</span>
+                                </td>
+                                <td class="align-middle px-4">
+                                    <span>@course.Name</span>
+                                </td>
+                                <td class="align-middle px-4">
+                                    <p>@course.Description</p>
+                                </td>
+                                <td class="align-middle px-4">
                                     @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageCourses")).Succeeded)
                                     {
-
-                                        <a class="btn btn-sm btn-outline-primary me-2" href="@Url.Action("Edit", "Course", new { id = course.Id })">
-                                            <i class="bi bi-pencil"></i> Sửa
-                                        </a>
-                                        <form method="post" action="@Url.Action("Delete", "Course")" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="Id" value="@course.Id" />
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i> Xóa
-                                            </button>
-                                        </form>
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-outline-primary me-1"
+                                               href="@Url.Action("Edit", "Course", new { id = course.Id })"
+                                               data-bs-toggle="tooltip"
+                                               title="Chỉnh sửa khóa học">
+                                                <i class="bi bi-pencil-fill"></i> Sửa
+                                            </a>
+                                            <form method="post" action="@Url.Action("Delete", "Course")" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@course.Id" />
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Xóa khóa học">
+                                                    <i class="bi bi-trash-fill"></i> Xóa
+                                                </button>
+                                            </form>
+                                        </div>
                                     }
                                 </td>
                             </tr>
@@ -78,4 +88,13 @@
         </div>
     </div>
 </div>
-                          
+
+@section Scripts {
+    <script>
+        // Enable Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}

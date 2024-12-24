@@ -14,12 +14,12 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
                     <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                        <i class="bi bi-gear me-2"></i>Manage Account
+                        <i class="bi bi-gear me-2"></i>Thông tin tài khoản
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">
-                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        <i class="bi bi-speedometer2 me-2"></i>Giao diện quản lý
                     </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
@@ -27,7 +27,7 @@
                     <form class="px-2" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
                           asp-area="Identity" method="post">
                         <button class="btn btn-outline-danger w-100" type="submit">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
                         </button>
                     </form>
                 </li>
