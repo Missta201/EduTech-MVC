@@ -145,7 +145,7 @@ namespace EduTech.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Sai tài khoản hoặc mật khẩu");
                     return Page();
                 }
             }
