@@ -30,7 +30,7 @@ public class ExamScheduleViewModel : IValidatableObject
     {
         if (StartTime > EndTime)
         {
-            yield return new ValidationResult("Giờ bắt đầu không được lơn hơn giờ kết thúc", new[] { nameof(StartTime), nameof(EndTime) });
+            yield return new ValidationResult("Giờ bắt đầu không được lớn hơn giờ kết thúc", new[] { nameof(StartTime), nameof(EndTime) });
         }
     }
 }

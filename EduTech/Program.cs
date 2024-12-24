@@ -42,11 +42,11 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddDefaultIdentity<ApplicationUser>(
     options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
-        options.Lockout.AllowedForNewUsers = true;
-        options.Password.RequiredLength = 8;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Password.RequireDigit = true;
+        options.SignIn.RequireConfirmedAccount = true; // Require email confirmation
+        options.Lockout.AllowedForNewUsers = true; 
+        options.Password.RequiredLength = 8;  // Độ dài tối thiểu
+        options.Password.RequireNonAlphanumeric = true; // Kí tự đặc biệt
+        options.Password.RequireDigit = true; // Số
     }
     )
     .AddEntityFrameworkStores<EduTechDbContext>(); // Configures Identity to store its data in EF Core

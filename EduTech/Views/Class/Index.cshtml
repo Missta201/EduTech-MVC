@@ -4,80 +4,80 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Danh sách lớp học";
-
 }
 
 @model IEnumerable<Class>
 
-<div class="container-fluid mt-4">
-    <nav aria-label="breadcrumb">
+<div class="container-fluid py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index", "Dashboard")" class="text-decoration-none">
-                    <i class="bi bi-house-door"></i> Back to Dashborad
+                    <i class="bi bi-house-door-fill"></i> Back to Dashboard
                 </a>
             </li>
-
         </ol>
     </nav>
 
-    <div class="card">
-        <div class="card-body">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="card-title">Danh sách lớp học</h2>
-                @* Người dùng có policy  CanManageClasses thì mới hiển thị button Thêm lớp học*@
+                <h2 class="card-title fs-2 mb-0">
+                    Danh sách lớp học
+                </h2>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
                 {
-                    <a href="@Url.Action("Add", "Class")" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i>Thêm lớp học
+                    <a href="@Url.Action("Add", "Class")" class="btn btn-primary btn-lg">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Thêm lớp học
                     </a>
                 }
             </div>
 
-
-
             @if (TempData["ErrorMessage"] != null)
             {
-                <div class="alert alert-danger">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-
             }
+
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert alert-success">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
                     @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
 
             <div class="table-responsive">
-                <table class="table table-hover table-striped table-bordered">
+                <table class="table table-hover table-striped border">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-nowrap">Mã</th>
-                            <th class="text-nowrap">Tên lớp học</th>
-                            <th class="text-nowrap">Môn học</th>
-                            <th class="text-nowrap">Phòng học</th>
-                            <th class="text-nowrap">Lịch học</th>
-                            <th class="text-nowrap">Sĩ số</th>
-                            <th class="text-nowrap">Giảng viên</th>
-                            <th class="text-nowrap">Trạng thái</th>
-                            <th class="text-nowrap">Ngày bắt đầu</th>
-                            <th class="text-nowrap">Ngày kết thúc</th>
-                            <th class="text-nowrap">Học phí</th>
-                            <th class="text-nowrap">Thao tác</th>
+                            <th class="text-nowrap px-3">Mã</th>
+                            <th class="text-nowrap px-3">Tên lớp học</th>
+                            <th class="text-nowrap px-3">Môn học</th>
+                            <th class="text-nowrap px-3">Phòng học</th>
+                            <th class="text-nowrap px-3">Lịch học</th>
+                            <th class="text-nowrap px-3">Sĩ số</th>
+                            <th class="text-nowrap px-3">Giảng viên</th>
+                            <th class="text-nowrap px-3">Trạng thái</th>
+                            <th class="text-nowrap px-3">Ngày bắt đầu</th>
+                            <th class="text-nowrap px-3">Ngày kết thúc</th>
+                            <th class="text-nowrap px-3">Học phí</th>
+                            <th class="text-nowrap px-3">Thao tác</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td class="text-nowrap">@item.Id</td>
-                                <td class="text-nowrap">@item.Name</td>
-                                <td class="text-nowrap">@item.Course.Name</td>
-                                <td class="text-nowrap">@item.RoomNumber</td>
-                                <td class="text-nowrap">
+                                <td class="text-nowrap px-3">@item.Id</td>
+                                <td class="text-nowrap px-3">@item.Name</td>
+                                <td class="text-nowrap px-3">@item.Course.Name</td>
+                                <td class="text-nowrap px-3">@item.RoomNumber</td>
+                                <td class="text-nowrap px-3">
                                     @foreach (var classSchedule in item.ClassSchedules)
                                     {
                                         var dayName = classSchedule.Day switch
@@ -91,24 +91,37 @@
                                             DayOfWeek.Saturday => "Thứ bảy",
                                             _ => classSchedule.Day.ToString()
                                         };
-                                        @($"{dayName} {classSchedule.StartTime:HH:mm}-{classSchedule.EndTime:HH:mm}") <br />
+                                        <div class="mb-1">
+                                            
+                                            @($"{dayName} {classSchedule.StartTime:HH:mm}-{classSchedule.EndTime:HH:mm}")
+                                        </div>
                                     }
                                 </td>
-                                <td class="text-nowrap">@item.NumberOfStudents / @item.Capacity</td>
-                                <td class="text-nowrap">@foreach (var lecturer in item.Lecturers)
+                                <td class="text-nowrap px-3">
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-people-fill me-1"></i>
+                                        @item.NumberOfStudents / @item.Capacity
+                                    </span>
+                                </td>
+                                <td class="text-nowrap px-3">
+                                    @foreach (var lecturer in item.Lecturers)
                                     {
-                                        @lecturer.Name <br />
-                                    }</td>
-                                <td class="text-nowrap">
+                                        <div class="mb-1">
+                                            
+                                            @lecturer.Name
+                                        </div>
+                                    }
+                                </td>
+                                <td class="text-nowrap px-3">
                                     @{
-                                        var statusClass = item.Status switch
+                                        var (statusClass, icon) = item.Status switch
                                         {
-                                            ClassStatus.Pending => "text-warning",
-                                            ClassStatus.Open => "text-success",
-                                            ClassStatus.InProgress => "text-primary",
-                                            ClassStatus.PaymentPending => "text-danger",
-                                            ClassStatus.Archived => "text-secondary",
-                                            _ => ""
+                                            ClassStatus.Pending => ("text-warning", "bi-hourglass-split"),
+                                            ClassStatus.Open => ("text-success", "bi-door-open"),
+                                            ClassStatus.InProgress => ("text-primary", "bi-play-circle"),
+                                            ClassStatus.PaymentPending => ("text-danger", "bi-cash"),
+                                            ClassStatus.Archived => ("text-secondary", "bi-archive"),
+                                            _ => ("", "bi-question-circle")
                                         };
                                         var status = item.Status switch
                                         {
@@ -120,143 +133,174 @@
                                             _ => item.Status.ToString()
                                         };
                                     }
-                                    <span class="@statusClass">@status</span>
+                                    <span class="@statusClass">
+                                        <i class="bi @icon me-1"></i>@status
+                                    </span>
                                 </td>
-                                <td class="text-nowrap">@item.StartDate.ToString("dd/MM/yyyy")</td>
-                                <td class="text-nowrap">@item.EndDate.ToString("dd/MM/yyyy")</td>
-                                <td class="text-nowrap">@item.Tuition.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>                                <td>
-                                    @* Người dùng có policy CanManageClasses thì mới hiển thị nút Sửa / Xoá lớp học *@
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
-                                    {
-                                        <a class="btn btn-sm btn-outline-primary"
-                                        href="@Url.Action("Edit", "Class", new { id = item.Id })">
-                                            <i class="bi bi-pencil"></i> Sửa
-                                        </a>
-                                        @* Conditional forms based on class status *@
-                                        @if (item.Status == ClassStatus.Pending)
+                                <td class="text-nowrap px-3">
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    @item.StartDate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="text-nowrap px-3">
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    @item.EndDate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="text-nowrap px-3">
+                                    
+                                    @item.Tuition.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+                                </td>
+                                <td class="text-nowrap px-3">
+                                    <div class="btn-group">
+                                        @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "CanManageClasses")).Succeeded)
                                         {
-                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="newStatus" value="Open" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-arrow-up-circle"></i> Đăng
-                                                </button>
-                                            </form>
-                                        }
-                                        else if (item.Status == ClassStatus.Open)
-                                        {
-                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="newStatus" value="InProgress" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-arrow-up-circle"></i> Khai giảng
-                                                </button>
-                                            </form>
-                                        }
-                                        else if (item.Status == ClassStatus.InProgress)
-                                        {
-                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="newStatus" value="PaymentPending" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-arrow-up-circle"></i> Chờ thanh toán
-                                                </button>
-                                            </form>
-                                        }
-                                        else if (item.Status == ClassStatus.PaymentPending)
-                                        {
-                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="newStatus" value="Archived" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-arrow-up-circle"></i> Lưu trữ
-                                                </button>
-                                            </form>
-                                        } else {
-                                            <form method="post" action="@Url.Action("ChangeStatus", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="newStatus" value="Pending" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-arrow-up-circle"></i> Chờ
-                                                </button>
-                                            </form>
-                                        }
-                                        <form method="post" action="@Url.Action("Delete", "Class")" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="Id" value="@item.Id" />
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i> Xóa
-                                            </button>
-                                        </form>
-                                    }
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
-                                    {
-                                        var lecturer = await UserManager.GetUserAsync(User);
-                                        if (item.Lecturers.Any(l => l.Id == lecturer.Id))
-                                        {
-                                            <form method="post" action="@Url.Action("CancelTeaching", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="classId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-person-x"></i> Hủy dạy
-                                                </button>
-                                            </form>
-                                        }
-                                        else 
-                                        {
-                                            <form method="post" action="@Url.Action("RegisterToTeach", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="classId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-person-check"></i> Đăng ký dạy
-                                                </button>
-                                            </form>
-                                        }
-                                    }
+                                            <a class="btn btn-sm btn-outline-primary me-1"
+                                               href="@Url.Action("Edit", "Class", new { id = item.Id })">
+                                                <i class="bi bi-pencil-fill"></i> Sửa
+                                            </a>
 
-                                    @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
-                                    {
-                                        var student = await UserManager.GetUserAsync(User);
-                                        if (item.Students.Any(s => s.Id == student.Id))
-                                        {
-                                            <form method="post" action="@Url.Action("CancelEnrollment", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="classId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-journal-x"></i> Hủy học
-                                                </button>
-                                            </form>
-                                        }
-                                        else
-                                        {
-                                            <form method="post" action="@Url.Action("Enroll", "Class")" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="classId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-journal-check"></i> Đăng ký học
-                                                </button>
-                                            </form>
-                                        }
-                                    }
-                                    else if (User?.Identity?.IsAuthenticated != true)
-                                    {
-                                        <a class="btn btn-sm btn-outline-info" asp-area="Identity" asp-page="/Account/Register">
-                                            <i class="bi bi-journal-check"></i> Đăng ký học
-                                        </a>
-                                    }
+                                            @if (item.Status == ClassStatus.Pending)
+                                            {
+                                                <form method="post" action="@Url.Action("ChangeStatus", "Class")" class="d-inline me-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="newStatus" value="Open" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-arrow-up-circle-fill"></i> Đăng
+                                                    </button>
+                                                </form>
+                                            }
+                                            else if (item.Status == ClassStatus.Open)
+                                            {
+                                                <form method="post" action="@Url.Action("ChangeStatus", "Class")" class="d-inline me-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="newStatus" value="InProgress" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-arrow-up-circle-fill"></i> Khai giảng
+                                                    </button>
+                                                </form>
+                                            }
+                                            else if (item.Status == ClassStatus.InProgress)
+                                            {
+                                                <form method="post" action="@Url.Action("ChangeStatus", "Class")" class="d-inline me-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="newStatus" value="PaymentPending" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-arrow-up-circle-fill"></i> Chờ thanh toán
+                                                    </button>
+                                                </form>
+                                            }
+                                            else if (item.Status == ClassStatus.PaymentPending)
+                                            {
+                                                <form method="post" action="@Url.Action("ChangeStatus", "Class")" class="d-inline me-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="newStatus" value="Archived" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-arrow-up-circle-fill"></i> Lưu trữ
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form method="post" action="@Url.Action("ChangeStatus", "Class")" class="d-inline me-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="newStatus" value="Pending" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-arrow-up-circle-fill"></i> Chờ
+                                                    </button>
+                                                </form>
+                                            }
 
+                                            <form method="post" action="@Url.Action("Delete", "Class")" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash-fill"></i> Xóa
+                                                </button>
+                                            </form>
+                                        }
+
+                                        @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsLecturer")).Succeeded)
+                                        {
+                                            var lecturer = await UserManager.GetUserAsync(User);
+                                            if (item.Lecturers.Any(l => l.Id == lecturer.Id))
+                                            {
+                                                <form method="post" action="@Url.Action("CancelTeaching", "Class")" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="classId" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-person-x-fill"></i> Hủy dạy
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form method="post" action="@Url.Action("RegisterToTeach", "Class")" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="classId" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-person-check-fill"></i> Đăng ký dạy
+                                                    </button>
+                                                </form>
+                                            }
+                                        }
+
+                                        @if (User != null && (await AuthorizationService.AuthorizeAsync(User, "IsStudent")).Succeeded)
+                                        {
+                                            var student = await UserManager.GetUserAsync(User);
+                                            if (item.Students.Any(s => s.Id == student.Id))
+                                            {
+                                                <form method="post" action="@Url.Action("CancelEnrollment", "Class")" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="classId" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-journal-x-fill"></i> Hủy học
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form method="post" action="@Url.Action("Enroll", "Class")" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="classId" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-journal-check-fill"></i> Đăng ký học
+                                                    </button>
+                                                </form>
+                                            }
+                                        }
+                                        else if (User?.Identity?.IsAuthenticated != true)
+                                        {
+                                            <a class="btn btn-sm btn-outline-info" asp-area="Identity" asp-page="/Account/Register">
+                                                <i class="bi bi-journal-check-fill"></i> Đăng ký học
+                                            </a>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
                         }
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Enable Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Enable Bootstrap popovers
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+}
